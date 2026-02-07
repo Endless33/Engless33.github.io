@@ -4,25 +4,360 @@
   <meta charset="UTF-8" />
   <title>VRP Protocol — Jumping VPN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="VRP / Jumping VPN — a living protocol architecture for secure, adaptive communication." />
+  <style>
+    :root {
+      --bg: #050505;
+      --fg: #f5f5f5;
+      --muted: #a0a0a0;
+      --accent: #8cc0c8;
+      --border: #262626;
+      --max-width: 900px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      line-height: 1.6;
+    }
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    h1, h2, h3 {
+      font-weight: 500;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 2.4rem;
+      margin-top: 10px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      margin-top: 40px;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 24px;
+    }
+    p {
+      margin: 0 0 12px;
+    }
+    .tagline {
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .muted {
+      color: var(--muted);
+    }
+    ul {
+      padding-left: 20px;
+      margin: 4px 0 12px;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: 1px solid var(--fg);
+      text-decoration: none;
+      color: var(--fg);
+      font-size: 0.9rem;
+    }
+    .button.muted {
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .section-intro {
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
-<body style="background:#050505; color:#f5f5f5; font-family:system-ui; padding:40px; max-width:900px; margin:auto; line-height:1.6;">
-  <h1>VRP Protocol</h1>
-  <p style="color:#c0c0c0;">A living architecture for secure, adaptive communication.</p>
+<body>
+  <div class="page">
+    <!-- Header / Hero -->
+    <header>
+      <h1>VRP Protocol</h1>
+      <div class="tagline">A living architecture for secure, adaptive communication.</div>
+      <p>
+        Jumping VPN / VRP is a communication protocol built around behavioral cryptography,
+        adaptive transport, and organism-like lifecycle patterns. The goal is not to create
+        another VPN, but to define a living protocol capable of evolving under observation
+        and adapting to network conditions.
+      </p>
+      <p class="muted">
+        Jumping VPN provides the encrypted transport perimeter. Inside it, VRP operates as a
+        behavioral, adaptive protocol with organism-like session dynamics.
+      </p>
+    </header>
 
-  <p>Jumping VPN / VRP is a communication protocol built around behavioral cryptography, adaptive transport, and organism‑like lifecycle patterns.</p>
+    <!-- Roadmap -->
+    <section id="roadmap">
+      <h2>Roadmap</h2>
 
-  <h2>Roadmap</h2>
-  <p>Full roadmap will be added soon.</p>
+      <h3>Phase 1 — Core Architecture (Completed / In Progress)</h3>
+      <ul>
+        <li>X25519 handshake</li>
+        <li>AEAD (ChaCha20‑Poly1305) sealing</li>
+        <li>Session lifecycle</li>
+        <li>Transport abstraction</li>
+        <li>Minimal client prototype</li>
+        <li>Mutation Log established</li>
+        <li>Visual language established</li>
+        <li>Observer map established</li>
+      </ul>
 
-  <h2>Whitepaper</h2>
-  <p>Whitepaper v0.1 will be published here.</p>
+      <h3>Phase 2 — Behavioral Layer</h3>
+      <ul>
+        <li>Pulse mechanism</li>
+        <li>Rotation logic</li>
+        <li>Adaptive transport switching</li>
+        <li>Connection heuristics</li>
+        <li>Error‑resilience model</li>
+        <li>Minimal, privacy‑preserving logging framework</li>
+      </ul>
 
-  <h2>Support</h2>
-  <p>Support options will be added soon.</p>
+      <h3>Phase 3 — Data Channel</h3>
+      <ul>
+        <li>Encrypted data tunnel</li>
+        <li>Multiplexing</li>
+        <li>Frame format</li>
+        <li>Packet scheduler</li>
+        <li>Congestion hints</li>
+        <li>Stateless recovery</li>
+      </ul>
 
-  <h2>Contact</h2>
-  <p>contact@example.com</p>
+      <h3>Phase 4 — Server Architecture</h3>
+      <ul>
+        <li>Minimal server daemon</li>
+        <li>Session registry</li>
+        <li>Key rotation</li>
+        <li>Transport negotiation</li>
+        <li>Multi‑node awareness (future clustering)</li>
+      </ul>
 
-  <footer style="margin-top:60px; color:#777;">© VRP Protocol — Independent research project.</footer>
+<h3>Phase 5 — Security Hardening</h3>
+      <ul>
+        <li>Replay protection</li>
+        <li>Timing‑side‑channel mitigation</li>
+        <li>Key‑material lifecycle</li>
+        <li>Zero‑trust integration hooks</li>
+      </ul>
+
+      <h3>Phase 6 — Public‑Facing Layer</h3>
+      <ul>
+        <li>Minimal website</li>
+        <li>Whitepaper v1</li>
+        <li>Demo video</li>
+        <li>Controlled GitHub surface</li>
+        <li>Documentation portal</li>
+      </ul>
+
+      <h3>Phase 7 — Expansion</h3>
+      <ul>
+        <li>Mobile client</li>
+        <li>Desktop client</li>
+        <li>Multi‑transport engine</li>
+        <li>Experimental PQC handshake</li>
+        <li>Experimental satellite‑latency mode</li>
+      </ul>
+    </section>
+
+    <!-- Whitepaper -->
+    <section id="whitepaper">
+      <h2>Whitepaper v0.1</h2>
+
+      <p class="section-intro">
+        The core whitepaper describes the cryptographic foundation, behavioral model, transport abstraction,
+        data channel, server architecture, and security model of VRP / Jumping VPN.
+      </p>
+
+      <h3>1. Introduction</h3>
+      <p>
+        Jumping VPN / VRP is a communication protocol designed around behavioral cryptography,
+        adaptive transport, and organism‑like lifecycle patterns. The goal is not to create
+        another VPN, but to define a living protocol capable of evolving under observation
+        and adapting to network conditions.
+      </p>
+
+      <h3>2. Cryptographic Foundation</h3>
+      <ul>
+        <li>X25519 for ephemeral key exchange</li>
+        <li>ChaCha20‑Poly1305 for authenticated encryption</li>
+        <li>Monotonic, per‑session nonce strategy</li>
+        <li>Short‑lived, rotating, sealed key lifecycle</li>
+      </ul>
+
+      <h3>3. Behavioral Model</h3>
+      <p>The protocol behaves as an organism, with distinct phases and reactions:</p>
+      <ul>
+        <li>pulse</li>
+        <li>rotation</li>
+        <li>mutation</li>
+        <li>recovery</li>
+        <li>sealing</li>
+      </ul>
+      <p>
+        This creates a dynamic communication pattern that is harder to fingerprint and easier to adapt
+        to changing network conditions.
+      </p>
+
+      <h3>4. Transport Layer</h3>
+      <p>Transport is abstracted and designed to be replaceable:</p>
+      <ul>
+        <li>UDP</li>
+        <li>TCP</li>
+        <li>QUIC (future)</li>
+        <li>Custom transports</li>
+      </ul>
+      <p>
+        The protocol can jump between transports without breaking the session, as long as the behavioral
+        and cryptographic invariants are preserved.
+      </p>
+
+      <h3>5. Data Channel</h3>
+      <p>Encrypted, multiplexed, low‑latency channel with:</p>
+      <ul>
+        <li>Frame format</li>
+        <li>Scheduler</li>
+        <li>Congestion hints</li>
+        <li>Stateless recovery mechanisms</li>
+      </ul>
+
+      <h3>6. Server Architecture</h3>
+      <p>Minimalistic daemon responsible for:</p>
+      <ul>
+        <li>Session registry</li>
+        <li>Handshake endpoint</li>
+        <li>Key rotation</li>
+        <li>Transport negotiation</li>
+      </ul>
+
+      <h3>7. Security Model</h3>
+      <ul>
+        <li>Zero‑trust compatible</li>
+        <li>Replay protection</li>
+        <li>Timing‑side‑channel mitigation</li>
+        <li>Sealed key lifecycle</li>
+        <li>Minimal metadata exposure</li>
+      </ul>
+
+      <h3>8. Future Work</h3>
+      <ul>
+        <li>PQC handshake experiments</li>
+        <li>Satellite‑latency optimization</li>
+        <li>Multi‑node clustering</li>
+        <li>Hardware acceleration</li>
+        <li>Formal verification</li>
+      </ul>
+
+      <p class="muted">
+        A full whitepaper PDF or dedicated page can be linked here later.
+      </p>
+      <a href="#" class="button muted">Whitepaper v0.1 (coming soon)</a>
+    </section>
+
+<!-- Why this matters -->
+    <section id="why">
+      <h2>Why this matters</h2>
+      <p>
+        Secure communication is no longer defined only by encryption strength. It requires adaptability,
+        behavior, and resilience under observation.
+      </p>
+      <p>
+        VRP explores a dynamic model where a protocol behaves more like an organism than a static tunnel —
+        capable of evolving, rotating, and adapting to network conditions.
+      </p>
+      <p>
+        The project is an independent research effort to rethink how secure transport and protocol behavior
+        can be combined into a single living architecture.
+      </p>
+    </section>
+
+    <!-- Observer map -->
+    <section id="observers">
+      <h2>Observer map</h2>
+      <p class="section-intro">
+        The project has attracted attention from engineers and analysts across multiple domains. Some of the
+        stronger signals include:
+      </p>
+      <ul>
+        <li>Secure communications specialists</li>
+        <li>Protocol designers and cryptographers</li>
+        <li>Academic research groups in networking and security</li>
+        <li>Cloud‑native platform and infrastructure engineers</li>
+        <li>Edge computing and autonomous systems security teams</li>
+        <li>Satellite & space‑tech communications engineers</li>
+        <li>Maritime & port cybersecurity divisions</li>
+        <li>National CERT/CSIRT teams</li>
+        <li>High‑performance computing (HPC) security groups</li>
+        <li>Quantum‑resistant cryptography researchers</li>
+        <li>Senior infrastructure architects at major hardware and networking companies</li>
+      </ul>
+      <p class="muted">
+        This list is documented as part of the protocol’s evolution, not as endorsement — it reflects who has
+        been watching the project emerge.
+      </p>
+    </section>
+
+    <!-- Community / Chat -->
+    <section id="community">
+      <h2>Community & discussion</h2>
+      <p>
+        For ideas, questions, and technical discussion, a minimal community channel will be used instead of
+        a heavy on‑site chat.
+      </p>
+      <p class="muted">
+        A link to a Telegram / Discord / Matrix room or GitHub Discussions can be placed here once the
+        channel is ready.
+      </p>
+      <a href="#" class="button muted">Join the discussion (soon)</a>
+    </section>
+
+    <!-- Support / Donations -->
+    <section id="support">
+      <h2>Support the project</h2>
+      <p>
+        VRP / Jumping VPN is an independent, self‑funded research project. If you want to support the work,
+        a minimal donation layer will be added here.
+      </p>
+      <ul>
+        <li>PayPal / Stripe / BuyMeACoffee / Patreon link (to be added)</li>
+        <li>Optional crypto address (to be added)</li>
+      </ul>
+      <p class="muted">
+        Until the donation endpoints are live, the main way to support the project is to follow its evolution,
+        share it with the right people, and engage with the ideas.
+      </p>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>For collaboration, research inquiries, or early support:</p>
+      <p><strong>contact@example.com</strong></p>
+      <!-- Replace with your real email when ready -->
+    </section>
+
+    <footer>
+      © VRP Protocol — Independent research project.
+    </footer>
+  </div>
 </body>
 </html>
