@@ -906,6 +906,7 @@ observers: 0
     </footer>
   </div>
 
+  <!-- VRP COMMAND CONSOLE -->
   <div id="vrp-console-wrapper">
     <div id="vrp-console-overlay"></div>
 
@@ -927,6 +928,7 @@ observers: 0
     </div>
   </div>
 
+  <!-- FLOATING BUTTONS -->
   <div id="floating-buttons">
     <button class="float-btn" id="btn-contract">Contract</button>
     <button class="float-btn" id="btn-author">Author</button>
@@ -934,6 +936,7 @@ observers: 0
     <button class="float-btn" id="btn-thanks">Thanks</button>
   </div>
 
+  <!-- MODALS -->
   <div class="modal" id="thanks-modal">
     <div class="modal-box">
       <h3>Gratitude Log</h3>
@@ -970,20 +973,27 @@ observers: 0
   <div class="modal" id="author-modal">
     <div class="modal-box">
       <h3>Author</h3>
-      <div>
-        Name: <strong>Vitalijus Riabovas</strong><br>
-        Role: Architect of VRP / Jumping VPN.<br><br>
-        Focus:<br>
-        - protocol design,<br>
-        - behavioral routing,<br>
-        - privacy infrastructure,<br>
-        - narrative and visual architecture.<br><br>
-        Identity:<br>
-        - not "just a developer",<br>
-        - not a generic VPN founder,<br>
-        - but an architect building a living protocol organism.<br><br>
-        Every surface — code, visuals, wording — is treated as part of the legend.
+
+      <div id="author-cmatrix" style="
+        background:#000;
+        color:#00ff66;
+        font-family: 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 14px;
+        height: 220px;
+        overflow:hidden;
+        border:1px solid #0f0;
+        padding:10px;
+        white-space:pre;
+      ">
       </div>
+
+      <div style="margin-top:12px; font-size:0.85rem; color:#4fd1c5;">
+        Architect: <strong>Vitalijus Riabovas</strong><br>
+        Role: VRP / Jumping VPN creator<br>
+        Focus: protocol design, behavioral routing, privacy infrastructure<br>
+      </div>
+
       <button class="modal-close" data-close="author-modal">Close</button>
     </div>
   </div>
@@ -1015,6 +1025,7 @@ observers: 0
   <div id="vrp-heartbeat"></div>
 
   <script>
+    // ===== VRP DEMO ENGINE =====
     (function() {
       var consoleEl = document.getElementById("console");
       var behaviorEl = document.getElementById("behavior-status");
@@ -1101,6 +1112,7 @@ observers: 0
       devBtn.addEventListener("click", openDevConsole);
     })();
 
+    // ===== VRP DASHBOARD (NODES / ENTROPY / PACKETS) =====
     (function() {
       var nodeMapEl = document.getElementById("vrp-node-map");
       var entropyEl = document.getElementById("vrp-entropy");
@@ -1185,6 +1197,7 @@ observers: 0
       setInterval(tick, 700);
     })();
 
+    // ===== VRP BEHAVIOR DIAGRAM =====
     (function() {
       var el = document.getElementById("vrp-behavior-diagram");
       if (!el) return;
@@ -1222,6 +1235,7 @@ observers: 0
       setInterval(tick, 800);
     })();
 
+    // ===== VRP COMMAND CONSOLE LOGIC =====
     (function() {
       var wrapper = document.getElementById("vrp-console-wrapper");
       var openBtn = document.getElementById("open-vrp-console");
@@ -1352,6 +1366,7 @@ observers: 0
       });
     })();
 
+    // ===== FLOATING BUTTONS / MODALS =====
     (function() {
       var btnContract = document.getElementById("btn-contract");
       var btnAuthor = document.getElementById("btn-author");
@@ -1400,6 +1415,7 @@ observers: 0
       attachOverlayClose(thanksModal);
     })();
 
+    // ===== BACKGROUND WHISPERS =====
     (function() {
       var lastMove = Date.now();
       var whisperCooldown = false;
@@ -1509,7 +1525,7 @@ observers: 0
       }, 2000);
     })();
 
-    // ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
+    // ===== FIXED VRP WATCHER AWAKENS + GHOST CURSOR =====
     (function() {
       var body = document.body;
       var consoleEl = document.getElementById("console");
@@ -1520,6 +1536,7 @@ observers: 0
         consoleEl.scrollTop = consoleEl.scrollHeight;
       }
 
+      // WATCHER AWAKENS — cursor still for 4+ seconds
       var lastX = null;
       var lastY = null;
       var stillSince = Date.now();
@@ -1537,6 +1554,7 @@ observers: 0
         var dy = Math.abs(e.clientY - lastY);
 
         if (dx < 2 && dy < 2) {
+          // still
         } else {
           lastX = e.clientX;
           lastY = e.clientY;
@@ -1558,7 +1576,9 @@ observers: 0
         }
       }, 800);
 
+      // FIXED GHOST CURSOR — no transform, no layout shift
       var lastMove = Date.now();
+
       document.addEventListener("mousemove", function() {
         lastMove = Date.now();
         body.style.cursor = "default";
@@ -1567,12 +1587,13 @@ observers: 0
       setInterval(function() {
         var now = Date.now();
         if (now - lastMove > 12000) {
+
+          // only hide cursor — no transform, no reflow
           body.style.cursor = "none";
-          body.style.transform = "translate(0,0)";
-          setTimeout(function() { body.style.transform = "translate(1px,0)"; }, 80);
-          setTimeout(function() { body.style.transform = "translate(-1px,0)"; }, 160);
-          setTimeout(function() { body.style.transform = "translate(0,0)"; }, 240);
-          setTimeout(function() { body.style.cursor = "default"; }, 260);
+
+          setTimeout(function() {
+            body.style.cursor = "default";
+          }, 260);
 
           log("[vrp] idle pattern detected. probing user presence...");
           lastMove = Date.now();
@@ -1667,43 +1688,44 @@ observers: 0
         log(msgs[Math.floor(Math.random() * msgs.length)]);
       }, 26000);
     })();
-// ===== VRP AUTHOR CMATRIX =====
-(function() {
-  var box = document.getElementById("author-cmatrix");
-  if (!box) return;
 
-  var cols = 60;
-  var rows = 20;
-  var matrix = [];
+    // ===== VRP AUTHOR CMATRIX =====
+    (function() {
+      var box = document.getElementById("author-cmatrix");
+      if (!box) return;
 
-  function randomChar() {
-    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    return chars[Math.floor(Math.random() * chars.length)];
-  }
+      var cols = 60;
+      var rows = 20;
+      var matrix = [];
 
-  function init() {
-    for (var r = 0; r < rows; r++) {
-      var line = "";
-      for (var c = 0; c < cols; c++) {
-        line += randomChar();
+      function randomChar() {
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return chars[Math.floor(Math.random() * chars.length)];
       }
-      matrix.push(line);
-    }
-  }
 
-  function render() {
-    matrix.shift();
-    var newLine = "";
-    for (var c = 0; c < cols; c++) {
-      newLine += randomChar();
-    }
-    matrix.push(newLine);
-    box.textContent = matrix.join("\n");
-  }
+      function init() {
+        for (var r = 0; r < rows; r++) {
+          var line = "";
+          for (var c = 0; c < cols; c++) {
+            line += randomChar();
+          }
+          matrix.push(line);
+        }
+      }
 
-  init();
-  setInterval(render, 80);
-})();
+      function render() {
+        matrix.shift();
+        var newLine = "";
+        for (var c = 0; c < cols; c++) {
+          newLine += randomChar();
+        }
+        matrix.push(newLine);
+        box.textContent = matrix.join("\n");
+      }
+
+      init();
+      setInterval(render, 80);
+    })();
   </script>
 </body>
 </html>
