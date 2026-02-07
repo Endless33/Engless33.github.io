@@ -1469,3 +1469,254 @@ observers: 0
   </script>
 </body>
 </html>
+
+// ===== VRP DEEP OBSERVER ENGINE =====
+(function() {
+  var lastMoveTime = Date.now();
+  var lastScrollTime = Date.now();
+  var lastInteractionTime = Date.now();
+  var deepObserverScore = 0;
+  var hasShownDeepObserver = false;
+  var hasShownReturn = false;
+
+  var consoleEl = document.getElementById("console");
+  var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+  function logToConsole(msg) {
+    if (!consoleEl) return;
+    consoleEl.textContent += "\n" + msg;
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  function boostBehaviorPulse() {
+    if (!behaviorDiagram) return;
+    behaviorDiagram.textContent += "\n[vrp] deep observer pattern detected. pulse modulation active.";
+  }
+
+  // Return detection (localStorage)
+  try {
+    var visits = parseInt(localStorage.getItem("vrp_visits") || "0", 10);
+    visits++;
+    localStorage.setItem("vrp_visits", String(visits));
+
+    if (visits > 1 && !hasShownReturn) {
+      hasShownReturn = true;
+      setTimeout(function() {
+        logToConsole("[vrp] returning observer detected. memory updated.");
+      }, 4000);
+    }
+  } catch (e) {
+    // ignore if localStorage is unavailable
+  }
+
+  document.addEventListener("mousemove", function() {
+    lastMoveTime = Date.now();
+    lastInteractionTime = Date.now();
+  });
+
+  document.addEventListener("scroll", function() {
+    lastScrollTime = Date.now();
+    lastInteractionTime = Date.now();
+  });
+
+  document.addEventListener("click", function() {
+    lastInteractionTime = Date.now();
+  });
+
+  setInterval(function() {
+    var now = Date.now();
+    var idleSince = now - lastInteractionTime;
+    var noScrollSince = now - lastScrollTime;
+
+    if (idleSince > 6000 && noScrollSince > 6000) {
+      deepObserverScore += 2;
+    } else if (idleSince > 3000) {
+      deepObserverScore += 1;
+    } else {
+      deepObserverScore = Math.max(0, deepObserverScore - 1);
+    }
+
+    if (deepObserverScore >= 8 && !hasShownDeepObserver) {
+      hasShownDeepObserver = true;
+      logToConsole("[vrp] deep observer identified. adjusting perimeter.");
+      boostBehaviorPulse();
+    }
+
+  }, 2000);
+})();
+
+// ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
+(function() {
+  var body = document.body;
+  var consoleEl = document.getElementById("console");
+
+  function log(msg) {
+    if (!consoleEl) return;
+    consoleEl.textContent += "\n" + msg;
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  // WATCHER AWAKENS — cursor stays almost still for 4+ seconds
+  var lastX = null;
+  var lastY = null;
+  var stillSince = Date.now();
+  var watcherTriggered = false;
+
+  document.addEventListener("mousemove", function(e) {
+    if (lastX === null && lastY === null) {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      stillSince = Date.now();
+      return;
+    }
+
+    var dx = Math.abs(e.clientX - lastX);
+    var dy = Math.abs(e.clientY - lastY);
+
+    if (dx < 2 && dy < 2) {
+      // almost still
+    } else {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      stillSince = Date.now();
+      watcherTriggered = false;
+      body.style.boxShadow = "none";
+    }
+  });
+
+  setInterval(function() {
+    var now = Date.now();
+    if (!watcherTriggered && now - stillSince > 4000) {
+      watcherTriggered = true;
+      body.style.boxShadow = "0 0 40px rgba(79,209,197,0.6)";
+      setTimeout(function() {
+        body.style.boxShadow = "none";
+      }, 1200);
+      log("[vrp] watcher: presence detected. adjusting perimeter.");
+    }
+  }, 800);
+
+  // GHOST CURSOR — no mouse movement for 12+ seconds
+  var lastMove = Date.now();
+  document.addEventListener("mousemove", function() {
+    lastMove = Date.now();
+    if (body) body.style.cursor = "default";
+  });
+
+  setInterval(function() {
+    var now = Date.now();
+    if (now - lastMove > 12000) {
+      if (body) {
+        body.style.cursor = "none";
+        body.style.transform = "translate(0,0)";
+        setTimeout(function() {
+          body.style.transform = "translate(1px,0)";
+        }, 80);
+        setTimeout(function() {
+          body.style.transform = "translate(-1px,0)";
+        }, 160);
+        setTimeout(function() {
+          body.style.transform = "translate(0,0)";
+        }, 240);
+        setTimeout(function() {
+          body.style.cursor = "default";
+        }, 260);
+      }
+      log("[vrp] idle pattern detected. probing user presence...");
+      lastMove = Date.now();
+    }
+  }, 2000);
+})();
+
+// ===== VRP VITALIJUS MODE (SECRET COMMAND) =====
+(function() {
+  var output = document.getElementById("vrp-console-output");
+  var input = document.getElementById("vrp-console-input");
+  if (!output || !input) return;
+
+  var vitalijusMode = false;
+
+  function print(msg) {
+    output.textContent += "\n" + msg;
+    output.scrollTop = output.scrollHeight;
+  }
+
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      var value = (input.value || "").trim().toLowerCase();
+      if (value === "vitalijus") {
+        setTimeout(function() {
+          vitalijusMode = true;
+          print("[vrp] architect detected.");
+          print("[vrp] elevating privileges. organism pulse increased.");
+          document.body.style.animationDuration = "4s";
+        }, 50);
+      }
+    }
+  });
+
+  setInterval(function() {
+    if (!vitalijusMode) return;
+    var msgs = [
+      "[vrp] architect presence confirmed.",
+      "[vrp] mutation window widened.",
+      "[vrp] internal logs exposed to architect.",
+      "[vrp] observer lattice reconfigured."
+    ];
+    var msg = msgs[Math.floor(Math.random() * msgs.length)];
+    print(msg);
+  }, 20000);
+})();
+
+// ===== VRP LORE UNLOCKS + OBSERVER MEMORY =====
+(function() {
+  var consoleEl = document.getElementById("console");
+  var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+  function log(msg) {
+    if (!consoleEl) return;
+    consoleEl.textContent += "\n" + msg;
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  // Local observer memory
+  var observerCount = 0;
+  try {
+    observerCount = parseInt(localStorage.getItem("vrp_observers") || "0", 10);
+    observerCount++;
+    localStorage.setItem("vrp_observers", String(observerCount));
+  } catch (e) {
+    observerCount = 1;
+  }
+
+  setTimeout(function() {
+    log("[vrp] observer lattice updated. total local observations: " + observerCount + ".");
+  }, 5000);
+
+  // Lore unlock on text selection
+  document.addEventListener("selectionchange", function() {
+    var sel = window.getSelection ? String(window.getSelection()) : "";
+    if (!sel || sel.length < 8) return;
+
+    if (Math.random() < 0.08) {
+      log("[vrp] user focus spike detected. lore fragment unlocked.");
+      if (behaviorDiagram) {
+        behaviorDiagram.textContent += "\n[vrp] lore: the protocol was not built. it emerged.";
+      }
+    }
+  });
+
+  // Rare shadow lore messages
+  setInterval(function() {
+    if (Math.random() < 0.25) return;
+
+    var msgs = [
+      "[vrp] silent watcher present beyond visible metrics.",
+      "[vrp] mutation log extended in private space.",
+      "[vrp] entropy and curiosity remain correlated.",
+      "[vrp] some observers never reveal themselves."
+    ];
+    var msg = msgs[Math.floor(Math.random() * msgs.length)];
+    log(msg);
+  }, 26000);
+})();
