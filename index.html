@@ -322,6 +322,85 @@
       letter-spacing:0.16em;
       color:var(--muted);
     }
+
+    /* VRP POPUP CONSOLE */
+    #vrp-console-wrapper {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+    }
+
+    #vrp-console-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+    }
+
+    #vrp-console {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 520px;
+      transform: translate(-50%, -50%);
+      background: #050505;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      color: #f5f5f5;
+      animation: console-pop 0.25s ease-out;
+    }
+
+    @keyframes console-pop {
+      from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .vrp-console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      color: #8cc0c8;
+    }
+
+    .vrp-console-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vrp-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .vrp-btn.red { background: #ff4b4b; }
+    .vrp-btn.green { background: #4fff7b; }
+    .vrp-btn.blue { background: #4fd1ff; }
+
+    #vrp-console-output {
+      background: #000;
+      border: 1px solid #333;
+      padding: 10px;
+      height: 220px;
+      overflow-y: auto;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+    }
+
+    #vrp-console-input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 
@@ -357,6 +436,7 @@
           <div class="hero-buttons">
             <button class="button primary" id="start-jumping">Start Jumping</button>
             <button class="button secondary" id="open-dev-console">Dev Console</button>
+            <button class="button secondary" id="open-vrp-console" style="margin-left:4px;">VRP Command Console</button>
           </div>
 
           <div class="hero-note">
@@ -584,6 +664,28 @@ log_level  = minimal
     </footer>
   </div>
 
+  <!-- VRP POPUP COMMAND CONSOLE -->
+  <div id="vrp-console-wrapper">
+    <div id="vrp-console-overlay"></div>
+
+    <div id="vrp-console">
+      <div class="vrp-console-header">
+        <span>VRP COMMAND CONSOLE</span>
+        <div class="vrp-console-buttons">
+          <div class="vrp-btn red"></div>
+          <div class="vrp-btn green"></div>
+          <div class="vrp-btn blue"></div>
+        </div>
+      </div>
+
+      <div id="vrp-console-output">
+[vrp] console ready. type "help" for commands.
+      </div>
+
+      <input id="vrp-console-input" placeholder="vrp> enter command..." autocomplete="off" />
+    </div>
+  </div>
+
   <script>
     (function() {
       const consoleEl = document.getElementById('console');
@@ -671,6 +773,67 @@ log_level  = minimal
 
       if (startBtn) startBtn.addEventListener('click', startDemo);
       if (devBtn) devBtn.addEventListener('click', openDevConsole);
+    })();
+
+    (function() {
+      const wrapper = document.getElementById("vrp-console-wrapper");
+      const openBtn = document.getElementById("open-vrp-console");
+      const overlay = document.getElementById("vrp-console-overlay");
+      const output = document.getElementById("vrp-console-output");
+      const input = document.getElementById("vrp-console-input");
+
+      function print(text) {
+        output.textContent += "\\n" + text;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      const commands = {
+        help: () => {
+          print("[vrp] available commands:");
+          print("  help              show this list");
+          print("  rotate            rotate transport");
+          print("  pulse             show pulse status");
+          print("  observers         show observer count");
+          print("  clear             clear console");
+        },
+        rotate: () => {
+          print("[vrp] rotation acknowledged. udp → tcp → udp.");
+        },
+        pulse: () => {
+          print("[vrp] pulse stable. entropy: 72%");
+        },
+        observers: () => {
+          print("[vrp] 14 observers detected. pattern adapting.");
+        },
+        clear: () => {
+          output.textContent = "[vrp] console cleared.";
+        }
+      };
+
+      openBtn.addEventListener("click", () => {
+        wrapper.style.display = "block";
+        input.focus();
+      });
+
+      overlay.addEventListener("click", () => {
+        wrapper.style.display = "none";
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const cmd = input.value.trim();
+          if (!cmd) return;
+          print("vrp> " + cmd);
+
+          if (commands[cmd]) {
+            commands[cmd]();
+          } else {
+            print("[vrp] unknown command.");
+          }
+
+          input.value = "";
+        }
+      });
     })();
   </script>
 </body>
