@@ -31,7 +31,7 @@
     .page {
       max-width: var(--max-width);
       margin: 0 auto;
-      padding: 32px 16px 80px;
+      padding: 32px 16px 120px;
     }
 
     h1, h2, h3 {
@@ -305,124 +305,7 @@
       color: var(--muted);
       border-top: 1px solid var(--border);
       padding-top: 20px;
-    }
-
-    input, textarea {
-      background:#111;
-      border:1px solid #333;
-      color:#f5f5f5;
-      padding:8px;
-      width:100%;
-      margin-bottom:10px;
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-
-    button {
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-
-    .diagram {
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size:0.78rem;
-      background:#050505;
-      border:1px solid var(--border);
-      padding:10px;
-      margin-top:10px;
-      white-space:pre;
-      overflow:auto;
-    }
-
-    .small-label {
-      font-size:0.75rem;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      color:var(--muted);
-    }
-
-    /* VRP POPUP CONSOLE */
-    #vrp-console-wrapper {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-    }
-
-    #vrp-console-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px);
-    }
-
-    #vrp-console {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 520px;
-      transform: translate(-50%, -50%);
-      background: #050505;
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 16px;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      color: #f5f5f5;
-      animation: console-pop 0.25s ease-out;
-    }
-
-    @keyframes console-pop {
-      from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
-
-    .vrp-console-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
-      color: #8cc0c8;
-    }
-
-    .vrp-console-buttons {
-      display: flex;
-      gap: 6px;
-    }
-
-    .vrp-btn {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .vrp-btn.red { background: #ff4b4b; }
-    .vrp-btn.green { background: #4fff7b; }
-    .vrp-btn.blue { background: #4fd1ff; }
-
-    #vrp-console-output {
-      background: #000;
-      border: 1px solid #333;
-      padding: 10px;
-      height: 220px;
-      overflow-y: auto;
-      font-size: 0.78rem;
-      white-space: pre-wrap;
-    }
-
-    #vrp-console-input {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px;
-      background: #111;
-      border: 1px solid #333;
-      color: #fff;
-      font-size: 0.85rem;
-    }
-
-    /* dashboard tweaks */
-    #vrp-dashboard .diagram {
-      height: 120px;
+      text-align: center;
     }
 
     /* crypto support */
@@ -445,6 +328,76 @@
     #support-crypto h2 {
       color: #4fd1c5;
       text-shadow: 0 0 8px rgba(79,209,197,0.4);
+    }
+
+    /* floating buttons */
+    #floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9999;
+    }
+
+    .float-btn {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #0a0a0a;
+      border: 1px solid #4fd1c5;
+      color: #4fd1c5;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .float-btn:hover {
+      background: #4fd1c5;
+      color: #000;
+      box-shadow: 0 0 12px rgba(79,209,197,0.6);
+    }
+
+    /* THANKS MODAL */
+    #thanks-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+
+    #thanks-box {
+      background: #050505;
+      border: 1px solid #4fd1c5;
+      padding: 20px;
+      width: 420px;
+      border-radius: 12px;
+      color: #f5f5f5;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      animation: console-pop 0.25s ease-out;
+    }
+
+    #thanks-box h3 {
+      margin-top: 0;
+      color: #4fd1c5;
+      text-align: center;
+    }
+
+    #thanks-close {
+      margin-top: 14px;
+      width: 100%;
+      padding: 8px;
+      background: #4fd1c5;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -584,556 +537,3 @@ log_level  = minimal
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- VRP DASHBOARD -->
-    <section id="vrp-dashboard">
-      <h2>VRP live dashboard</h2>
-      <p class="muted">Local simulation of nodes, entropy and packet flow. No real traffic.</p>
-
-      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:14px;">
-        <!-- NODE MAP -->
-        <div class="feature-card">
-          <div class="feature-title"><span>Node</span> Map</div>
-          <div class="diagram" id="vrp-node-map">
-[vrp] node‑map initializing...
-          </div>
-        </div>
-
-        <!-- ENTROPY METER -->
-        <div class="feature-card">
-          <div class="feature-title"><span>Entropy</span> Meter</div>
-          <div class="diagram" id="vrp-entropy">
-Entropy: ███████░░░ 72%
-State:   stable
-          </div>
-        </div>
-
-        <!-- PACKET VISUALIZER -->
-        <div class="feature-card">
-          <div class="feature-title"><span>Packet</span> Visualizer</div>
-          <div class="diagram" id="vrp-packets">
-[vrp] packets:
-|······························|
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BEHAVIOR PANEL -->
-    <section id="vrp-behavior">
-      <h2>Behavior engine sketch</h2>
-      <p class="muted">Symbolic view of pulse, rotation and observers.</p>
-
-      <div class="diagram" id="vrp-behavior-diagram">
-[vrp] behavior:
-pulse:     ░░░░░░░░░░
-rotation:  idle
-observers: 0
-      </div>
-    </section>
-
-    <!-- ROADMAP -->
-    <section id="roadmap">
-      <h2>Roadmap</h2>
-
-      <h3>Phase 1 — Core Architecture (Completed / In Progress)</h3>
-      <ul>
-        <li>X25519 handshake</li>
-        <li>AEAD (ChaCha20‑Poly1305) sealing</li>
-        <li>Session lifecycle</li>
-        <li>Transport abstraction</li>
-        <li>Minimal client prototype</li>
-        <li>Mutation Log established</li>
-        <li>Visual language established</li>
-        <li>Observer map established</li>
-      </ul>
-
-      <h3>Phase 2 — Behavioral Layer</h3>
-      <ul>
-        <li>Pulse mechanism</li>
-        <li>Rotation logic</li>
-        <li>Adaptive transport switching</li>
-        <li>Connection heuristics</li>
-        <li>Error‑resilience model</li>
-        <li>Minimal, privacy‑preserving logging framework</li>
-      </ul>
-
-      <h3>Phase 3 — Data Channel</h3>
-      <ul>
-        <li>Encrypted data tunnel</li>
-        <li>Multiplexing</li>
-        <li>Frame format</li>
-        <li>Packet scheduler</li>
-        <li>Congestion hints</li>
-        <li>Stateless recovery</li>
-      </ul>
-
-      <h3>Phase 4 — Server Architecture</h3>
-      <ul>
-        <li>Minimal server daemon</li>
-        <li>Session registry</li>
-        <li>Key rotation</li>
-        <li>Transport negotiation</li>
-        <li>Multi‑node awareness (future clustering)</li>
-      </ul>
-
-      <h3>Phase 5 — Security Hardening</h3>
-      <ul>
-        <li>Replay protection</li>
-        <li>Timing‑side‑channel mitigation</li>
-        <li>Key‑material lifecycle</li>
-        <li>Zero‑trust integration hooks</li>
-      </ul>
-
-      <h3>Phase 6 — Public‑Facing Layer</h3>
-      <ul>
-        <li>Minimal website</li>
-        <li>Whitepaper v1</li>
-        <li>Demo video</li>
-        <li>Controlled GitHub surface</li>
-        <li>Documentation portal</li>
-      </ul>
-
-      <h3>Phase 7 — Expansion</h3>
-      <ul>
-        <li>Mobile client</li>
-        <li>Desktop client</li>
-        <li>Multi‑transport engine</li>
-        <li>Experimental PQC handshake</li>
-        <li>Experimental satellite‑latency mode</li>
-      </ul>
-    </section>
-
-    <!-- ENTITIES -->
-    <section id="entities">
-      <h2>Entities</h2>
-      <p class="muted">Symbolic representations of the protocol’s internal logic.</p>
-      <ul>
-        <li><strong>The Watcher</strong> — vigilance, perimeter, awareness.</li>
-        <li><strong>The Pulse Engine</strong> — behavior, rotation, adaptation.</li>
-        <li><strong>The Curiosity Node</strong> — evolution, learning, emergence.</li>
-      </ul>
-      <p class="section-note">
-        These entities appear across the visual language of Jumping VPN 2.0 and act as anchors for how the protocol is perceived.
-      </p>
-    </section>
-
-    <!-- OBSERVERS -->
-    <section id="observers">
-      <h2>Observer map</h2>
-      <p class="muted">A symbolic list of domains watching the protocol.</p>
-      <ul>
-        <li>Secure communications specialists</li>
-        <li>Protocol designers and cryptographers</li>
-        <li>Academic research groups in networking and security</li>
-        <li>Cloud‑native infrastructure engineers</li>
-        <li>Satellite & space‑tech communications teams</li>
-        <li>National CERT/CSIRT units</li>
-      </ul>
-    </section>
-
-    <!-- SUPPORT (PayPal, старый блок остаётся) -->
-    <section id="support">
-      <h2>Support the project</h2>
-      <p>
-        VRP / Jumping VPN is an independent, self‑funded research project.
-        If you want to support the evolution of the protocol, you can contribute via PayPal:
-      </p>
-      <p style="font-size:1.1rem;"><strong>jumpingvpn@yahoo.com</strong></p>
-      <p class="muted">Thank you to everyone who supports the work and follows the protocol’s development.</p>
-    </section>
-
-    <!-- NEW: CRYPTO SUPPORT -->
-    <section id="support-crypto">
-      <h2>🛡 Support the Protocol</h2>
-      <p class="muted">
-        Jumping VPN and VRP are self‑funded experimental projects.<br>
-        If you want to support the movement, you may contribute any amount via crypto.
-      </p>
-
-      <p>
-        Every satoshi strengthens the signal.<br>
-        Every ether fuels the evolution.
-      </p>
-
-      <div class="crypto-box">
-        <div><strong>BTC:</strong> bc1qafvdlevfeld4zvmqhvalwqdcc7jag2xanecfwx</div>
-        <div><strong>ETH:</strong> 0x3b51AaF84F958e082b90639bd7728544234Ff7c9</div>
-        <div><strong>LTC:</strong> ltc1qden05pz46cwtk022y9cqhzzfkj2ssgq42ldmys</div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>For collaboration, research inquiries, or early support:</p>
-      <p><strong>jumpingvpn@yahoo.com</strong></p>
-    </section>
-
-    <footer>
-      © VRP Protocol / Jumping VPN — Independent research project.
-    </footer>
-  </div>
-
-  <!-- VRP POPUP COMMAND CONSOLE -->
-  <div id="vrp-console-wrapper">
-    <div id="vrp-console-overlay"></div>
-
-    <div id="vrp-console">
-      <div class="vrp-console-header">
-        <span>VRP COMMAND CONSOLE</span>
-        <div class="vrp-console-buttons">
-          <div class="vrp-btn red"></div>
-          <div class="vrp-btn green"></div>
-          <div class="vrp-btn blue"></div>
-        </div>
-      </div>
-
-      <div id="vrp-console-output">
-[vrp] console ready. type "help" for commands.
-      </div>
-
-      <input id="vrp-console-input" placeholder="vrp> enter command..." autocomplete="off" />
-    </div>
-  </div>
-
-  <script>
-    // MAIN DEMO CONSOLE (hero right)
-    (function() {
-      const consoleEl = document.getElementById('console');
-      const behaviorEl = document.getElementById('behavior-status');
-      const transportEl = document.getElementById('transport-status');
-      const startBtn = document.getElementById('start-jumping');
-      const devBtn = document.getElementById('open-dev-console');
-
-      let running = false;
-      let step = 0;
-      let intervalId = null;
-
-      const lines = [
-        '> VRP: Initializing behavioral core...',
-        '> VRP: Generating ephemeral X25519 keys...',
-        '> VRP: Sealing context: ChaCha20‑Poly1305 ready.',
-        '> VRP: Session lifecycle started.',
-        '> VRP: Behavior engine online. Pulse: stable.',
-        '> VRP: Transport mode: adaptive.',
-        '> VRP: Observers detected. Adjusting pattern...',
-        '> VRP: Jump: route A → route B.',
-        '> VRP: Jump: route B → route C.',
-        '> VRP: Mutation 006 — demo surface attached.',
-        '> VRP: Status: stable under observation.',
-        '> VRP: Note: this is a local simulation only.'
-      ];
-
-      function appendLine(text) {
-        if (!consoleEl) return;
-        consoleEl.textContent += '\n' + text;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }
-
-      function resetConsole() {
-        if (!consoleEl) return;
-        consoleEl.textContent =
-`> USER: Hello, can you please change my IP address?
-> VRP: Command received. Processing...`;
-      }
-
-      function setBehavior(text) {
-        if (behaviorEl) behaviorEl.textContent = text;
-      }
-
-      function setTransport(text) {
-        if (transportEl) transportEl.textContent = text;
-      }
-
-      function startDemo() {
-        if (running) return;
-        running = true;
-        step = 0;
-        resetConsole();
-        appendLine('> VRP: Starting jump sequence...');
-        setBehavior('warming up');
-        setTransport('adaptive');
-
-        intervalId = setInterval(() => {
-          if (step < lines.length) {
-            appendLine(lines[step]);
-
-            if (step === 4) setBehavior('stable');
-            if (step === 6) setBehavior('observed');
-            if (step === 7) setTransport('udp → tcp');
-            if (step === 8) setTransport('tcp → udp');
-            if (step === 10) setBehavior('stable');
-
-            step++;
-          } else {
-            appendLine('> VRP: Jump sequence complete.');
-            setBehavior('stable');
-            setTransport('adaptive');
-            clearInterval(intervalId);
-            running = false;
-          }
-        }, 700);
-      }
-
-      function openDevConsole() {
-        if (!consoleEl) return;
-        appendLine('');
-        appendLine('> USER: Open dev console.');
-        appendLine('> VRP: Dev console already active on this surface.');
-      }
-
-      if (startBtn) startBtn.addEventListener('click', startDemo);
-      if (devBtn) devBtn.addEventListener('click', openDevConsole);
-    })();
-
-    // VRP DASHBOARD: node map + entropy + packets
-    (function() {
-      const nodeMapEl = document.getElementById("vrp-node-map");
-      const entropyEl = document.getElementById("vrp-entropy");
-      const packetsEl = document.getElementById("vrp-packets");
-
-      if (!nodeMapEl || !entropyEl || !packetsEl) return;
-
-      const nodes = [
-        { name: "Node A", state: "online" },
-        { name: "Node B", state: "rotating" },
-        { name: "Node C", state: "sealed" },
-        { name: "Node D", state: "offline" },
-        { name: "Node E", state: "probing" }
-      ];
-
-      let entropy = 72;
-      let direction = 1;
-      let packetPos = 3;
-
-      function renderNodeMap() {
-        let out = "[vrp] node‑map:\n";
-        nodes.forEach(n => {
-          let symbol = "●";
-          if (n.state === "offline") symbol = "○";
-          if (n.state === "rotating") symbol = "◐";
-          if (n.state === "sealed") symbol = "◆";
-          if (n.state === "probing") symbol = "◌";
-          out += `${n.name.padEnd(7)} ${symbol}  ${n.state}\n`;
-        });
-        nodeMapEl.textContent = out.trimEnd();
-      }
-
-      function renderEntropy() {
-        const barLength = 20;
-        const filled = Math.round((entropy / 100) * barLength);
-        const bar = "█".repeat(filled) + "░".repeat(barLength - filled);
-
-        let state = "stable";
-        if (entropy > 85) state = "storm";
-        else if (entropy < 65) state = "low";
-
-        entropyEl.textContent =
-`Entropy: ${bar} ${entropy}%
-State:   ${state}`;
-      }
-
-      function renderPackets() {
-        const width = 30;
-        let line = Array(width).fill("·");
-        if (packetPos >= 0 && packetPos < width) {
-          line[packetPos] = "●";
-        }
-        packetsEl.textContent =
-`[vrp] packets:
-|${line.join("")}|`;
-      }
-
-      function tick() {
-        const idx = Math.floor(Math.random() * nodes.length);
-        const states = ["online", "rotating", "sealed", "offline", "probing"];
-        nodes[idx].state = states[Math.floor(Math.random() * states.length)];
-
-        entropy += direction * (Math.random() * 2);
-        if (entropy > 92) direction = -1;
-        if (entropy < 64) direction = 1;
-        entropy = Math.round(entropy);
-
-        packetPos += 1;
-        if (packetPos >= 30) packetPos = 0;
-
-        renderNodeMap();
-        renderEntropy();
-        renderPackets();
-      }
-
-      renderNodeMap();
-      renderEntropy();
-      renderPackets();
-      setInterval(tick, 900);
-    })();
-
-    // VRP BEHAVIOR SKETCH
-    (function() {
-      const el = document.getElementById("vrp-behavior-diagram");
-      if (!el) return;
-
-      let pulseLevel = 3;
-      let rotationState = "idle";
-      let observers = 0;
-      const rotationStates = ["idle", "warming", "rotating", "cooldown"];
-
-      function render() {
-        const max = 10;
-        const filled = "█".repeat(pulseLevel);
-        const empty = "░".repeat(max - pulseLevel);
-        el.textContent =
-`[vrp] behavior:
-pulse:     ${filled}${empty}
-rotation:  ${rotationState}
-observers: ${observers}`;
-      }
-
-      function tick() {
-        const delta = Math.random() > 0.5 ? 1 : -1;
-        pulseLevel = Math.min(10, Math.max(1, pulseLevel + delta));
-
-        rotationState = rotationStates[Math.floor(Math.random() * rotationStates.length)];
-
-        observers = Math.floor(Math.random() * 22);
-
-        render();
-      }
-
-      render();
-      setInterval(tick, 1100);
-    })();
-
-    // VRP COMMAND CONSOLE (popup, extended)
-    (function() {
-      const wrapper = document.getElementById("vrp-console-wrapper");
-      const openBtn = document.getElementById("open-vrp-console");
-      const overlay = document.getElementById("vrp-console-overlay");
-      const output = document.getElementById("vrp-console-output");
-      const input = document.getElementById("vrp-console-input");
-
-      let currentMode = "normal";
-
-      function print(text) {
-        output.textContent += "\n" + text;
-        output.scrollTop = output.scrollHeight;
-      }
-
-      function setMode(mode) {
-        currentMode = mode;
-        print(`[vrp] mode set to ${mode}.`);
-        if (mode === "stealth") {
-          print("[vrp] pulse reduced. visibility minimized.");
-        } else if (mode === "aggressive") {
-          print("[vrp] rotation frequency increased. jumps intensified.");
-        } else if (mode === "storm") {
-          print("[vrp] mutation storm initiated. entropy rising.");
-        } else if (mode === "ritual") {
-          print("[vrp] ritual acknowledged. organism listening in silence.");
-        }
-      }
-
-      const commands = {
-        help: () => {
-          print("[vrp] available commands:");
-          print("  help                show this list");
-          print("  rotate              rotate transport");
-          print("  pulse               show pulse status");
-          print("  observers           show observer count");
-          print("  status              show current mode and state");
-          print("  mode stealth        enter stealth mode");
-          print("  mode aggressive     enter aggressive mode");
-          print("  mode storm          enter mutation storm");
-          print("  ritual              enter ritual mode");
-          print("  awaken watcher      wake watcher entity");
-          print("  summon pulse        wake pulse engine");
-          print("  what is vrp         short description of vrp");
-          print("  ls                  list virtual vrp paths");
-          print("  clear               clear console");
-        },
-        rotate: () => {
-          print("[vrp] rotation acknowledged...");
-          print("[vrp] udp → tcp → udp.");
-        },
-        pulse: () => {
-          const entropy = currentMode === "storm" ? 93 : currentMode === "aggressive" ? 84 : currentMode === "stealth" ? 68 : 73;
-          print(`[vrp] pulse stable. entropy: ${entropy}%.`);
-        },
-        observers: () => {
-          const count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 21 : 14;
-          print(`[vrp] ${count} observers detected. pattern adapting.`);
-        },
-        status: () => {
-          print(`[vrp] mode: ${currentMode}.`);
-          print("[vrp] core: online. behavior: stable under observation.");
-        },
-        "mode stealth": () => setMode("stealth"),
-        "mode aggressive": () => setMode("aggressive"),
-        "mode storm": () => setMode("storm"),
-        ritual: () => setMode("ritual"),
-        "awaken watcher": () => {
-          print("[vrp] watcher awakened. perimeter expanded.");
-        },
-        "summon pulse": () => {
-          print("[vrp] pulse engine summoned. rotation window widened.");
-        },
-        "what is vrp": () => {
-          print("[vrp] VRP is a behavioral communication organism.");
-          print("[vrp] it treats routing, encryption and transport as a living system.");
-        },
-        ls: () => {
-          print("[vrp] /core");
-          print("[vrp] /behavior");
-          print("[vrp] /transport");
-          print("[vrp] /mutations");
-          print("[vrp] /observers");
-        },
-        clear: () => {
-          output.textContent = "[vrp] console cleared.";
-        }
-      };
-
-      function handleCommand(raw) {
-        const cmd = raw.trim();
-        const lower = cmd.toLowerCase();
-        if (!cmd) return;
-
-        print("vrp> " + cmd);
-
-        if (commands[lower]) {
-          commands[lower]();
-        } else if (lower.startsWith("mode ")) {
-          print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
-        } else if (lower.includes("ip")) {
-          print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
-        } else if (lower.includes("hello") || lower.includes("hi") || lower.includes("privet")) {
-          print("[vrp] acknowledged. organism is listening.");
-        } else if (lower.startsWith("cat ") || lower.startsWith("open ")) {
-          print("[vrp] virtual file system only. nothing to read here yet.");
-        } else {
-          print("[vrp] unknown command. type \"help\" for list.");
-        }
-      }
-
-      openBtn.addEventListener("click", () => {
-        wrapper.style.display = "block";
-        input.focus();
-      });
-
-      overlay.addEventListener("click", () => {
-        wrapper.style.display = "none";
-      });
-
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          const value = input.value;
-          input.value = "";
-          handleCommand(value);
-        }
-      });
-    })();
-  </script>
-</body>
-</html>
