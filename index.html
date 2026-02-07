@@ -1,4 +1,3 @@
-`html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -399,6 +398,86 @@
       color:var(--muted);
     }
 
+    /* VRP POPUP CONSOLE */
+    #vrp-console-wrapper {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+    }
+
+    #vrp-console-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+    }
+
+    #vrp-console {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 520px;
+      transform: translate(-50%, -50%);
+      background: #050505;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      color: #f5f5f5;
+      animation: console-pop 0.25s ease-out;
+    }
+
+    @keyframes console-pop {
+      from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .vrp-console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      color: #8cc0c8;
+    }
+
+    .vrp-console-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vrp-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .vrp-btn.red { background: #ff4b4b; }
+    .vrp-btn.green { background: #4fff7b; }
+    .vrp-btn.blue { background: #4fd1ff; }
+
+    #vrp-console-output {
+      background: #000;
+      border: 1px solid #333;
+      padding: 10px;
+      height: 220px;
+      overflow-y: auto;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+    }
+
+    #vrp-console-input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    /* crypto support */
     .crypto-box {
       border: 1px solid var(--border);
       background: linear-gradient(135deg, #0a0a0a, #111);
@@ -420,6 +499,7 @@
       text-shadow: 0 0 10px rgba(79,209,197,0.8);
     }
 
+    /* floating buttons */
     #floating-buttons {
       position: fixed;
       bottom: 20px;
@@ -450,6 +530,7 @@
       transform: translateY(-1px);
     }
 
+    /* generic modal */
     .modal {
       position: fixed;
       inset: 0;
@@ -494,11 +575,7 @@
       font-weight: bold;
     }
 
-    @keyframes console-pop {
-      from { transform: scale(0.8); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-
+    /* HEARTBEAT LINE */
     #vrp-heartbeat {
       position: fixed;
       bottom: 0;
@@ -507,7 +584,7 @@
       width: 100%;
       background: #4fd1c5;
       animation: vrpPulse 1.8s infinite ease-in-out;
-      z-index: 9998;
+      z-index: 99999;
     }
 
     @keyframes vrpPulse {
@@ -547,6 +624,8 @@
 
           <div class="hero-buttons">
             <button class="button primary" id="start-jumping">Start Jumping</button>
+            <button class="button secondary" id="open-dev-console">Dev Console</button>
+            <button class="button secondary" id="open-vrp-console" style="margin-left:4px;">VRP Command Console</button>
           </div>
 
           <div class="hero-note">
@@ -565,14 +644,8 @@
             <div class="terminal-dots"><span></span><span></span><span></span></div>
           </div>
           <div class="terminal" id="console">
-> USER: hello, how can I help you?
-> VRP: Ready.
-          </div>
-
-          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
-            <button class="button secondary" id="geo-eu">EU Route</button>
-            <button class="button secondary" id="geo-us">US Route</button>
-            <button class="button secondary" id="geo-asia">Asia Route</button>
+> USER: Hello, can you please change my IP address?
+> VRP: Command received. Processing...
           </div>
 
           <div class="hero-status-row" style="margin-top:8px;">
@@ -785,7 +858,7 @@ observers: 0
       <p class="muted">A symbolic list of domains watching the protocol.</p>
       <ul>
         <li>Wayne P — early observer, consistent presence.</li>
-        <li>Cynthia — quiet orbit, long-term attention.</li>
+        <li>Chynthia — quiet orbit, long-term attention.</li>
         <li>OptiSol — structured curiosity from the outside.</li>
         <li>Security engineers and protocol designers.</li>
         <li>Cloud-native and infra architects.</li>
@@ -833,6 +906,27 @@ observers: 0
     </footer>
   </div>
 
+  <div id="vrp-console-wrapper">
+    <div id="vrp-console-overlay"></div>
+
+    <div id="vrp-console">
+      <div class="vrp-console-header">
+        <span>VRP COMMAND CONSOLE</span>
+        <div class="vrp-console-buttons">
+          <div class="vrp-btn red"></div>
+          <div class="vrp-btn green"></div>
+          <div class="vrp-btn blue"></div>
+        </div>
+      </div>
+
+      <div id="vrp-console-output">
+[vrp] console ready. type "help" for commands.
+      </div>
+
+      <input id="vrp-console-input" placeholder="vrp> enter command..." autocomplete="off" />
+    </div>
+  </div>
+
   <div id="floating-buttons">
     <button class="float-btn" id="btn-contract">Contract</button>
     <button class="float-btn" id="btn-author">Author</button>
@@ -846,7 +940,7 @@ observers: 0
       <div>
         [vrp] observers acknowledged:<br>
         - Wayne P — early signal, consistent presence.<br>
-        - Cynthia — quiet observer, steady orbit.<br>
+        - Chynthia — quiet observer, steady orbit.<br>
         - OptiSol — structured curiosity, external lens.<br>
         - silent watchers — those who never comment, never like, but always return.<br><br>
         Every view, every saved link, every private share<br>
@@ -876,27 +970,20 @@ observers: 0
   <div class="modal" id="author-modal">
     <div class="modal-box">
       <h3>Author</h3>
-
-      <div id="author-cmatrix" style="
-        background:#000;
-        color:#00ff66;
-        font-family: 'SF Mono', Menlo, Consolas, monospace;
-        font-size: 12px;
-        line-height: 14px;
-        height: 220px;
-        overflow:hidden;
-        border:1px solid #0f0;
-        padding:10px;
-        white-space:pre;
-      ">
+      <div>
+        Name: <strong>Vitalijus Riabovas</strong><br>
+        Role: Architect of VRP / Jumping VPN.<br><br>
+        Focus:<br>
+        - protocol design,<br>
+        - behavioral routing,<br>
+        - privacy infrastructure,<br>
+        - narrative and visual architecture.<br><br>
+        Identity:<br>
+        - not "just a developer",<br>
+        - not a generic VPN founder,<br>
+        - but an architect building a living protocol organism.<br><br>
+        Every surface — code, visuals, wording — is treated as part of the legend.
       </div>
-
-      <div style="margin-top:12px; font-size:0.85rem; color:#4fd1c5;">
-        Architect: <strong>Vitalijus Riabovas</strong><br>
-        Role: VRP / Jumping VPN creator<br>
-        Focus: protocol design, behavioral routing, privacy infrastructure<br>
-      </div>
-
       <button class="modal-close" data-close="author-modal">Close</button>
     </div>
   </div>
@@ -933,8 +1020,9 @@ observers: 0
       var behaviorEl = document.getElementById("behavior-status");
       var transportEl = document.getElementById("transport-status");
       var startBtn = document.getElementById("start-jumping");
+      var devBtn = document.getElementById("open-dev-console");
 
-      if (!consoleEl || !behaviorEl || !transportEl || !startBtn) return;
+      if (!consoleEl || !behaviorEl || !transportEl || !startBtn || !devBtn) return;
 
       var running = false;
       var step = 0;
@@ -962,7 +1050,7 @@ observers: 0
 
       function resetConsole() {
         consoleEl.textContent =
-"> USER: hello, how can I help you?\n> VRP: Ready.";
+"> USER: Hello, can you please change my IP address?\n> VRP: Command received. Processing...";
       }
 
       function setBehavior(text) {
@@ -1003,36 +1091,14 @@ observers: 0
         }, 550);
       }
 
-      startBtn.addEventListener("click", startDemo);
-    })();
-
-    (function() {
-      var consoleEl = document.getElementById("console");
-      if (!consoleEl) return;
-
-      function log(msg) {
-        consoleEl.textContent += "\n" + msg;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
+      function openDevConsole() {
+        appendLine("");
+        appendLine("> USER: Open dev console.");
+        appendLine("> VRP: Dev console already active on this surface.");
       }
 
-      var eu = document.getElementById("geo-eu");
-      var us = document.getElementById("geo-us");
-      var asia = document.getElementById("geo-asia");
-
-      if (eu) eu.addEventListener("click", function() {
-        log("[vrp] switching route → Europe node...");
-        log("[vrp] new simulated IP: 51.68.xxx.xxx (EU)");
-      });
-
-      if (us) us.addEventListener("click", function() {
-        log("[vrp] switching route → US node...");
-        log("[vrp] new simulated IP: 34.201.xxx.xxx (US)");
-      });
-
-      if (asia) asia.addEventListener("click", function() {
-        log("[vrp] switching route → Asia node...");
-        log("[vrp] new simulated IP: 103.21.xxx.xxx (Asia)");
-      });
+      startBtn.addEventListener("click", startDemo);
+      devBtn.addEventListener("click", openDevConsole);
     })();
 
     (function() {
@@ -1100,7 +1166,7 @@ observers: 0
         var states = ["online", "rotating", "sealed", "offline", "probing"];
         nodes[idx].state = states[Math.floor(Math.random() * states.length)];
 
-        entropy += direction  (Math.random()  2.2);
+        entropy += direction * (Math.random() * 2.2);
         if (entropy > 92) direction = -1;
         if (entropy < 64) direction = 1;
         entropy = Math.round(entropy);
@@ -1157,84 +1223,450 @@ observers: 0
     })();
 
     (function() {
-      function open(id) {
-        var m = document.getElementById(id);
-        if (m) m.style.display = "flex";
-      }
-      function close(id) {
-        var m = document.getElementById(id);
-        if (m) m.style.display = "none";
+      var wrapper = document.getElementById("vrp-console-wrapper");
+      var openBtn = document.getElementById("open-vrp-console");
+      var overlay = document.getElementById("vrp-console-overlay");
+      var output = document.getElementById("vrp-console-output");
+      var input = document.getElementById("vrp-console-input");
+
+      if (!wrapper || !openBtn || !overlay || !output || !input) return;
+
+      var currentMode = "normal";
+
+      function print(text) {
+        output.textContent += "\n" + text;
+        output.scrollTop = output.scrollHeight;
       }
 
+      function setMode(mode) {
+        currentMode = mode;
+        print("[vrp] mode set to " + mode + ".");
+        if (mode === "stealth") {
+          print("[vrp] pulse reduced. visibility minimized.");
+        } else if (mode === "aggressive") {
+          print("[vrp] rotation frequency increased. jumps intensified.");
+        } else if (mode === "storm") {
+          print("[vrp] mutation storm initiated. entropy rising.");
+        } else if (mode === "ritual") {
+          print("[vrp] ritual acknowledged. organism listening in silence.");
+        }
+      }
+
+      var commands = {
+        "help": function() {
+          print("[vrp] available commands:");
+          print("  help                show this list");
+          print("  rotate              rotate transport");
+          print("  pulse               show pulse status");
+          print("  observers           show observer count");
+          print("  status              show current mode and state");
+          print("  mode stealth        enter stealth mode");
+          print("  mode aggressive     enter aggressive mode");
+          print("  mode storm          enter mutation storm");
+          print("  ritual              enter ritual mode");
+          print("  awaken watcher      wake watcher entity");
+          print("  summon pulse        wake pulse engine");
+          print("  what is vrp         short description of vrp");
+          print("  ls                  list virtual vrp paths");
+          print("  clear               clear console");
+        },
+        "rotate": function() {
+          print("[vrp] rotation acknowledged...");
+          print("[vrp] udp -> tcp -> udp.");
+        },
+        "pulse": function() {
+          var entropy = currentMode === "storm" ? 93 : currentMode === "aggressive" ? 84 : currentMode === "stealth" ? 68 : 73;
+          print("[vrp] pulse stable. entropy: " + entropy + "%.");
+        },
+        "observers": function() {
+          var count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 21 : 14;
+          print("[vrp] " + count + " observers detected. pattern adapting.");
+        },
+        "status": function() {
+          print("[vrp] mode: " + currentMode + ".");
+          print("[vrp] core: online. behavior: stable under observation.");
+        },
+        "mode stealth": function() { setMode("stealth"); },
+        "mode aggressive": function() { setMode("aggressive"); },
+        "mode storm": function() { setMode("storm"); },
+        "ritual": function() { setMode("ritual"); },
+        "awaken watcher": function() {
+          print("[vrp] watcher awakened. perimeter expanded.");
+        },
+        "summon pulse": function() {
+          print("[vrp] pulse engine summoned. rotation window widened.");
+        },
+        "what is vrp": function() {
+          print("[vrp] VRP is a behavioral communication organism.");
+          print("[vrp] it treats routing, encryption and transport as a living system.");
+        },
+        "ls": function() {
+          print("[vrp] /core");
+          print("[vrp] /behavior");
+          print("[vrp] /transport");
+          print("[vrp] /mutations");
+          print("[vrp] /observers");
+        },
+        "clear": function() {
+          output.textContent = "[vrp] console cleared.";
+        }
+      };
+
+      function handleCommand(raw) {
+        var cmd = raw.trim();
+        var lower = cmd.toLowerCase();
+        if (!cmd) return;
+
+        print("vrp> " + cmd);
+
+        if (commands[lower]) {
+          commands[lower]();
+        } else if (lower.indexOf("mode ") === 0) {
+          print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
+        } else if (lower.indexOf("ip") !== -1) {
+          print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
+        } else if (lower.indexOf("hello") !== -1 || lower.indexOf("hi") !== -1) {
+          print("[vrp] acknowledged. organism is listening.");
+        } else if (lower.indexOf("cat ") === 0 || lower.indexOf("open ") === 0) {
+          print("[vrp] virtual file system only. nothing to read here yet.");
+        } else {
+          print("[vrp] unknown command. type \"help\" for list.");
+        }
+      }
+
+      openBtn.addEventListener("click", function() {
+        wrapper.style.display = "block";
+        input.focus();
+      });
+
+      overlay.addEventListener("click", function() {
+        wrapper.style.display = "none";
+      });
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          var value = input.value;
+          input.value = "";
+          handleCommand(value);
+        }
+      });
+    })();
+
+    (function() {
       var btnContract = document.getElementById("btn-contract");
       var btnAuthor = document.getElementById("btn-author");
       var btnProtocol = document.getElementById("btn-protocol");
       var btnThanks = document.getElementById("btn-thanks");
 
-      if (btnContract) btnContract.onclick = function() { open("contract-modal"); };
-      if (btnAuthor) btnAuthor.onclick = function() { open("author-modal"); };
-      if (btnProtocol) btnProtocol.onclick = function() { open("protocol-modal"); };
-      if (btnThanks) btnThanks.onclick = function() { open("thanks-modal"); };
+      var contractModal = document.getElementById("contract-modal");
+      var authorModal = document.getElementById("author-modal");
+      var protocolModal = document.getElementById("protocol-modal");
+      var thanksModal = document.getElementById("thanks-modal");
+
+      function openModal(modal) {
+        if (modal) modal.style.display = "flex";
+      }
+
+      function closeModal(modal) {
+        if (modal) modal.style.display = "none";
+      }
+
+      if (btnContract) btnContract.addEventListener("click", function() { openModal(contractModal); });
+      if (btnAuthor) btnAuthor.addEventListener("click", function() { openModal(authorModal); });
+      if (btnProtocol) btnProtocol.addEventListener("click", function() { openModal(protocolModal); });
+      if (btnThanks) btnThanks.addEventListener("click", function() { openModal(thanksModal); });
 
       var closeButtons = document.querySelectorAll(".modal-close");
       for (var i = 0; i < closeButtons.length; i++) {
         closeButtons[i].addEventListener("click", function() {
           var id = this.getAttribute("data-close");
-          close(id);
+          var m = document.getElementById(id);
+          closeModal(m);
         });
       }
 
-      function attachOverlayClose(modalId) {
-        var modal = document.getElementById(modalId);
+      function attachOverlayClose(modal) {
         if (!modal) return;
         modal.addEventListener("click", function(e) {
-          if (e.target === modal) close(modalId);
+          if (e.target === modal) {
+            closeModal(modal);
+          }
         });
       }
 
-      attachOverlayClose("contract-modal");
-      attachOverlayClose("author-modal");
-      attachOverlayClose("protocol-modal");
-      attachOverlayClose("thanks-modal");
+      attachOverlayClose(contractModal);
+      attachOverlayClose(authorModal);
+      attachOverlayClose(protocolModal);
+      attachOverlayClose(thanksModal);
     })();
 
     (function() {
-      var box = document.getElementById("author-cmatrix");
-      if (!box) return;
+      var lastMove = Date.now();
+      var whisperCooldown = false;
 
-      var cols = 60;
-      var rows = 20;
-      var matrix = [];
+      document.addEventListener("mousemove", function() {
+        lastMove = Date.now();
+        if (!whisperCooldown) {
+          whisperCooldown = true;
+          setTimeout(function() { whisperCooldown = false; }, 3000);
 
-      function randomChar() {
-        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return chars[Math.floor(Math.random() * chars.length)];
-      }
-
-      function init() {
-        for (var r = 0; r < rows; r++) {
-          var line = "";
-          for (var c = 0; c < cols; c++) {
-            line += randomChar();
+          var consoleEl = document.getElementById("console");
+          if (consoleEl) {
+            consoleEl.textContent += "\n[vrp] entropy spike detected. adjusting pulse...";
+            consoleEl.scrollTop = consoleEl.scrollHeight;
           }
-          matrix.push(line);
         }
+      });
+
+      setInterval(function() {
+        var consoleEl = document.getElementById("console");
+        if (!consoleEl) return;
+
+        var msgs = [
+          "[vrp] silent watcher connected.",
+          "[vrp] mutation event detected.",
+          "[vrp] entropy drift observed.",
+          "[vrp] background rotation active.",
+          "[vrp] observer ping received."
+        ];
+
+        var msg = msgs[Math.floor(Math.random() * msgs.length)];
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+
+      }, 15000);
+    })();
+
+    // ===== VRP DEEP OBSERVER ENGINE =====
+    (function() {
+      var lastMoveTime = Date.now();
+      var lastScrollTime = Date.now();
+      var lastInteractionTime = Date.now();
+      var deepObserverScore = 0;
+      var hasShownDeepObserver = false;
+      var hasShownReturn = false;
+
+      var consoleEl = document.getElementById("console");
+      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+      function logToConsole(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
       }
 
-      function render() {
-        matrix.shift();
-        var newLine = "";
-        for (var c = 0; c < cols; c++) {
-          newLine += randomChar();
-        }
-        matrix.push(newLine);
-        box.textContent = matrix.join("\n");
+      function boostBehaviorPulse() {
+        if (!behaviorDiagram) return;
+        behaviorDiagram.textContent += "\n[vrp] deep observer pattern detected. pulse modulation active.";
       }
 
-      init();
-      setInterval(render, 80);
+      try {
+        var visits = parseInt(localStorage.getItem("vrp_visits") || "0", 10);
+        visits++;
+        localStorage.setItem("vrp_visits", String(visits));
+
+        if (visits > 1 && !hasShownReturn) {
+          hasShownReturn = true;
+          setTimeout(function() {
+            logToConsole("[vrp] returning observer detected. memory updated.");
+          }, 4000);
+        }
+      } catch (e) {}
+
+      document.addEventListener("mousemove", function() {
+        lastMoveTime = Date.now();
+        lastInteractionTime = Date.now();
+      });
+
+      document.addEventListener("scroll", function() {
+        lastScrollTime = Date.now();
+        lastInteractionTime = Date.now();
+      });
+
+      document.addEventListener("click", function() {
+        lastInteractionTime = Date.now();
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        var idleSince = now - lastInteractionTime;
+        var noScrollSince = now - lastScrollTime;
+
+        if (idleSince > 6000 && noScrollSince > 6000) {
+          deepObserverScore += 2;
+        } else if (idleSince > 3000) {
+          deepObserverScore += 1;
+        } else {
+          deepObserverScore = Math.max(0, deepObserverScore - 1);
+        }
+
+        if (deepObserverScore >= 8 && !hasShownDeepObserver) {
+          hasShownDeepObserver = true;
+          logToConsole("[vrp] deep observer identified. adjusting perimeter.");
+          boostBehaviorPulse();
+        }
+
+      }, 2000);
+    })();
+
+    // ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
+    (function() {
+      var body = document.body;
+      var consoleEl = document.getElementById("console");
+
+      function log(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      var lastX = null;
+      var lastY = null;
+      var stillSince = Date.now();
+      var watcherTriggered = false;
+
+      document.addEventListener("mousemove", function(e) {
+        if (lastX === null && lastY === null) {
+          lastX = e.clientX;
+          lastY = e.clientY;
+          stillSince = Date.now();
+          return;
+        }
+
+        var dx = Math.abs(e.clientX - lastX);
+        var dy = Math.abs(e.clientY - lastY);
+
+        if (dx < 2 && dy < 2) {
+        } else {
+          lastX = e.clientX;
+          lastY = e.clientY;
+          stillSince = Date.now();
+          watcherTriggered = false;
+          body.style.boxShadow = "none";
+        }
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        if (!watcherTriggered && now - stillSince > 4000) {
+          watcherTriggered = true;
+          body.style.boxShadow = "0 0 40px rgba(79,209,197,0.6)";
+          setTimeout(function() {
+            body.style.boxShadow = "none";
+          }, 1200);
+          log("[vrp] watcher: presence detected. adjusting perimeter.");
+        }
+      }, 800);
+
+      var lastMove = Date.now();
+      document.addEventListener("mousemove", function() {
+        lastMove = Date.now();
+        body.style.cursor = "default";
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        if (now - lastMove > 12000) {
+          body.style.cursor = "none";
+          body.style.transform = "translate(0,0)";
+          setTimeout(function() { body.style.transform = "translate(1px,0)"; }, 80);
+          setTimeout(function() { body.style.transform = "translate(-1px,0)"; }, 160);
+          setTimeout(function() { body.style.transform = "translate(0,0)"; }, 240);
+          setTimeout(function() { body.style.cursor = "default"; }, 260);
+
+          log("[vrp] idle pattern detected. probing user presence...");
+          lastMove = Date.now();
+        }
+      }, 2000);
+    })();
+
+    // ===== VRP VITALIJUS MODE (SECRET COMMAND) =====
+    (function() {
+      var output = document.getElementById("vrp-console-output");
+      var input = document.getElementById("vrp-console-input");
+      if (!output || !input) return;
+
+      var vitalijusMode = false;
+
+      function print(msg) {
+        output.textContent += "\n" + msg;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          var value = (input.value || "").trim().toLowerCase();
+          if (value === "vitalijus") {
+            setTimeout(function() {
+              vitalijusMode = true;
+              print("[vrp] architect detected.");
+              print("[vrp] elevating privileges. organism pulse increased.");
+              document.body.style.animationDuration = "4s";
+            }, 50);
+          }
+        }
+      });
+
+      setInterval(function() {
+        if (!vitalijusMode) return;
+        var msgs = [
+          "[vrp] architect presence confirmed.",
+          "[vrp] mutation window widened.",
+          "[vrp] internal logs exposed to architect.",
+          "[vrp] observer lattice reconfigured."
+        ];
+        print(msgs[Math.floor(Math.random() * msgs.length)]);
+      }, 20000);
+    })();
+
+    // ===== VRP LORE UNLOCKS + OBSERVER MEMORY =====
+    (function() {
+      var consoleEl = document.getElementById("console");
+      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+      function log(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      var observerCount = 0;
+      try {
+        observerCount = parseInt(localStorage.getItem("vrp_observers") || "0", 10);
+        observerCount++;
+        localStorage.setItem("vrp_observers", String(observerCount));
+      } catch (e) {
+        observerCount = 1;
+      }
+
+      setTimeout(function() {
+        log("[vrp] observer lattice updated. total local observations: " + observerCount + ".");
+      }, 5000);
+
+      document.addEventListener("selectionchange", function() {
+        var sel = window.getSelection ? String(window.getSelection()) : "";
+        if (!sel || sel.length < 8) return;
+
+        if (Math.random() < 0.08) {
+          log("[vrp] user focus spike detected. lore fragment unlocked.");
+          if (behaviorDiagram) {
+            behaviorDiagram.textContent += "\n[vrp] lore: the protocol was not built. it emerged.";
+          }
+        }
+      });
+
+      setInterval(function() {
+        if (Math.random() < 0.25) return;
+
+        var msgs = [
+          "[vrp] silent watcher present beyond visible metrics.",
+          "[vrp] mutation log extended in private space.",
+          "[vrp] entropy and curiosity remain correlated.",
+          "[vrp] some observers never reveal themselves."
+        ];
+        log(msgs[Math.floor(Math.random() * msgs.length)]);
+      }, 26000);
     })();
   </script>
 </body>
 </html>
-`
