@@ -121,7 +121,7 @@ Support options will be added here once the public site is online.
 ## Contact
 
 For collaboration or research inquiries:  
-your-email-here@example.com
+jumpingvpn@yahoo.com
 
 ---
 
