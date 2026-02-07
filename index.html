@@ -1,1672 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Jumping VPN — VRP Protocol</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Jumping VPN / VRP — the network that jumps. A living protocol for secure, adaptive communication." />
-  <style>
-    :root {
-      --bg: #050505;
-      --fg: #f5f5f5;
-      --muted: #a0a0a0;
-      --accent: #8cc0c8;
-      --accent-strong: #4fd1c5;
-      --accent-purple: #b794f4;
-      --accent-pink: #f472b6;
-      --border: #262626;
-      --danger: #ff4b4b;
-      --max-width: 1040px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #1a1a1a 0, #050505 45%, #000 100%);
-      color: var(--fg);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.6;
-      animation: vrpBreath 6s ease-in-out infinite;
-      background-size: 100%;
-    }
-
-    @keyframes vrpBreath {
-      0% { background-size: 100%; }
-      50% { background-size: 102%; }
-      100% { background-size: 100%; }
-    }
-
-    .page {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 32px 16px 140px;
-    }
-
-    h1, h2, h3 {
-      font-weight: 500;
-      margin-top: 40px;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-      margin-top: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    h2::after {
-      content: "";
-      position: absolute;
-      left: -120%;
-      top: 0;
-      width: 120%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(79,209,197,0.25), transparent);
-      animation: shine 2.8s infinite linear;
-    }
-
-    @keyframes shine {
-      0% { left: -120%; }
-      100% { left: 120%; }
-    }
-
-    h3 {
-      font-size: 1.05rem;
-      margin-top: 24px;
-    }
-
-    p { margin: 0 0 12px; }
-
-    .muted { color: var(--muted); }
-
-    .tagline {
-      font-size: 0.9rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .subtagline {
-      font-size: 1.05rem;
-      color: var(--accent);
-      margin-top: 8px;
-      margin-bottom: 24px;
-      animation: pulseSoft 3s infinite ease-in-out;
-    }
-
-    @keyframes pulseSoft {
-      0% { text-shadow: 0 0 0 rgba(79,209,197,0.0); }
-      50% { text-shadow: 0 0 12px rgba(79,209,197,0.8); }
-      100% { text-shadow: 0 0 0 rgba(79,209,197,0.0); }
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
-      gap: 28px;
-      margin-top: 24px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .hero-left-title {
-      font-size: 2.2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      margin-bottom: 12px;
-      animation: titleGlow 4s infinite ease-in-out;
-    }
-
-    @keyframes titleGlow {
-      0% { color: #f5f5f5; text-shadow: 0 0 0 rgba(79,209,197,0); }
-      50% { color: #e5fdfb; text-shadow: 0 0 18px rgba(79,209,197,0.9); }
-      100% { color: #f5f5f5; text-shadow: 0 0 0 rgba(79,209,197,0); }
-    }
-
-    .hero-left-title span {
-      display: block;
-    }
-
-    .hero-left-title-main {
-      font-size: 2.4rem;
-    }
-
-    .hero-highlight {
-      color: var(--accent-strong);
-    }
-
-    .hero-highlight-alt {
-      color: var(--accent-pink);
-    }
-
-    .hero-buttons {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: 1px solid var(--fg);
-      background: transparent;
-      color: var(--fg);
-      font-size: 0.9rem;
-      text-decoration: none;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: 0.25s;
-    }
-
-    .button.primary {
-      border-color: var(--accent-strong);
-      color: #000;
-      background: var(--accent-strong);
-      box-shadow: 0 0 10px rgba(79,209,197,0.7);
-    }
-
-    .button.secondary {
-      border-color: var(--border);
-      color: var(--muted);
-      background: #050505;
-    }
-
-    .button.primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 16px rgba(79,209,197,1);
-    }
-
-    .button.secondary:hover {
-      border-color: var(--accent-purple);
-      color: var(--accent-purple);
-      box-shadow: 0 0 12px rgba(183,148,244,0.9);
-      transform: translateY(-1px);
-    }
-
-    .hero-note {
-      margin-top: 14px;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .hero-right {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, rgba(79,209,197,0.18), #050505 55%);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      animation: panelGlow 4s infinite ease-in-out;
-    }
-
-    @keyframes panelGlow {
-      0% { box-shadow: 0 0 0 rgba(79,209,197,0); }
-      50% { box-shadow: 0 0 20px rgba(79,209,197,0.7); }
-      100% { box-shadow: 0 0 0 rgba(79,209,197,0); }
-    }
-
-    .hero-right-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .hero-right-title {
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.75rem;
-    }
-
-    .hero-right-badge {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-      font-size: 0.7rem;
-      color: var(--accent-strong);
-    }
-
-    .terminal {
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #050505;
-      padding: 10px;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.78rem;
-      height: 180px;
-      overflow: auto;
-      white-space: pre-wrap;
-    }
-
-    .terminal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .terminal-dots span {
-      display:inline-block;
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      margin-right:4px;
-    }
-
-    .terminal-dots span:nth-child(1) { background:#ff5f57; }
-    .terminal-dots span:nth-child(2) { background:#febc2e; }
-    .terminal-dots span:nth-child(3) { background:#28c840; }
-
-    .hero-status-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .status-pill {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      animation: pillPulse 3.2s infinite ease-in-out;
-    }
-
-    @keyframes pillPulse {
-      0% { border-color: var(--border); }
-      50% { border-color: var(--accent-strong); box-shadow: 0 0 12px rgba(79,209,197,0.9); }
-      100% { border-color: var(--border); box-shadow: none; }
-    }
-
-    .status-dot {
-      display:inline-block;
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      margin-right:6px;
-      background:var(--accent-strong);
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 28px;
-    }
-
-    @media (max-width: 900px) {
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .feature-card {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #060606;
-      padding: 14px;
-      font-size: 0.9rem;
-      transition: 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .feature-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(79,209,197,0.18), transparent 55%);
-      opacity: 0;
-      transition: 0.25s;
-    }
-
-    .feature-card:hover::before {
-      opacity: 1;
-    }
-
-    .feature-title {
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 6px;
-    }
-
-    .feature-title span {
-      color: var(--accent-strong);
-    }
-
-    .section-note {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    ul {
-      padding-left: 20px;
-      margin: 4px 0 12px;
-    }
-
-    footer {
-      margin-top: 60px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-      text-align: center;
-    }
-
-    .diagram {
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size:0.78rem;
-      background:#050505;
-      border:1px solid var(--border);
-      padding:10px;
-      margin-top:10px;
-      white-space:pre;
-      overflow:auto;
-      animation: diagramGlow 3.4s infinite ease-in-out;
-    }
-
-    @keyframes diagramGlow {
-      0% { box-shadow: 0 0 0 rgba(183,148,244,0); }
-      50% { box-shadow: 0 0 16px rgba(183,148,244,0.9); }
-      100% { box-shadow: 0 0 0 rgba(183,148,244,0); }
-    }
-
-    .small-label {
-      font-size:0.75rem;
-      text-transform:uppercase;
-      letter-spacing:0.16em;
-      color:var(--muted);
-    }
-
-    /* VRP POPUP CONSOLE */
-    #vrp-console-wrapper {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-    }
-
-    #vrp-console-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px);
-    }
-
-    #vrp-console {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 520px;
-      transform: translate(-50%, -50%);
-      background: #050505;
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 16px;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      color: #f5f5f5;
-      animation: console-pop 0.25s ease-out;
-    }
-
-    @keyframes console-pop {
-      from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
-
-    .vrp-console-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
-      color: #8cc0c8;
-    }
-
-    .vrp-console-buttons {
-      display: flex;
-      gap: 6px;
-    }
-
-    .vrp-btn {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .vrp-btn.red { background: #ff4b4b; }
-    .vrp-btn.green { background: #4fff7b; }
-    .vrp-btn.blue { background: #4fd1ff; }
-
-    #vrp-console-output {
-      background: #000;
-      border: 1px solid #333;
-      padding: 10px;
-      height: 220px;
-      overflow-y: auto;
-      font-size: 0.78rem;
-      white-space: pre-wrap;
-    }
-
-    #vrp-console-input {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px;
-      background: #111;
-      border: 1px solid #333;
-      color: #fff;
-      font-size: 0.85rem;
-    }
-
-    /* crypto support */
-    .crypto-box {
-      border: 1px solid var(--border);
-      background: linear-gradient(135deg, #0a0a0a, #111);
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      animation: cryptoGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes cryptoGlow {
-      0% { box-shadow: 0 0 4px #4fd1c5; }
-      50% { box-shadow: 0 0 16px #4fd1c5; }
-      100% { box-shadow: 0 0 4px #4fd1c5; }
-    }
-
-    #support-crypto h2 {
-      color: #4fd1c5;
-      text-shadow: 0 0 10px rgba(79,209,197,0.8);
-    }
-
-    /* floating buttons */
-    #floating-buttons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 9999;
-    }
-
-    .float-btn {
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: #050505;
-      border: 1px solid #4fd1c5;
-      color: #4fd1c5;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: 0.25s;
-      text-align: center;
-      min-width: 120px;
-    }
-
-    .float-btn:hover {
-      background: #4fd1c5;
-      color: #000;
-      box-shadow: 0 0 14px rgba(79,209,197,1);
-      transform: translateY(-1px);
-    }
-
-    /* generic modal */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-    }
-
-    .modal-box {
-      background: #050505;
-      border: 1px solid #4fd1c5;
-      padding: 20px;
-      width: 460px;
-      max-width: 90vw;
-      border-radius: 12px;
-      color: #f5f5f5;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      animation: console-pop 0.25s ease-out;
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
-
-    .modal-box h3 {
-      margin-top: 0;
-      color: #4fd1c5;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .modal-close {
-      margin-top: 14px;
-      width: 100%;
-      padding: 8px;
-      background: #4fd1c5;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #000;
-      font-weight: bold;
-    }
-
-    /* HEARTBEAT LINE */
-    #vrp-heartbeat {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      width: 100%;
-      background: #4fd1c5;
-      animation: vrpPulse 1.8s infinite ease-in-out;
-      z-index: 99999;
-    }
-
-    @keyframes vrpPulse {
-      0% { opacity: 0.2; }
-      50% { opacity: 1; }
-      100% { opacity: 0.2; }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Jumping VPN — VRP Protocol</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root {
+  --bg:#050505;
+  --fg:#f5f5f5;
+  --muted:#9a9a9a;
+  --accent:#4fd1c5;
+  --accent-pink:#f472b6;
+  --border:#222;
+}
+
+* { box-sizing:border-box; }
+
+html,body {
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle at top,#111 0,#050505 60%,#000 100%);
+  color:var(--fg);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow-x:hidden;
+}
+
+.page {
+  width:100vw;
+  min-height:100vh;
+  padding:32px;
+}
+
+/* ---------- HEADER ---------- */
+
+.header-top {
+  display:flex;
+  justify-content:space-between;
+  font-size:0.8rem;
+  color:var(--muted);
+}
+
+.hero {
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:32px;
+}
+
+@media(max-width:900px){
+  .hero{ grid-template-columns:1fr; }
+}
+
+.hero-title {
+  font-size:2.6rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+}
+
+.hero-title span { color:var(--accent); }
+
+.buttons {
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn {
+  padding:10px 20px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:#000;
+  color:var(--fg);
+  cursor:pointer;
+  transition:.25s;
+}
+
+.btn.primary {
+  background:var(--accent);
+  color:#000;
+  border:none;
+  box-shadow:0 0 14px rgba(79,209,197,.7);
+}
+
+.btn:hover {
+  transform:translateY(-1px);
+}
+
+/* ---------- TERMINAL ---------- */
+
+.terminal {
+  background:#000;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  font-family:monospace;
+  font-size:0.78rem;
+  height:200px;
+  overflow:auto;
+}
+
+/* ---------- FLOATING ---------- */
+
+#floating {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.float-btn {
+  padding:8px 16px;
+  border-radius:999px;
+  border:1px solid var(--accent);
+  background:#000;
+  color:var(--accent);
+  cursor:pointer;
+}
+
+/* ---------- MODALS ---------- */
+
+.modal {
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.75);
+  z-index:9999;
+}
+
+.modal-box {
+  position:relative;
+  width:520px;
+  max-width:90vw;
+  background:#000;
+  border:1px solid var(--accent);
+  border-radius:12px;
+  padding:20px;
+  z-index:2;
+}
+
+.modal h3 {
+  margin-top:0;
+  color:var(--accent);
+  text-align:center;
+}
+
+.close {
+  margin-top:16px;
+  width:100%;
+  padding:8px;
+  background:var(--accent);
+  border:none;
+  color:#000;
+  cursor:pointer;
+}
+
+/* ---------- MATRIX ---------- */
+
+.matrix {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.matrix canvas {
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.matrix-content {
+  position:relative;
+  z-index:2;
+}
+</style>
 </head>
 
 <body>
-  <div class="page">
 
-    <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-      <div><span class="hero-highlight">JUMPING VPN</span></div>
-      <div><span class="hero-highlight-alt">VRP PROTOCOL ACTIVE</span></div>
+<div class="page">
+
+<div class="header-top">
+  <div>JUMPING VPN</div>
+  <div style="color:var(--accent-pink)">VRP ACTIVE</div>
+</div>
+
+<section class="hero">
+  <div>
+    <div class="hero-title">
+      THE NETWORK<br>
+      THAT <span>JUMPS</span>
     </div>
 
-    <header>
-      <div class="tagline">INDEPENDENT PROTOCOL ORGANISM</div>
-      <div class="subtagline">Stop using static VPNs. Let the <span class="hero-highlight">network jump</span>.</div>
+    <p class="muted">
+      Behavioral routing. Adaptive transport.<br>
+      A protocol that reacts.
+    </p>
 
-      <div class="hero-grid">
-        <div>
-          <div class="hero-left-title">
-            <span>THE <span class="hero-highlight">NETWORK</span></span>
-            <span class="hero-left-title-main">THAT <span class="hero-highlight-alt">JUMPS</span></span>
-          </div>
-          <p>
-            Jumping VPN uses <span class="hero-highlight">behavioral routing</span> and
-            <span class="hero-highlight-alt">adaptive transport</span> to mutate your connection path
-            like a living organism. Routes shift, keys rotate, behavior adapts — under observation.
-          </p>
-          <p class="muted">
-            Not a static tunnel. Not a commodity VPN. <span class="hero-highlight">A protocol that behaves.</span>
-          </p>
-
-          <div class="hero-buttons">
-            <button class="button primary" id="start-jumping">Start Jumping</button>
-            <button class="button secondary" id="open-dev-console">Dev Console</button>
-            <button class="button secondary" id="open-vrp-console" style="margin-left:4px;">VRP Command Console</button>
-          </div>
-
-          <div class="hero-note">
-            No real traffic is generated here. This surface is a conceptual interface for the VRP organism.
-          </div>
-        </div>
-
-        <div class="hero-right" id="dev-console-panel">
-          <div class="hero-right-header">
-            <div class="hero-right-title">VRP DEV CONSOLE // AI LINKED</div>
-            <div class="hero-right-badge">LOCAL SIMULATION</div>
-          </div>
-
-          <div class="terminal-header">
-            <div>console.vrp</div>
-            <div class="terminal-dots"><span></span><span></span><span></span></div>
-          </div>
-          <div class="terminal" id="console">
-> USER: Hello, can you please change my IP address?
-> VRP: Command received. Processing...
-          </div>
-
-          <div class="hero-status-row" style="margin-top:8px;">
-            <div class="status-pill"><span class="status-dot"></span>VRP core: <span class="hero-highlight">online</span></div>
-            <div class="status-pill">Behavior: <span id="behavior-status">idle</span></div>
-            <div class="status-pill">Transport: <span id="transport-status">adaptive</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-title"><span>Mutating</span> Encryption</div>
-          <p>
-            Keys rotate with every session and behavioral event. The sealing layer is designed
-            to minimize static exposure and maximize entropy over time.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-title"><span>Biological</span> Routing</div>
-          <p>
-            The network is treated as a swarm. Paths appear, disappear, and reconfigure based on
-            behavior, not just static rules.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-title"><span>Adaptive</span> Jumps</div>
-          <p>
-            The protocol is designed to anticipate change — rotating transports, adjusting pulse,
-            and reacting to observation.
-          </p>
-        </div>
-      </div>
-
-      <div class="section-note">
-        This interface is a conceptual surface. The real protocol lives in code, behavior, and time.
-      </div>
-    </header>
-
-    <section id="demo">
-      <h2>VRP demo surface</h2>
-      <p>
-        The demo below simulates how VRP behaves: handshake, sealing, behavior, transport, and mutation.
-        No packets are sent — this is a local behavioral sketch.
-      </p>
-
-      <div style="margin-top:14px; display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1.6fr); gap:18px;">
-        <div>
-          <div class="small-label">Core flow</div>
-          <div class="diagram">
-   +---------------+
-   |   Handshake   |  X25519
-   +-------+-------+
-           |
-   +-------v-------+
-   |    Sealing    |  ChaCha20-Poly1305
-   +-------+-------+
-           |
-   +-------v-------+
-   |   Behavior    |  pulse . rotation . mutation
-   +-------+-------+
-           |
-   +-------v-------+
-   |   Transport   |  UDP . TCP . QUIC (future)
-   +---------------+
-          </div>
-        </div>
-        <div>
-          <div class="small-label">Conceptual config</div>
-          <div class="diagram" id="config-demo">
-[vrp]
-server     = 203.0.113.10
-port       = 443
-transport  = adaptive
-behavior   = organism
-log_level  = minimal
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="vrp-dashboard">
-      <h2>VRP live dashboard</h2>
-      <p class="muted">Local simulation of nodes, entropy and packet flow. No real traffic.</p>
-
-      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:14px;">
-        <div class="feature-card">
-          <div class="feature-title"><span>Node</span> Map</div>
-          <div class="diagram" id="vrp-node-map">
-[vrp] node-map initializing...
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-title"><span>Entropy</span> Meter</div>
-          <div class="diagram" id="vrp-entropy">
-Entropy: #######..... 72%
-State:   stable
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-title"><span>Packet</span> Visualizer</div>
-          <div class="diagram" id="vrp-packets">
-[vrp] packets:
-|..............................|
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="vrp-behavior">
-      <h2>Behavior engine sketch</h2>
-      <p class="muted">Symbolic view of pulse, rotation and observers.</p>
-
-      <div class="diagram" id="vrp-behavior-diagram">
-[vrp] behavior:
-pulse:     ..........
-rotation:  idle
-observers: 0
-      </div>
-    </section>
-
-    <section id="roadmap">
-      <h2>Roadmap</h2>
-
-      <h3>Phase 1 — Core Architecture (Completed / In Progress)</h3>
-      <ul>
-        <li>X25519 handshake</li>
-        <li>AEAD (ChaCha20-Poly1305) sealing</li>
-        <li>Session lifecycle</li>
-        <li>Transport abstraction</li>
-        <li>Minimal client prototype</li>
-        <li>Mutation Log established</li>
-        <li>Visual language established</li>
-        <li>Observer map established</li>
-      </ul>
-
-      <h3>Phase 2 — Behavioral Layer</h3>
-      <ul>
-        <li>Pulse mechanism</li>
-        <li>Rotation logic</li>
-        <li>Adaptive transport switching</li>
-        <li>Connection heuristics</li>
-        <li>Error-resilience model</li>
-        <li>Minimal, privacy-preserving logging framework</li>
-      </ul>
-
-      <h3>Phase 3 — Data Channel</h3>
-      <ul>
-        <li>Encrypted data tunnel</li>
-        <li>Multiplexing</li>
-        <li>Frame format</li>
-        <li>Packet scheduler</li>
-        <li>Congestion hints</li>
-        <li>Stateless recovery</li>
-      </ul>
-
-      <h3>Phase 4 — Server Architecture</h3>
-      <ul>
-        <li>Minimal server daemon</li>
-        <li>Session registry</li>
-        <li>Key rotation</li>
-        <li>Transport negotiation</li>
-        <li>Multi-node awareness (future clustering)</li>
-      </ul>
-
-      <h3>Phase 5 — Security Hardening</h3>
-      <ul>
-        <li>Replay protection</li>
-        <li>Timing-side-channel mitigation</li>
-        <li>Key-material lifecycle</li>
-        <li>Zero-trust integration hooks</li>
-      </ul>
-
-      <h3>Phase 6 — Public-Facing Layer</h3>
-      <ul>
-        <li>Minimal website</li>
-        <li>Whitepaper v1</li>
-        <li>Demo video</li>
-        <li>Controlled GitHub surface</li>
-        <li>Documentation portal</li>
-      </ul>
-
-      <h3>Phase 7 — Expansion</h3>
-      <ul>
-        <li>Mobile client</li>
-        <li>Desktop client</li>
-        <li>Multi-transport engine</li>
-        <li>Experimental PQC handshake</li>
-        <li>Experimental satellite-latency mode</li>
-      </ul>
-    </section>
-
-    <section id="entities">
-      <h2>Entities</h2>
-      <p class="muted">Symbolic representations of the protocol’s internal logic.</p>
-      <ul>
-        <li><strong>The Watcher</strong> — vigilance, perimeter, awareness.</li>
-        <li><strong>The Pulse Engine</strong> — behavior, rotation, adaptation.</li>
-        <li><strong>The Curiosity Node</strong> — evolution, learning, emergence.</li>
-      </ul>
-      <p class="section-note">
-        These entities appear across the visual language of Jumping VPN 2.0 and act as anchors for how the protocol is perceived.
-      </p>
-    </section>
-
-    <section id="observers">
-      <h2>Observer map</h2>
-      <p class="muted">A symbolic list of domains watching the protocol.</p>
-      <ul>
-        <li>Wayne P — early observer, consistent presence.</li>
-        <li>Chynthia — quiet orbit, long-term attention.</li>
-        <li>OptiSol — structured curiosity from the outside.</li>
-        <li>Security engineers and protocol designers.</li>
-        <li>Cloud-native and infra architects.</li>
-        <li>Those who watch silently and never like.</li>
-      </ul>
-    </section>
-
-    <section id="support">
-      <h2>Support the project</h2>
-      <p>
-        VRP / Jumping VPN is an independent, self-funded research project.
-        If you want to support the evolution of the protocol, you can contribute via PayPal:
-      </p>
-      <p style="font-size:1.1rem;"><strong>jumpingvpn@yahoo.com</strong></p>
-      <p class="muted">Thank you to everyone who supports the work and follows the protocol’s development.</p>
-    </section>
-
-    <section id="support-crypto">
-      <h2>Support the Protocol (Crypto)</h2>
-      <p class="muted">
-        Jumping VPN and VRP are self-funded experimental projects.<br>
-        If you want to support the movement, you may contribute any amount via crypto.
-      </p>
-
-      <p>
-        Every <span class="hero-highlight">satoshi</span> strengthens the signal.<br>
-        Every <span class="hero-highlight-alt">ether</span> fuels the evolution.
-      </p>
-
-      <div class="crypto-box">
-        <div><strong>BTC:</strong> bc1qafvdlevfeld4zvmqhvalwqdcc7jag2xanecfwx</div>
-        <div><strong>ETH:</strong> 0x3b51AaF84F958e082b90639bd7728544234Ff7c9</div>
-        <div><strong>LTC:</strong> ltc1qden05pz46cwtk022y9cqhzzfkj2ssgq42ldmys</div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>For collaboration, research inquiries, or early support:</p>
-      <p><strong>jumpingvpn@yahoo.com</strong></p>
-    </section>
-
-    <footer>
-      © VRP Protocol / Jumping VPN — Independent research project. 2027 — all rights reserved.
-    </footer>
-  </div>
-
-  <div id="vrp-console-wrapper">
-    <div id="vrp-console-overlay"></div>
-
-    <div id="vrp-console">
-      <div class="vrp-console-header">
-        <span>VRP COMMAND CONSOLE</span>
-        <div class="vrp-console-buttons">
-          <div class="vrp-btn red"></div>
-          <div class="vrp-btn green"></div>
-          <div class="vrp-btn blue"></div>
-        </div>
-      </div>
-
-      <div id="vrp-console-output">
-[vrp] console ready. type "help" for commands.
-      </div>
-
-      <input id="vrp-console-input" placeholder="vrp> enter command..." autocomplete="off" />
+    <div class="buttons">
+      <button class="btn primary" id="start">Start Jumping</button>
+      <button class="btn" id="open-author">Author</button>
     </div>
   </div>
 
-  <div id="floating-buttons">
-    <button class="float-btn" id="btn-contract">Contract</button>
-    <button class="float-btn" id="btn-author">Author</button>
-    <button class="float-btn" id="btn-protocol">Protocol</button>
-    <button class="float-btn" id="btn-thanks">Thanks</button>
-  </div>
-
-  <div class="modal" id="thanks-modal">
-    <div class="modal-box">
-      <h3>Gratitude Log</h3>
-      <div>
-        [vrp] observers acknowledged:<br>
-        - Wayne P — early signal, consistent presence.<br>
-        - Chynthia — quiet observer, steady orbit.<br>
-        - OptiSol — structured curiosity, external lens.<br>
-        - silent watchers — those who never comment, never like, but always return.<br><br>
-        Every view, every saved link, every private share<br>
-        becomes part of the organism's memory.
-      </div>
-      <button class="modal-close" data-close="thanks-modal">Close</button>
+  <div>
+    <div class="terminal" id="console">
+[vrp] core initialized
+[vrp] behavior engine online
+[vrp] pulse stable
     </div>
   </div>
+</section>
 
-  <div class="modal" id="contract-modal">
-    <div class="modal-box">
-      <h3>Contract</h3>
-      <div>
-        This is not a SaaS product. Not a subscription. Not a marketing funnel.<br><br>
-        VRP / Jumping VPN is an independent protocol organism under active research.<br>
-        Any future contracts will be:<br>
-        - minimal,<br>
-        - explicit,<br>
-        - protocol-first,<br>
-        - and negotiated directly with the architect.<br><br>
-        Until then, this surface is a conceptual preview — not a legal offer.
-      </div>
-      <button class="modal-close" data-close="contract-modal">Close</button>
+</div>
+
+<!-- FLOATING -->
+<div id="floating">
+  <button class="float-btn" id="btn-author">Author</button>
+</div>
+
+<!-- AUTHOR MODAL -->
+<div class="modal" id="author-modal">
+  <div class="modal-box">
+
+    <div class="matrix">
+      <canvas id="matrix"></canvas>
     </div>
-  </div>
 
-  <div class="modal" id="author-modal">
-    <div class="modal-box">
+    <div class="matrix-content">
       <h3>Author</h3>
-      <div>
-        Name: <strong>Vitalijus Riabovas</strong><br>
-        Role: Architect of VRP / Jumping VPN.<br><br>
-        Focus:<br>
-        - protocol design,<br>
-        - behavioral routing,<br>
-        - privacy infrastructure,<br>
-        - narrative and visual architecture.<br><br>
-        Identity:<br>
-        - not "just a developer",<br>
-        - not a generic VPN founder,<br>
-        - but an architect building a living protocol organism.<br><br>
-        Every surface — code, visuals, wording — is treated as part of the legend.
-      </div>
-      <button class="modal-close" data-close="author-modal">Close</button>
+      <p>
+        <strong>Vitalijus Riabovas</strong><br><br>
+        Architect of VRP / Jumping VPN<br><br>
+        Protocol design • Behavioral routing<br>
+        Privacy infrastructure • Narrative systems
+      </p>
+      <button class="close" data-close="author-modal">Close</button>
     </div>
+
   </div>
+</div>
+
+<script>
+/* ---------- CONSOLE ---------- */
+(function(){
+  const c=document.getElementById("console");
+  const logs=[
+    "[vrp] observers detected",
+    "[vrp] entropy stable",
+    "[vrp] background rotation active",
+    "[vrp] mutation window idle"
+  ];
+  setInterval(()=>{
+    c.textContent+="\n"+logs[Math.floor(Math.random()*logs.length)];
+    c.scrollTop=c.scrollHeight;
+  },6000);
+})();
+
+/* ---------- MODAL ---------- */
+const modal=document.getElementById("author-modal");
+document.getElementById("btn-author").onclick=()=>open();
+document.getElementById("open-author").onclick=()=>open();
+function open(){ modal.style.display="flex"; startMatrix(); }
+document.querySelector(".close").onclick=()=>modal.style.display="none";
+
+/* ---------- MATRIX ---------- */
+function startMatrix(){
+  const canvas=document.getElementById("matrix");
+  const ctx=canvas.getContext("2d");
+  canvas.width=canvas.offsetWidth;
+  canvas.height=canvas.offsetHeight;
+
+  const chars="0123456789";
+  const cols=Math.floor(canvas.width/14);
+  const drops=Array(cols).fill(1);
+
+  function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.08)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#4fd1c5";
+    ctx.font="14px monospace";
+
+    for(let i=0;i<drops.length;i++){
+      const text=chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(text,i*14,drops[i]*14);
+      if(drops[i]*14>canvas.height && Math.random()>0.95) drops[i]=0;
+      drops[i]++;
+    }
+  }
+  if(window.matrixInterval) clearInterval(window.matrixInterval);
+  window.matrixInterval=setInterval(draw,50);
+}
+</script>
 
-  <div class="modal" id="protocol-modal">
-    <div class="modal-box">
-      <h3>What is VRP?</h3>
-      <div style="max-height:260px; overflow:auto;">
-        VRP (Variable Routing Protocol) is a behavioral communication organism.<br><br>
-        It treats routing, encryption and transport not as static configuration,
-        but as a living system that reacts to observation, pressure and time.<br><br>
-        Core ideas:<br>
-        - Handshake: ephemeral X25519 keys, minimal exposure.<br>
-        - Sealing: AEAD (ChaCha20-Poly1305) as the sealing layer.<br>
-        - Behavior: pulse, rotation, mutation — the protocol "moves".<br>
-        - Transport: adaptive, not married to a single tunnel.<br><br>
-        VRP is not "a VPN provider". It is a protocol that can be embedded,
-        extended and evolved. The public surface you see here is intentionally
-        minimal and cinematic — the real organism lives in private repos,
-        mutation logs, and the behavior of those who interact with it.<br><br>
-        The goal is simple: make surveillance and static assumptions expensive,
-        confusing and fragile — while keeping the protocol itself precise,
-        documented and architected for long-term evolution.
-      </div>
-      <button class="modal-close" data-close="protocol-modal">Close</button>
-    </div>
-  </div>
-
-  <div id="vrp-heartbeat"></div>
-
-  <script>
-    (function() {
-      var consoleEl = document.getElementById("console");
-      var behaviorEl = document.getElementById("behavior-status");
-      var transportEl = document.getElementById("transport-status");
-      var startBtn = document.getElementById("start-jumping");
-      var devBtn = document.getElementById("open-dev-console");
-
-      if (!consoleEl || !behaviorEl || !transportEl || !startBtn || !devBtn) return;
-
-      var running = false;
-      var step = 0;
-      var intervalId = null;
-
-      var lines = [
-        "> VRP: Initializing behavioral core...",
-        "> VRP: Generating ephemeral X25519 keys...",
-        "> VRP: Sealing context: ChaCha20-Poly1305 ready.",
-        "> VRP: Session lifecycle started.",
-        "> VRP: Behavior engine online. Pulse: stable.",
-        "> VRP: Transport mode: adaptive.",
-        "> VRP: Observers detected. Adjusting pattern...",
-        "> VRP: Jump: route A -> route B.",
-        "> VRP: Jump: route B -> route C.",
-        "> VRP: Mutation 006 - demo surface attached.",
-        "> VRP: Status: stable under observation.",
-        "> VRP: Note: this is a local simulation only."
-      ];
-
-      function appendLine(text) {
-        consoleEl.textContent += "\n" + text;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }
-
-      function resetConsole() {
-        consoleEl.textContent =
-"> USER: Hello, can you please change my IP address?\n> VRP: Command received. Processing...";
-      }
-
-      function setBehavior(text) {
-        behaviorEl.textContent = text;
-      }
-
-      function setTransport(text) {
-        transportEl.textContent = text;
-      }
-
-      function startDemo() {
-        if (running) return;
-        running = true;
-        step = 0;
-        resetConsole();
-        appendLine("> VRP: Starting jump sequence...");
-        setBehavior("warming up");
-        setTransport("adaptive");
-
-        intervalId = setInterval(function() {
-          if (step < lines.length) {
-            appendLine(lines[step]);
-
-            if (step === 4) setBehavior("stable");
-            if (step === 6) setBehavior("observed");
-            if (step === 7) setTransport("udp -> tcp");
-            if (step === 8) setTransport("tcp -> udp");
-            if (step === 10) setBehavior("stable");
-
-            step++;
-          } else {
-            appendLine("> VRP: Jump sequence complete.");
-            setBehavior("stable");
-            setTransport("adaptive");
-            clearInterval(intervalId);
-            running = false;
-          }
-        }, 550);
-      }
-
-      function openDevConsole() {
-        appendLine("");
-        appendLine("> USER: Open dev console.");
-        appendLine("> VRP: Dev console already active on this surface.");
-      }
-
-      startBtn.addEventListener("click", startDemo);
-      devBtn.addEventListener("click", openDevConsole);
-    })();
-
-    (function() {
-      var nodeMapEl = document.getElementById("vrp-node-map");
-      var entropyEl = document.getElementById("vrp-entropy");
-      var packetsEl = document.getElementById("vrp-packets");
-
-      if (!nodeMapEl || !entropyEl || !packetsEl) return;
-
-      var nodes = [
-        { name: "Node A", state: "online" },
-        { name: "Node B", state: "rotating" },
-        { name: "Node C", state: "sealed" },
-        { name: "Node D", state: "offline" },
-        { name: "Node E", state: "probing" }
-      ];
-
-      var entropy = 72;
-      var direction = 1;
-      var packetPos = 3;
-
-      function renderNodeMap() {
-        var out = "[vrp] node-map:\n";
-        for (var i = 0; i < nodes.length; i++) {
-          var n = nodes[i];
-          var symbol = "●";
-          if (n.state === "offline") symbol = "○";
-          if (n.state === "rotating") symbol = "◐";
-          if (n.state === "sealed") symbol = "◆";
-          if (n.state === "probing") symbol = "◌";
-          out += n.name + " ".repeat(8 - n.name.length) + " " + symbol + "  " + n.state + "\n";
-        }
-        nodeMapEl.textContent = out;
-      }
-
-      function renderEntropy() {
-        var barLength = 20;
-        var filled = Math.round((entropy / 100) * barLength);
-        var bar = "";
-        for (var i = 0; i < barLength; i++) {
-          bar += i < filled ? "#" : ".";
-        }
-
-        var state = "stable";
-        if (entropy > 85) state = "storm";
-        else if (entropy < 65) state = "low";
-
-        entropyEl.textContent =
-"Entropy: " + bar + " " + entropy + "%\nState:   " + state;
-      }
-
-      function renderPackets() {
-        var width = 30;
-        var line = [];
-        for (var i = 0; i < width; i++) line.push(".");
-        if (packetPos >= 0 && packetPos < width) {
-          line[packetPos] = "O";
-        }
-        packetsEl.textContent =
-"[vrp] packets:\n|" + line.join("") + "|";
-      }
-
-      function tick() {
-        var idx = Math.floor(Math.random() * nodes.length);
-        var states = ["online", "rotating", "sealed", "offline", "probing"];
-        nodes[idx].state = states[Math.floor(Math.random() * states.length)];
-
-        entropy += direction * (Math.random() * 2.2);
-        if (entropy > 92) direction = -1;
-        if (entropy < 64) direction = 1;
-        entropy = Math.round(entropy);
-
-        packetPos += 1;
-        if (packetPos >= 30) packetPos = 0;
-
-        renderNodeMap();
-        renderEntropy();
-        renderPackets();
-      }
-
-      renderNodeMap();
-      renderEntropy();
-      renderPackets();
-      setInterval(tick, 700);
-    })();
-
-    (function() {
-      var el = document.getElementById("vrp-behavior-diagram");
-      if (!el) return;
-
-      var pulseLevel = 3;
-      var rotationState = "idle";
-      var observers = 0;
-      var rotationStates = ["idle", "warming", "rotating", "cooldown"];
-
-      function render() {
-        var max = 10;
-        var filled = "";
-        for (var i = 0; i < max; i++) {
-          filled += i < pulseLevel ? "#" : ".";
-        }
-        el.textContent =
-"[vrp] behavior:\n" +
-"pulse:     " + filled + "\n" +
-"rotation:  " + rotationState + "\n" +
-"observers: " + observers;
-      }
-
-      function tick() {
-        var delta = Math.random() > 0.5 ? 1 : -1;
-        pulseLevel = Math.min(10, Math.max(1, pulseLevel + delta));
-
-        rotationState = rotationStates[Math.floor(Math.random() * rotationStates.length)];
-
-        observers = Math.floor(Math.random() * 22);
-
-        render();
-      }
-
-      render();
-      setInterval(tick, 800);
-    })();
-
-    (function() {
-      var wrapper = document.getElementById("vrp-console-wrapper");
-      var openBtn = document.getElementById("open-vrp-console");
-      var overlay = document.getElementById("vrp-console-overlay");
-      var output = document.getElementById("vrp-console-output");
-      var input = document.getElementById("vrp-console-input");
-
-      if (!wrapper || !openBtn || !overlay || !output || !input) return;
-
-      var currentMode = "normal";
-
-      function print(text) {
-        output.textContent += "\n" + text;
-        output.scrollTop = output.scrollHeight;
-      }
-
-      function setMode(mode) {
-        currentMode = mode;
-        print("[vrp] mode set to " + mode + ".");
-        if (mode === "stealth") {
-          print("[vrp] pulse reduced. visibility minimized.");
-        } else if (mode === "aggressive") {
-          print("[vrp] rotation frequency increased. jumps intensified.");
-        } else if (mode === "storm") {
-          print("[vrp] mutation storm initiated. entropy rising.");
-        } else if (mode === "ritual") {
-          print("[vrp] ritual acknowledged. organism listening in silence.");
-        }
-      }
-
-      var commands = {
-        "help": function() {
-          print("[vrp] available commands:");
-          print("  help                show this list");
-          print("  rotate              rotate transport");
-          print("  pulse               show pulse status");
-          print("  observers           show observer count");
-          print("  status              show current mode and state");
-          print("  mode stealth        enter stealth mode");
-          print("  mode aggressive     enter aggressive mode");
-          print("  mode storm          enter mutation storm");
-          print("  ritual              enter ritual mode");
-          print("  awaken watcher      wake watcher entity");
-          print("  summon pulse        wake pulse engine");
-          print("  what is vrp         short description of vrp");
-          print("  ls                  list virtual vrp paths");
-          print("  clear               clear console");
-        },
-        "rotate": function() {
-          print("[vrp] rotation acknowledged...");
-          print("[vrp] udp -> tcp -> udp.");
-        },
-        "pulse": function() {
-          var entropy = currentMode === "storm" ? 93 : currentMode === "aggressive" ? 84 : currentMode === "stealth" ? 68 : 73;
-          print("[vrp] pulse stable. entropy: " + entropy + "%.");
-        },
-        "observers": function() {
-          var count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 21 : 14;
-          print("[vrp] " + count + " observers detected. pattern adapting.");
-        },
-        "status": function() {
-          print("[vrp] mode: " + currentMode + ".");
-          print("[vrp] core: online. behavior: stable under observation.");
-        },
-        "mode stealth": function() { setMode("stealth"); },
-        "mode aggressive": function() { setMode("aggressive"); },
-        "mode storm": function() { setMode("storm"); },
-        "ritual": function() { setMode("ritual"); },
-        "awaken watcher": function() {
-          print("[vrp] watcher awakened. perimeter expanded.");
-        },
-        "summon pulse": function() {
-          print("[vrp] pulse engine summoned. rotation window widened.");
-        },
-        "what is vrp": function() {
-          print("[vrp] VRP is a behavioral communication organism.");
-          print("[vrp] it treats routing, encryption and transport as a living system.");
-        },
-        "ls": function() {
-          print("[vrp] /core");
-          print("[vrp] /behavior");
-          print("[vrp] /transport");
-          print("[vrp] /mutations");
-          print("[vrp] /observers");
-        },
-        "clear": function() {
-          output.textContent = "[vrp] console cleared.";
-        }
-      };
-
-      function handleCommand(raw) {
-        var cmd = raw.trim();
-        var lower = cmd.toLowerCase();
-        if (!cmd) return;
-
-        print("vrp> " + cmd);
-
-        if (commands[lower]) {
-          commands[lower]();
-        } else if (lower.indexOf("mode ") === 0) {
-          print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
-        } else if (lower.indexOf("ip") !== -1) {
-          print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
-        } else if (lower.indexOf("hello") !== -1 || lower.indexOf("hi") !== -1) {
-          print("[vrp] acknowledged. organism is listening.");
-        } else if (lower.indexOf("cat ") === 0 || lower.indexOf("open ") === 0) {
-          print("[vrp] virtual file system only. nothing to read here yet.");
-        } else {
-          print("[vrp] unknown command. type \"help\" for list.");
-        }
-      }
-
-      openBtn.addEventListener("click", function() {
-        wrapper.style.display = "block";
-        input.focus();
-      });
-
-      overlay.addEventListener("click", function() {
-        wrapper.style.display = "none";
-      });
-
-      input.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          var value = input.value;
-          input.value = "";
-          handleCommand(value);
-        }
-      });
-    })();
-
-    (function() {
-      var btnContract = document.getElementById("btn-contract");
-      var btnAuthor = document.getElementById("btn-author");
-      var btnProtocol = document.getElementById("btn-protocol");
-      var btnThanks = document.getElementById("btn-thanks");
-
-      var contractModal = document.getElementById("contract-modal");
-      var authorModal = document.getElementById("author-modal");
-      var protocolModal = document.getElementById("protocol-modal");
-      var thanksModal = document.getElementById("thanks-modal");
-
-      function openModal(modal) {
-        if (modal) modal.style.display = "flex";
-      }
-
-      function closeModal(modal) {
-        if (modal) modal.style.display = "none";
-      }
-
-      if (btnContract) btnContract.addEventListener("click", function() { openModal(contractModal); });
-      if (btnAuthor) btnAuthor.addEventListener("click", function() { openModal(authorModal); });
-      if (btnProtocol) btnProtocol.addEventListener("click", function() { openModal(protocolModal); });
-      if (btnThanks) btnThanks.addEventListener("click", function() { openModal(thanksModal); });
-
-      var closeButtons = document.querySelectorAll(".modal-close");
-      for (var i = 0; i < closeButtons.length; i++) {
-        closeButtons[i].addEventListener("click", function() {
-          var id = this.getAttribute("data-close");
-          var m = document.getElementById(id);
-          closeModal(m);
-        });
-      }
-
-      function attachOverlayClose(modal) {
-        if (!modal) return;
-        modal.addEventListener("click", function(e) {
-          if (e.target === modal) {
-            closeModal(modal);
-          }
-        });
-      }
-
-      attachOverlayClose(contractModal);
-      attachOverlayClose(authorModal);
-      attachOverlayClose(protocolModal);
-      attachOverlayClose(thanksModal);
-    })();
-
-    (function() {
-      var lastMove = Date.now();
-      var whisperCooldown = false;
-
-      document.addEventListener("mousemove", function() {
-        lastMove = Date.now();
-        if (!whisperCooldown) {
-          whisperCooldown = true;
-          setTimeout(function() { whisperCooldown = false; }, 3000);
-
-          var consoleEl = document.getElementById("console");
-          if (consoleEl) {
-            consoleEl.textContent += "\n[vrp] entropy spike detected. adjusting pulse...";
-            consoleEl.scrollTop = consoleEl.scrollHeight;
-          }
-        }
-      });
-
-      setInterval(function() {
-        var consoleEl = document.getElementById("console");
-        if (!consoleEl) return;
-
-        var msgs = [
-          "[vrp] silent watcher connected.",
-          "[vrp] mutation event detected.",
-          "[vrp] entropy drift observed.",
-          "[vrp] background rotation active.",
-          "[vrp] observer ping received."
-        ];
-
-        var msg = msgs[Math.floor(Math.random() * msgs.length)];
-        consoleEl.textContent += "\n" + msg;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-
-      }, 15000);
-    })();
-
-    // ===== VRP DEEP OBSERVER ENGINE =====
-    (function() {
-      var lastMoveTime = Date.now();
-      var lastScrollTime = Date.now();
-      var lastInteractionTime = Date.now();
-      var deepObserverScore = 0;
-      var hasShownDeepObserver = false;
-      var hasShownReturn = false;
-
-      var consoleEl = document.getElementById("console");
-      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
-
-      function logToConsole(msg) {
-        if (!consoleEl) return;
-        consoleEl.textContent += "\n" + msg;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }
-
-      function boostBehaviorPulse() {
-        if (!behaviorDiagram) return;
-        behaviorDiagram.textContent += "\n[vrp] deep observer pattern detected. pulse modulation active.";
-      }
-
-      try {
-        var visits = parseInt(localStorage.getItem("vrp_visits") || "0", 10);
-        visits++;
-        localStorage.setItem("vrp_visits", String(visits));
-
-        if (visits > 1 && !hasShownReturn) {
-          hasShownReturn = true;
-          setTimeout(function() {
-            logToConsole("[vrp] returning observer detected. memory updated.");
-          }, 4000);
-        }
-      } catch (e) {}
-
-      document.addEventListener("mousemove", function() {
-        lastMoveTime = Date.now();
-        lastInteractionTime = Date.now();
-      });
-
-      document.addEventListener("scroll", function() {
-        lastScrollTime = Date.now();
-        lastInteractionTime = Date.now();
-      });
-
-      document.addEventListener("click", function() {
-        lastInteractionTime = Date.now();
-      });
-
-      setInterval(function() {
-        var now = Date.now();
-        var idleSince = now - lastInteractionTime;
-        var noScrollSince = now - lastScrollTime;
-
-        if (idleSince > 6000 && noScrollSince > 6000) {
-          deepObserverScore += 2;
-        } else if (idleSince > 3000) {
-          deepObserverScore += 1;
-        } else {
-          deepObserverScore = Math.max(0, deepObserverScore - 1);
-        }
-
-        if (deepObserverScore >= 8 && !hasShownDeepObserver) {
-          hasShownDeepObserver = true;
-          logToConsole("[vrp] deep observer identified. adjusting perimeter.");
-          boostBehaviorPulse();
-        }
-
-      }, 2000);
-    })();
-
-    // ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
-    (function() {
-      var body = document.body;
-      var consoleEl = document.getElementById("console");
-
-      function log(msg) {
-        if (!consoleEl) return;
-        consoleEl.textContent += "\n" + msg;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }
-
-      var lastX = null;
-      var lastY = null;
-      var stillSince = Date.now();
-      var watcherTriggered = false;
-
-      document.addEventListener("mousemove", function(e) {
-        if (lastX === null && lastY === null) {
-          lastX = e.clientX;
-          lastY = e.clientY;
-          stillSince = Date.now();
-          return;
-        }
-
-        var dx = Math.abs(e.clientX - lastX);
-        var dy = Math.abs(e.clientY - lastY);
-
-        if (dx < 2 && dy < 2) {
-        } else {
-          lastX = e.clientX;
-          lastY = e.clientY;
-          stillSince = Date.now();
-          watcherTriggered = false;
-          body.style.boxShadow = "none";
-        }
-      });
-
-      setInterval(function() {
-        var now = Date.now();
-        if (!watcherTriggered && now - stillSince > 4000) {
-          watcherTriggered = true;
-          body.style.boxShadow = "0 0 40px rgba(79,209,197,0.6)";
-          setTimeout(function() {
-            body.style.boxShadow = "none";
-          }, 1200);
-          log("[vrp] watcher: presence detected. adjusting perimeter.");
-        }
-      }, 800);
-
-      var lastMove = Date.now();
-      document.addEventListener("mousemove", function() {
-        lastMove = Date.now();
-        body.style.cursor = "default";
-      });
-
-      setInterval(function() {
-        var now = Date.now();
-        if (now - lastMove > 12000) {
-          body.style.cursor = "none";
-          body.style.transform = "translate(0,0)";
-          setTimeout(function() { body.style.transform = "translate(1px,0)"; }, 80);
-          setTimeout(function() { body.style.transform = "translate(-1px,0)"; }, 160);
-          setTimeout(function() { body.style.transform = "translate(0,0)"; }, 240);
-          setTimeout(function() { body.style.cursor = "default"; }, 260);
-
-          log("[vrp] idle pattern detected. probing user presence...");
-          lastMove = Date.now();
-        }
-      }, 2000);
-    })();
-
-    // ===== VRP VITALIJUS MODE (SECRET COMMAND) =====
-    (function() {
-      var output = document.getElementById("vrp-console-output");
-      var input = document.getElementById("vrp-console-input");
-      if (!output || !input) return;
-
-      var vitalijusMode = false;
-
-      function print(msg) {
-        output.textContent += "\n" + msg;
-        output.scrollTop = output.scrollHeight;
-      }
-
-      input.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          var value = (input.value || "").trim().toLowerCase();
-          if (value === "vitalijus") {
-            setTimeout(function() {
-              vitalijusMode = true;
-              print("[vrp] architect detected.");
-              print("[vrp] elevating privileges. organism pulse increased.");
-              document.body.style.animationDuration = "4s";
-            }, 50);
-          }
-        }
-      });
-
-      setInterval(function() {
-        if (!vitalijusMode) return;
-        var msgs = [
-          "[vrp] architect presence confirmed.",
-          "[vrp] mutation window widened.",
-          "[vrp] internal logs exposed to architect.",
-          "[vrp] observer lattice reconfigured."
-        ];
-        print(msgs[Math.floor(Math.random() * msgs.length)]);
-      }, 20000);
-    })();
-
-    // ===== VRP LORE UNLOCKS + OBSERVER MEMORY =====
-    (function() {
-      var consoleEl = document.getElementById("console");
-      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
-
-      function log(msg) {
-        if (!consoleEl) return;
-        consoleEl.textContent += "\n" + msg;
-        consoleEl.scrollTop = consoleEl.scrollHeight;
-      }
-
-      var observerCount = 0;
-      try {
-        observerCount = parseInt(localStorage.getItem("vrp_observers") || "0", 10);
-        observerCount++;
-        localStorage.setItem("vrp_observers", String(observerCount));
-      } catch (e) {
-        observerCount = 1;
-      }
-
-      setTimeout(function() {
-        log("[vrp] observer lattice updated. total local observations: " + observerCount + ".");
-      }, 5000);
-
-      document.addEventListener("selectionchange", function() {
-        var sel = window.getSelection ? String(window.getSelection()) : "";
-        if (!sel || sel.length < 8) return;
-
-        if (Math.random() < 0.08) {
-          log("[vrp] user focus spike detected. lore fragment unlocked.");
-          if (behaviorDiagram) {
-            behaviorDiagram.textContent += "\n[vrp] lore: the protocol was not built. it emerged.";
-          }
-        }
-      });
-
-      setInterval(function() {
-        if (Math.random() < 0.25) return;
-
-        var msgs = [
-          "[vrp] silent watcher present beyond visible metrics.",
-          "[vrp] mutation log extended in private space.",
-          "[vrp] entropy and curiosity remain correlated.",
-          "[vrp] some observers never reveal themselves."
-        ];
-        log(msgs[Math.floor(Math.random() * msgs.length)]);
-      }, 26000);
-    })();
-  </script>
 </body>
 </html>
