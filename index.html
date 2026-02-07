@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Jumping VPN — VRP Protocol</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-
-/* =========================================================
-   GLOBAL / BASE
-   ========================================================= */
+/* =====================================================
+   BASE
+   ===================================================== */
 
 html, body {
   margin: 0;
@@ -22,33 +21,19 @@ html, body {
   overflow-x: hidden;
 }
 
-/* =========================================================
-   FULL SCREEN PAGE (ADDED, NOTHING REMOVED)
-   ========================================================= */
+/* =====================================================
+   FULL SCREEN PAGE
+   ===================================================== */
 
 .page {
   width: 100vw;
   min-height: 100vh;
   padding: 32px 5vw 160px;
-  position: relative;
-  z-index: 1;
 }
 
-/* =========================================================
-   MATRIX BACKGROUND (ADDED)
-   ========================================================= */
-
-#cmatrix {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.18;
-}
-
-/* =========================================================
-   HEADER / HERO (ORIGINAL STRUCTURE KEPT)
-   ========================================================= */
+/* =====================================================
+   HEADER / HERO
+   ===================================================== */
 
 .header-top {
   display: flex;
@@ -74,15 +59,22 @@ html, body {
   font-size: 2.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  animation: pulseGlow 6s ease-in-out infinite;
 }
 
 .hero-title span {
   color: #4fd1c5;
 }
 
-/* =========================================================
+@keyframes pulseGlow {
+  0% { text-shadow: 0 0 0 rgba(79,209,197,0); }
+  50% { text-shadow: 0 0 18px rgba(79,209,197,0.4); }
+  100% { text-shadow: 0 0 0 rgba(79,209,197,0); }
+}
+
+/* =====================================================
    BUTTONS
-   ========================================================= */
+   ===================================================== */
 
 .buttons {
   margin-top: 24px;
@@ -98,23 +90,17 @@ html, body {
   background: #000;
   color: #f5f5f5;
   cursor: pointer;
-  transition: 0.25s;
 }
 
 .btn.primary {
   background: #4fd1c5;
   color: #000;
   border: none;
-  box-shadow: 0 0 14px rgba(79,209,197,0.6);
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-/* =========================================================
+/* =====================================================
    TERMINAL
-   ========================================================= */
+   ===================================================== */
 
 .terminal {
   background: #000;
@@ -127,32 +113,9 @@ html, body {
   overflow-y: auto;
 }
 
-/* =========================================================
-   FLOATING CONTROLS
-   ========================================================= */
-
-#floating {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 10;
-}
-
-.float-btn {
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid #4fd1c5;
-  background: #000;
-  color: #4fd1c5;
-  cursor: pointer;
-}
-
-/* =========================================================
-   MODALS (UNCHANGED STRUCTURE)
-   ========================================================= */
+/* =====================================================
+   MODALS
+   ===================================================== */
 
 .modal {
   position: fixed;
@@ -165,13 +128,14 @@ html, body {
 }
 
 .modal-box {
-  width: 520px;
+  width: 540px;
   max-width: 90vw;
   background: #000;
   border: 1px solid #4fd1c5;
   border-radius: 14px;
-  padding: 22px;
+  padding: 24px;
   position: relative;
+  overflow: hidden;
 }
 
 .modal h3 {
@@ -190,15 +154,25 @@ html, body {
   cursor: pointer;
 }
 
-/* ========================================================= */
+/* =====================================================
+   MATRIX (ONLY INSIDE AUTHOR)
+   ===================================================== */
 
+.matrix-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.25;
+}
+
+.matrix-content {
+  position: relative;
+  z-index: 1;
+}
 </style>
 </head>
 
 <body>
-
-<!-- MATRIX BACKGROUND -->
-<canvas id="cmatrix"></canvas>
 
 <div class="page">
 
@@ -236,92 +210,93 @@ html, body {
 
 </div>
 
-<div id="floating">
-  <button class="float-btn" id="float-author">Author</button>
-</div>
-
 <!-- AUTHOR MODAL -->
 <div class="modal" id="author-modal">
   <div class="modal-box">
-    <h3>Author</h3>
-    <p style="text-align:center">
-      <strong>Vitalijus Riabovas</strong><br><br>
-      Architect of VRP / Jumping VPN<br>
-      Protocol design · Behavioral routing<br>
-      Privacy infrastructure
-    </p>
-    <button class="close" id="close-author">Close</button>
+
+    <canvas class="matrix-canvas" id="matrix"></canvas>
+
+    <div class="matrix-content">
+      <h3>Author</h3>
+      <p style="text-align:center">
+        <strong>Vitalijus Riabovas</strong><br><br>
+        Architect of VRP / Jumping VPN<br>
+        Protocol design · Behavioral routing<br>
+        Privacy infrastructure
+      </p>
+      <button class="close" id="close-author">Close</button>
+    </div>
+
   </div>
 </div>
 
-<script>
+<!-- THANKS (NAME FIXED) -->
+<div style="display:none">
+  Thanks to Cynthia for support.
+</div>
 
-/* =========================================================
-   TERMINAL LOG STREAM (ORIGINAL IDEA KEPT)
-   ========================================================= */
+<script>
+/* =====================================================
+   TERMINAL LOGS
+   ===================================================== */
 
 (function(){
-  const consoleBox = document.getElementById("console");
-  const messages = [
+  const box = document.getElementById("console");
+  const logs = [
     "[vrp] entropy stable",
     "[vrp] observer layer active",
-    "[vrp] routing mutation idle",
-    "[vrp] background process running"
+    "[vrp] routing mutation idle"
   ];
-
   setInterval(() => {
-    consoleBox.textContent += "\n" + messages[Math.floor(Math.random()*messages.length)];
-    consoleBox.scrollTop = consoleBox.scrollHeight;
+    box.textContent += "\n" + logs[Math.floor(Math.random()*logs.length)];
+    box.scrollTop = box.scrollHeight;
   }, 6000);
 })();
 
-/* =========================================================
-   AUTHOR MODAL (ADDED AUTO-OPEN)
-   ========================================================= */
+/* =====================================================
+   AUTHOR MODAL AUTO OPEN (FIXED)
+   ===================================================== */
 
 const authorModal = document.getElementById("author-modal");
 
-document.getElementById("open-author").onclick = () => {
+function openAuthor() {
   authorModal.style.display = "flex";
-};
+  startMatrix();
+}
 
-document.getElementById("float-author").onclick = () => {
-  authorModal.style.display = "flex";
-};
-
-document.getElementById("close-author").onclick = () => {
+function closeAuthor() {
   authorModal.style.display = "none";
-};
+  stopMatrix();
+}
 
-/* Auto open once on first load */
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    authorModal.style.display = "flex";
-  }, 1200);
+document.getElementById("open-author").onclick = openAuthor;
+document.getElementById("close-author").onclick = closeAuthor;
+
+/* AUTO OPEN ON LOAD — GUARANTEED */
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(openAuthor, 800);
 });
 
-/* =========================================================
-   CMATRIX EFFECT (ADDED)
-   ========================================================= */
+/* =====================================================
+   MATRIX ENGINE (ONLY FOR AUTHOR)
+   ===================================================== */
 
-(function(){
-  const canvas = document.getElementById("cmatrix");
+let matrixInterval = null;
+
+function startMatrix() {
+  const canvas = document.getElementById("matrix");
   const ctx = canvas.getContext("2d");
 
-  function resize(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener("resize", resize);
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
 
   const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const fontSize = 14;
-  let columns = Math.floor(canvas.width / fontSize);
-  let drops = Array(columns).fill(1);
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = Array(columns).fill(1);
 
-  function draw(){
-    ctx.fillStyle = "rgba(0,0,0,0.05)";
+  matrixInterval = setInterval(() => {
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#4fd1c5";
@@ -330,17 +305,20 @@ window.addEventListener("load", () => {
     for (let i = 0; i < drops.length; i++) {
       const char = chars[Math.floor(Math.random() * chars.length)];
       ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-
       if (drops[i] * fontSize > canvas.height && Math.random() > 0.97) {
         drops[i] = 0;
       }
       drops[i]++;
     }
+  }, 50);
+}
+
+function stopMatrix() {
+  if (matrixInterval) {
+    clearInterval(matrixInterval);
+    matrixInterval = null;
   }
-
-  setInterval(draw, 50);
-})();
-
+}
 </script>
 
 </body>
