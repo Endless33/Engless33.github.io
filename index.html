@@ -1667,6 +1667,43 @@ observers: 0
         log(msgs[Math.floor(Math.random() * msgs.length)]);
       }, 26000);
     })();
+// ===== VRP AUTHOR CMATRIX =====
+(function() {
+  var box = document.getElementById("author-cmatrix");
+  if (!box) return;
+
+  var cols = 60;
+  var rows = 20;
+  var matrix = [];
+
+  function randomChar() {
+    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  function init() {
+    for (var r = 0; r < rows; r++) {
+      var line = "";
+      for (var c = 0; c < cols; c++) {
+        line += randomChar();
+      }
+      matrix.push(line);
+    }
+  }
+
+  function render() {
+    matrix.shift();
+    var newLine = "";
+    for (var c = 0; c < cols; c++) {
+      newLine += randomChar();
+    }
+    matrix.push(newLine);
+    box.textContent = matrix.join("\n");
+  }
+
+  init();
+  setInterval(render, 80);
+})();
   </script>
 </body>
 </html>
