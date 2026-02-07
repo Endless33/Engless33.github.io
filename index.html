@@ -40,13 +40,6 @@
       margin-bottom: 10px;
     }
 
-    h1 {
-      font-size: 2.8rem;
-      margin-top: 8px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
     h2 {
       font-size: 1.4rem;
       border-top: 1px solid var(--border);
@@ -138,11 +131,6 @@
       border-color: var(--border);
       color: var(--muted);
       background: #050505;
-    }
-
-    .button.small {
-      padding: 6px 14px;
-      font-size: 0.8rem;
     }
 
     .hero-note {
@@ -401,6 +389,11 @@
       color: #fff;
       font-size: 0.85rem;
     }
+
+    /* dashboard tweaks */
+    #vrp-dashboard .diagram {
+      height: 120px;
+    }
   </style>
 </head>
 
@@ -538,6 +531,53 @@ behavior   = organism
 log_level  = minimal
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- VRP DASHBOARD -->
+    <section id="vrp-dashboard">
+      <h2>VRP live dashboard</h2>
+      <p class="muted">Local simulation of nodes, entropy and packet flow. No real traffic.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:14px;">
+        <!-- NODE MAP -->
+        <div class="feature-card">
+          <div class="feature-title"><span>Node</span> Map</div>
+          <div class="diagram" id="vrp-node-map">
+[vrp] node‑map initializing...
+          </div>
+        </div>
+
+        <!-- ENTROPY METER -->
+        <div class="feature-card">
+          <div class="feature-title"><span>Entropy</span> Meter</div>
+          <div class="diagram" id="vrp-entropy">
+Entropy: ███████░░░ 72%
+State:   stable
+          </div>
+        </div>
+
+        <!-- PACKET VISUALIZER -->
+        <div class="feature-card">
+          <div class="feature-title"><span>Packet</span> Visualizer</div>
+          <div class="diagram" id="vrp-packets">
+[vrp] packets:
+|······························|
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEHAVIOR PANEL -->
+    <section id="vrp-behavior">
+      <h2>Behavior engine sketch</h2>
+      <p class="muted">Symbolic view of pulse, rotation and observers.</p>
+
+      <div class="diagram" id="vrp-behavior-diagram">
+[vrp] behavior:
+pulse:     ░░░░░░░░░░
+rotation:  idle
+observers: 0
       </div>
     </section>
 
@@ -687,7 +727,7 @@ log_level  = minimal
   </div>
 
   <script>
-    // MAIN DEMO CONSOLE (справа в hero)
+    // MAIN DEMO CONSOLE (hero right)
     (function() {
       const consoleEl = document.getElementById('console');
       const behaviorEl = document.getElementById('behavior-status');
@@ -716,7 +756,7 @@ log_level  = minimal
 
       function appendLine(text) {
         if (!consoleEl) return;
-        consoleEl.textContent += '\\n' + text;
+        consoleEl.textContent += '\n' + text;
         consoleEl.scrollTop = consoleEl.scrollHeight;
       }
 
@@ -776,7 +816,125 @@ log_level  = minimal
       if (devBtn) devBtn.addEventListener('click', openDevConsole);
     })();
 
-    // VRP COMMAND CONSOLE (всплывающая)
+    // VRP DASHBOARD: node map + entropy + packets
+    (function() {
+      const nodeMapEl = document.getElementById("vrp-node-map");
+      const entropyEl = document.getElementById("vrp-entropy");
+      const packetsEl = document.getElementById("vrp-packets");
+
+      if (!nodeMapEl || !entropyEl || !packetsEl) return;
+
+      const nodes = [
+        { name: "Node A", state: "online" },
+        { name: "Node B", state: "rotating" },
+        { name: "Node C", state: "sealed" },
+        { name: "Node D", state: "offline" },
+        { name: "Node E", state: "probing" }
+      ];
+
+      let entropy = 72;
+      let direction = 1;
+      let packetPos = 3;
+
+      function renderNodeMap() {
+        let out = "[vrp] node‑map:\n";
+        nodes.forEach(n => {
+          let symbol = "●";
+          if (n.state === "offline") symbol = "○";
+          if (n.state === "rotating") symbol = "◐";
+          if (n.state === "sealed") symbol = "◆";
+          if (n.state === "probing") symbol = "◌";
+          out += `${n.name.padEnd(7)} ${symbol}  ${n.state}\n`;
+        });
+        nodeMapEl.textContent = out.trimEnd();
+      }
+
+      function renderEntropy() {
+        const barLength = 20;
+        const filled = Math.round((entropy / 100) * barLength);
+        const bar = "█".repeat(filled) + "░".repeat(barLength - filled);
+
+        let state = "stable";
+        if (entropy > 85) state = "storm";
+        else if (entropy < 65) state = "low";
+
+        entropyEl.textContent =
+`Entropy: ${bar} ${entropy}%
+State:   ${state}`;
+      }
+
+      function renderPackets() {
+        const width = 30;
+        let line = Array(width).fill("·");
+        if (packetPos >= 0 && packetPos < width) {
+          line[packetPos] = "●";
+        }
+        packetsEl.textContent =
+`[vrp] packets:
+|${line.join("")}|`;
+      }
+
+      function tick() {
+        const idx = Math.floor(Math.random() * nodes.length);
+        const states = ["online", "rotating", "sealed", "offline", "probing"];
+        nodes[idx].state = states[Math.floor(Math.random() * states.length)];
+
+        entropy += direction * (Math.random() * 2);
+        if (entropy > 92) direction = -1;
+        if (entropy < 64) direction = 1;
+        entropy = Math.round(entropy);
+
+        packetPos += 1;
+        if (packetPos >= 30) packetPos = 0;
+
+        renderNodeMap();
+        renderEntropy();
+        renderPackets();
+      }
+
+      renderNodeMap();
+      renderEntropy();
+      renderPackets();
+      setInterval(tick, 900);
+    })();
+
+    // VRP BEHAVIOR SKETCH
+    (function() {
+      const el = document.getElementById("vrp-behavior-diagram");
+      if (!el) return;
+
+      let pulseLevel = 3;
+      let rotationState = "idle";
+      let observers = 0;
+      const rotationStates = ["idle", "warming", "rotating", "cooldown"];
+
+      function render() {
+        const max = 10;
+        const filled = "█".repeat(pulseLevel);
+        const empty = "░".repeat(max - pulseLevel);
+        el.textContent =
+`[vrp] behavior:
+pulse:     ${filled}${empty}
+rotation:  ${rotationState}
+observers: ${observers}`;
+      }
+
+      function tick() {
+        const delta = Math.random() > 0.5 ? 1 : -1;
+        pulseLevel = Math.min(10, Math.max(1, pulseLevel + delta));
+
+        rotationState = rotationStates[Math.floor(Math.random() * rotationStates.length)];
+
+        observers = Math.floor(Math.random() * 22);
+
+        render();
+      }
+
+      render();
+      setInterval(tick, 1100);
+    })();
+
+    // VRP COMMAND CONSOLE (popup, extended)
     (function() {
       const wrapper = document.getElementById("vrp-console-wrapper");
       const openBtn = document.getElementById("open-vrp-console");
@@ -787,7 +945,7 @@ log_level  = minimal
       let currentMode = "normal";
 
       function print(text) {
-        output.textContent += "\\n" + text;
+        output.textContent += "\n" + text;
         output.scrollTop = output.scrollHeight;
       }
 
@@ -800,33 +958,39 @@ log_level  = minimal
           print("[vrp] rotation frequency increased. jumps intensified.");
         } else if (mode === "storm") {
           print("[vrp] mutation storm initiated. entropy rising.");
+        } else if (mode === "ritual") {
+          print("[vrp] ritual acknowledged. organism listening in silence.");
         }
       }
 
       const commands = {
         help: () => {
           print("[vrp] available commands:");
-          print("  help              show this list");
-          print("  rotate            rotate transport");
-          print("  pulse             show pulse status");
-          print("  observers         show observer count");
-          print("  status            show current mode and state");
-          print("  mode stealth      enter stealth mode");
-          print("  mode aggressive   enter aggressive mode");
-          print("  mode storm        enter mutation storm");
-          print("  what is vrp       short description of vrp");
-          print("  clear             clear console");
+          print("  help                show this list");
+          print("  rotate              rotate transport");
+          print("  pulse               show pulse status");
+          print("  observers           show observer count");
+          print("  status              show current mode and state");
+          print("  mode stealth        enter stealth mode");
+          print("  mode aggressive     enter aggressive mode");
+          print("  mode storm          enter mutation storm");
+          print("  ritual              enter ritual mode");
+          print("  awaken watcher      wake watcher entity");
+          print("  summon pulse        wake pulse engine");
+          print("  what is vrp         short description of vrp");
+          print("  ls                  list virtual vrp paths");
+          print("  clear               clear console");
         },
         rotate: () => {
           print("[vrp] rotation acknowledged...");
           print("[vrp] udp → tcp → udp.");
         },
         pulse: () => {
-          const entropy = currentMode === "storm" ? 91 : currentMode === "aggressive" ? 82 : 73;
+          const entropy = currentMode === "storm" ? 93 : currentMode === "aggressive" ? 84 : currentMode === "stealth" ? 68 : 73;
           print(`[vrp] pulse stable. entropy: ${entropy}%.`);
         },
         observers: () => {
-          const count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 19 : 14;
+          const count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 21 : 14;
           print(`[vrp] ${count} observers detected. pattern adapting.`);
         },
         status: () => {
@@ -836,9 +1000,23 @@ log_level  = minimal
         "mode stealth": () => setMode("stealth"),
         "mode aggressive": () => setMode("aggressive"),
         "mode storm": () => setMode("storm"),
+        ritual: () => setMode("ritual"),
+        "awaken watcher": () => {
+          print("[vrp] watcher awakened. perimeter expanded.");
+        },
+        "summon pulse": () => {
+          print("[vrp] pulse engine summoned. rotation window widened.");
+        },
         "what is vrp": () => {
           print("[vrp] VRP is a behavioral communication organism.");
           print("[vrp] it treats routing, encryption and transport as a living system.");
+        },
+        ls: () => {
+          print("[vrp] /core");
+          print("[vrp] /behavior");
+          print("[vrp] /transport");
+          print("[vrp] /mutations");
+          print("[vrp] /observers");
         },
         clear: () => {
           output.textContent = "[vrp] console cleared.";
@@ -846,19 +1024,22 @@ log_level  = minimal
       };
 
       function handleCommand(raw) {
-        const cmd = raw.trim().toLowerCase();
+        const cmd = raw.trim();
+        const lower = cmd.toLowerCase();
         if (!cmd) return;
 
-        print("vrp> " + raw);
+        print("vrp> " + cmd);
 
-        if (commands[cmd]) {
-          commands[cmd]();
-        } else if (cmd.startsWith("mode ")) {
-          print("[vrp] unknown mode. available: stealth, aggressive, storm.");
-        } else if (cmd.includes("ip")) {
+        if (commands[lower]) {
+          commands[lower]();
+        } else if (lower.startsWith("mode ")) {
+          print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
+        } else if (lower.includes("ip")) {
           print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
-        } else if (cmd.includes("hello") || cmd.includes("hi")) {
+        } else if (lower.includes("hello") || lower.includes("hi") || lower.includes("privet")) {
           print("[vrp] acknowledged. organism is listening.");
+        } else if (lower.startsWith("cat ") || lower.startsWith("open ")) {
+          print("[vrp] virtual file system only. nothing to read here yet.");
         } else {
           print("[vrp] unknown command. type \"help\" for list.");
         }
