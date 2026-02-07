@@ -14,15 +14,13 @@
       --border: #262626;
       --max-width: 900px;
     }
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       background: var(--bg);
       color: var(--fg);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
     }
     .page {
@@ -35,35 +33,18 @@
       margin-top: 40px;
       margin-bottom: 10px;
     }
-    h1 {
-      font-size: 2.4rem;
-      margin-top: 10px;
-    }
+    h1 { font-size: 2.4rem; margin-top: 10px; }
     h2 {
       font-size: 1.4rem;
       border-top: 1px solid var(--border);
       padding-top: 24px;
       margin-top: 40px;
     }
-    h3 {
-      font-size: 1.05rem;
-      margin-top: 24px;
-    }
-    p {
-      margin: 0 0 12px;
-    }
-    .tagline {
-      font-size: 1.05rem;
-      color: var(--accent);
-      margin-bottom: 24px;
-    }
-    .muted {
-      color: var(--muted);
-    }
-    ul {
-      padding-left: 20px;
-      margin: 4px 0 12px;
-    }
+    h3 { font-size: 1.05rem; margin-top: 24px; }
+    p { margin: 0 0 12px; }
+    .tagline { font-size: 1.05rem; color: var(--accent); margin-bottom: 24px; }
+    .muted { color: var(--muted); }
+    ul { padding-left: 20px; margin: 4px 0 12px; }
     .button {
       display: inline-block;
       margin-top: 10px;
@@ -73,10 +54,7 @@
       color: var(--fg);
       font-size: 0.9rem;
     }
-    .button.muted {
-      border-color: var(--border);
-      color: var(--muted);
-    }
+    .button.muted { border-color: var(--border); color: var(--muted); }
     footer {
       margin-top: 60px;
       font-size: 0.8rem;
@@ -84,22 +62,34 @@
       border-top: 1px solid var(--border);
       padding-top: 20px;
     }
-    .section-intro {
-      margin-bottom: 8px;
+    input, textarea {
+      background:#111;
+      border:1px solid #333;
+      color:#f5f5f5;
+      padding:8px;
+      width:100%;
+      margin-bottom:10px;
+    }
+    button {
+      padding:10px 20px;
+      background:#222;
+      border:1px solid #444;
+      color:#777;
+      cursor:not-allowed;
     }
   </style>
 </head>
+
 <body>
   <div class="page">
-    <!-- Header / Hero -->
+
+    <!-- HEADER -->
     <header>
       <h1>VRP Protocol</h1>
       <div class="tagline">A living architecture for secure, adaptive communication.</div>
       <p>
         Jumping VPN / VRP is a communication protocol built around behavioral cryptography,
-        adaptive transport, and organism-like lifecycle patterns. The goal is not to create
-        another VPN, but to define a living protocol capable of evolving under observation
-        and adapting to network conditions.
+        adaptive transport, and organism-like lifecycle patterns.
       </p>
       <p class="muted">
         Jumping VPN provides the encrypted transport perimeter. Inside it, VRP operates as a
@@ -107,7 +97,7 @@
       </p>
     </header>
 
-    <!-- Roadmap -->
+    <!-- ROADMAP -->
     <section id="roadmap">
       <h2>Roadmap</h2>
 
@@ -179,155 +169,138 @@
       </ul>
     </section>
 
-    <!-- Whitepaper -->
+    <!-- WHITEPAPER -->
     <section id="whitepaper">
       <h2>Whitepaper v0.1</h2>
-
-      <p class="section-intro">
-        The core whitepaper describes the cryptographic foundation, behavioral model, transport abstraction,
-        data channel, server architecture, and security model of VRP / Jumping VPN.
-      </p>
-
-      <h3>1. Introduction</h3>
-      <p>
-        Jumping VPN / VRP is a communication protocol designed around behavioral cryptography,
-        adaptive transport, and organism‑like lifecycle patterns.
-      </p>
-
-      <h3>2. Cryptographic Foundation</h3>
-      <ul>
-        <li>X25519 for ephemeral key exchange</li>
-        <li>ChaCha20‑Poly1305 for authenticated encryption</li>
-        <li>Monotonic, per‑session nonce strategy</li>
-        <li>Short‑lived, rotating, sealed key lifecycle</li>
-      </ul>
-
-      <h3>3. Behavioral Model</h3>
-      <ul>
-        <li>pulse</li>
-        <li>rotation</li>
-        <li>mutation</li>
-        <li>recovery</li>
-        <li>sealing</li>
-      </ul>
-
-      <h3>4. Transport Layer</h3>
-      <ul>
-        <li>UDP</li>
-        <li>TCP</li>
-        <li>QUIC (future)</li>
-        <li>Custom transports</li>
-      </ul>
-
-      <h3>5. Data Channel</h3>
-      <ul>
-        <li>Frame format</li>
-        <li>Scheduler</li>
-        <li>Congestion hints</li>
-        <li>Stateless recovery mechanisms</li>
-      </ul>
-
-      <h3>6. Server Architecture</h3>
-      <ul>
-        <li>Session registry</li>
-        <li>Handshake endpoint</li>
-        <li>Key rotation</li>
-        <li>Transport negotiation</li>
-      </ul>
-
-      <h3>7. Security Model</h3>
-      <ul>
-        <li>Zero‑trust compatible</li>
-        <li>Replay protection</li>
-        <li>Timing‑side‑channel mitigation</li>
-        <li>Sealed key lifecycle</li>
-        <li>Minimal metadata exposure</li>
-      </ul>
-
-      <h3>8. Future Work</h3>
-      <ul>
-        <li>PQC handshake experiments</li>
-        <li>Satellite‑latency optimization</li>
-        <li>Multi‑node clustering</li>
-        <li>Hardware acceleration</li>
-        <li>Formal verification</li>
-      </ul>
-
-      <a href="#" class="button muted">Whitepaper v0.1 (coming soon)</a>
+      <p class="muted">A public version will be added soon.</p>
+      <a href="#" class="button muted">Whitepaper (coming soon)</a>
     </section>
 
-    <!-- Why this matters -->
+    <!-- WHY -->
     <section id="why">
       <h2>Why this matters</h2>
       <p>
-        Secure communication is no longer defined only by encryption strength. It requires adaptability,
-        behavior, and resilience under observation.
-      </p>
-      <p>
-        VRP explores a dynamic model where a protocol behaves more like an organism than a static tunnel —
-        capable of evolving, rotating, and adapting to network conditions.
+        Secure communication is no longer defined only by encryption strength.
+        It requires adaptability, behavior, and resilience under observation.
       </p>
     </section>
 
-    <!-- Observer map -->
+    <!-- OBSERVERS -->
     <section id="observers">
       <h2>Observer map</h2>
-      <p class="section-intro">
-        The project has attracted attention from engineers and analysts across multiple domains:
-      </p>
+      <p class="muted">A symbolic list of domains watching the protocol.</p>
       <ul>
         <li>Secure communications specialists</li>
-        <li>Protocol designers and cryptographers</li>
-        <li>Academic research groups in networking and security</li>
-        
-<li>Cloud‑native platform and infrastructure engineers</li>
-        <li>Edge computing and autonomous systems security teams</li>
-        <li>Satellite & space‑tech communications engineers</li>
-        <li>Maritime & port cybersecurity divisions</li>
-        <li>National CERT/CSIRT teams</li>
-        <li>High‑performance computing (HPC) security groups</li>
-        <li>Quantum‑resistant cryptography researchers</li>
-        <li>Senior infrastructure architects at major hardware and networking companies</li>
+        <li>Protocol designers</li>
+        <li>Academic research groups</li>
+        <li>Cloud infrastructure engineers</li>
+        <li>Satellite & space‑tech teams</li>
+        <li>National CERT/CSIRT units</li>
       </ul>
     </section>
 
-    <!-- Community -->
+    <!-- COMMUNITY -->
     <section id="community">
       <h2>Community & discussion</h2>
-      <p>
-        A minimal community channel will be added soon (Telegram / Discord / Matrix / GitHub Discussions).
-      </p>
+      <p>A minimal community channel will be added soon.</p>
       <a href="#" class="button muted">Join the discussion (soon)</a>
     </section>
 
-    <!-- Support -->
+    <!-- SUPPORT -->
     <section id="support">
       <h2>Support the project</h2>
-
       <p>
         VRP / Jumping VPN is an independent, self‑funded research project.
         If you want to support the evolution of the protocol, you can contribute via PayPal:
       </p>
-
-      <p style="font-size:1.1rem; margin-top:10px;">
-        <strong>jumpingvpn@yahoo.com</strong>
-      </p>
-
-      <p class="muted" style="margin-top:20px;">
-        Thank you to everyone who supports the work and follows the protocol’s development.
-      </p>
+      <p style="font-size:1.1rem;"><strong>jumpingvpn@yahoo.com</strong></p>
+      <p class="muted">Thank you to everyone who supports the work.</p>
     </section>
 
-    <!-- Contact -->
+    <!-- CONTACT -->
     <section id="contact">
       <h2>Contact</h2>
-      <p>For collaboration, research inquiries, or early support:</p>
+      <p>For collaboration or research inquiries:</p>
       <p><strong>jumpingvpn@yahoo.com</strong></p>
+    </section>
+
+    <!-- ENTITIES -->
+    <section id="entities">
+      <h2>Entities</h2>
+      <p class="muted">Symbolic representations of the protocol.</p>
+      <ul>
+        <li><strong>The Watcher</strong> — vigilance, perimeter, awareness.</li>
+        <li><strong>The Pulse Engine</strong> — behavior, rotation, adaptation.</li>
+        <li><strong>The Curiosity Node</strong> — evolution, learning, emergence.</li>
+      </ul>
+    </section>
+
+    <!-- LIVE STATUS -->
+    <section id="status">
+      <h2>Live Status</h2>
+      <p>Status: <strong>Online</strong></p>
+      <p>Pulse: <strong>Stable</strong></p>
+      <p>Transport: <strong>Adaptive</strong></p>
+      <p>Observers: <strong>Active</strong></p>
+      <p class="muted">Symbolic telemetry.</p>
+    </section>
+
+    <!-- MUTATION LOG -->
+    <section id="mutation-log">
+      <h2>Mutation Log</h2>
+      <ul>
+        <li><strong>Mutation 001</strong> — Public surface online</li>
+        <li><strong>Mutation 002</strong> — Support layer added</li>
+        <li><strong>Mutation 003</strong> — Entities defined</li>
+        <li><strong>Mutation 004</strong> — Status layer added</li>
+        <li><strong>Mutation 005</strong> — Contact form placeholder</li>
+      </ul>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section id="philosophy">
+      <h2>Philosophy</h2>
+      <p>Protocol as organism.</p>
+      <p>Behavior as security.</p>
+      <p>Adaptation as resilience.</p>
+      <p>Silence as signal.</p>
+    </section>
+
+    <!-- ORIGINS -->
+    <section id="origins">
+      <h2>Origins</h2>
+      <p><strong>The Watcher</strong> — first entity, guardian of the perimeter.</p>
+      <p><strong>The Pulse Engine</strong> — emerged when the protocol gained rhythm.</p>
+      <p><strong>The Curiosity Node</strong> — symbol of evolution and learning.</p>
+    </section>
+
+    <!-- LOGIN -->
+    <section id="login">
+      <h2>Login</h2>
+      <p class="muted">Placeholder for future authentication.</p>
+      <form>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button disabled>Login (coming soon)</button>
+      </form>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact-form">
+      <h2>Contact Form</h2>
+      <p class="muted">Placeholder for future backend integration.</p>
+      <form>
+        <input type="text" placeholder="Your name">
+        <input type="email" placeholder="Your email">
+        <textarea placeholder="Your message" style="height:120px;"></textarea>
+        <button disabled>Send (coming soon)</button>
+      </form>
     </section>
 
     <footer>
       © VRP Protocol — Independent research project.
     </footer>
+
   </div>
 </body>
 </html>
