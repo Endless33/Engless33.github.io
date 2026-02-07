@@ -399,7 +399,6 @@
       color:var(--muted);
     }
 
-    / crypto support /
     .crypto-box {
       border: 1px solid var(--border);
       background: linear-gradient(135deg, #0a0a0a, #111);
@@ -421,7 +420,6 @@
       text-shadow: 0 0 10px rgba(79,209,197,0.8);
     }
 
-    / floating buttons /
     #floating-buttons {
       position: fixed;
       bottom: 20px;
@@ -452,7 +450,6 @@
       transform: translateY(-1px);
     }
 
-    / generic modal /
     .modal {
       position: fixed;
       inset: 0;
@@ -502,7 +499,6 @@
       to   { transform: scale(1); opacity: 1; }
     }
 
-    / HEARTBEAT LINE /
     #vrp-heartbeat {
       position: fixed;
       bottom: 0;
@@ -837,7 +833,6 @@ observers: 0
     </footer>
   </div>
 
-  <!-- FLOATING BUTTONS -->
   <div id="floating-buttons">
     <button class="float-btn" id="btn-contract">Contract</button>
     <button class="float-btn" id="btn-author">Author</button>
@@ -845,7 +840,6 @@ observers: 0
     <button class="float-btn" id="btn-thanks">Thanks</button>
   </div>
 
-  <!-- MODALS -->
   <div class="modal" id="thanks-modal">
     <div class="modal-box">
       <h3>Gratitude Log</h3>
@@ -934,7 +928,6 @@ observers: 0
   <div id="vrp-heartbeat"></div>
 
   <script>
-    // ===== VRP DEMO ENGINE =====
     (function() {
       var consoleEl = document.getElementById("console");
       var behaviorEl = document.getElementById("behavior-status");
@@ -1013,7 +1006,6 @@ observers: 0
       startBtn.addEventListener("click", startDemo);
     })();
 
-    // ===== VRP GEO SIMULATION BUTTONS =====
     (function() {
       var consoleEl = document.getElementById("console");
       if (!consoleEl) return;
@@ -1043,7 +1035,6 @@ observers: 0
       });
     })();
 
-    // ===== VRP DASHBOARD (NODES / ENTROPY / PACKETS) =====
     (function() {
       var nodeMapEl = document.getElementById("vrp-node-map");
       var entropyEl = document.getElementById("vrp-entropy");
@@ -1128,7 +1119,6 @@ observers: 0
       setInterval(tick, 700);
     })();
 
-    // ===== VRP BEHAVIOR DIAGRAM =====
     (function() {
       var el = document.getElementById("vrp-behavior-diagram");
       if (!el) return;
@@ -1166,56 +1156,48 @@ observers: 0
       setInterval(tick, 800);
     })();
 
-    // ===== FLOATING BUTTONS / MODALS =====
     (function() {
+      function open(id) {
+        var m = document.getElementById(id);
+        if (m) m.style.display = "flex";
+      }
+      function close(id) {
+        var m = document.getElementById(id);
+        if (m) m.style.display = "none";
+      }
+
       var btnContract = document.getElementById("btn-contract");
       var btnAuthor = document.getElementById("btn-author");
       var btnProtocol = document.getElementById("btn-protocol");
       var btnThanks = document.getElementById("btn-thanks");
 
-      var contractModal = document.getElementById("contract-modal");
-      var authorModal = document.getElementById("author-modal");
-      var protocolModal = document.getElementById("protocol-modal");
-      var thanksModal = document.getElementById("thanks-modal");
-
-      function openModal(modal) {
-        if (modal) modal.style.display = "flex";
-      }
-
-      function closeModal(modal) {
-        if (modal) modal.style.display = "none";
-      }
-
-      if (btnContract) btnContract.addEventListener("click", function() { openModal(contractModal); });
-      if (btnAuthor) btnAuthor.addEventListener("click", function() { openModal(authorModal); });
-      if (btnProtocol) btnProtocol.addEventListener("click", function() { openModal(protocolModal); });
-      if (btnThanks) btnThanks.addEventListener("click", function() { openModal(thanksModal); });
+      if (btnContract) btnContract.onclick = function() { open("contract-modal"); };
+      if (btnAuthor) btnAuthor.onclick = function() { open("author-modal"); };
+      if (btnProtocol) btnProtocol.onclick = function() { open("protocol-modal"); };
+      if (btnThanks) btnThanks.onclick = function() { open("thanks-modal"); };
 
       var closeButtons = document.querySelectorAll(".modal-close");
       for (var i = 0; i < closeButtons.length; i++) {
         closeButtons[i].addEventListener("click", function() {
           var id = this.getAttribute("data-close");
-          var m = document.getElementById(id);
-          closeModal(m);
+          close(id);
         });
       }
 
-      function attachOverlayClose(modal) {
+      function attachOverlayClose(modalId) {
+        var modal = document.getElementById(modalId);
         if (!modal) return;
         modal.addEventListener("click", function(e) {
-          if (e.target === modal) {
-            closeModal(modal);
-          }
+          if (e.target === modal) close(modalId);
         });
       }
 
-      attachOverlayClose(contractModal);
-      attachOverlayClose(authorModal);
-      attachOverlayClose(protocolModal);
-      attachOverlayClose(thanksModal);
+      attachOverlayClose("contract-modal");
+      attachOverlayClose("author-modal");
+      attachOverlayClose("protocol-modal");
+      attachOverlayClose("thanks-modal");
     })();
 
-    // ===== VRP AUTHOR CMATRIX =====
     (function() {
       var box = document.getElementById("author-cmatrix");
       if (!box) return;
