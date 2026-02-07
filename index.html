@@ -687,6 +687,7 @@ log_level  = minimal
   </div>
 
   <script>
+    // MAIN DEMO CONSOLE (справа в hero)
     (function() {
       const consoleEl = document.getElementById('console');
       const behaviorEl = document.getElementById('behavior-status');
@@ -775,6 +776,7 @@ log_level  = minimal
       if (devBtn) devBtn.addEventListener('click', openDevConsole);
     })();
 
+    // VRP COMMAND CONSOLE (всплывающая)
     (function() {
       const wrapper = document.getElementById("vrp-console-wrapper");
       const openBtn = document.getElementById("open-vrp-console");
@@ -782,9 +784,23 @@ log_level  = minimal
       const output = document.getElementById("vrp-console-output");
       const input = document.getElementById("vrp-console-input");
 
+      let currentMode = "normal";
+
       function print(text) {
         output.textContent += "\\n" + text;
         output.scrollTop = output.scrollHeight;
+      }
+
+      function setMode(mode) {
+        currentMode = mode;
+        print(`[vrp] mode set to ${mode}.`);
+        if (mode === "stealth") {
+          print("[vrp] pulse reduced. visibility minimized.");
+        } else if (mode === "aggressive") {
+          print("[vrp] rotation frequency increased. jumps intensified.");
+        } else if (mode === "storm") {
+          print("[vrp] mutation storm initiated. entropy rising.");
+        }
       }
 
       const commands = {
@@ -794,21 +810,59 @@ log_level  = minimal
           print("  rotate            rotate transport");
           print("  pulse             show pulse status");
           print("  observers         show observer count");
+          print("  status            show current mode and state");
+          print("  mode stealth      enter stealth mode");
+          print("  mode aggressive   enter aggressive mode");
+          print("  mode storm        enter mutation storm");
+          print("  what is vrp       short description of vrp");
           print("  clear             clear console");
         },
         rotate: () => {
-          print("[vrp] rotation acknowledged. udp → tcp → udp.");
+          print("[vrp] rotation acknowledged...");
+          print("[vrp] udp → tcp → udp.");
         },
         pulse: () => {
-          print("[vrp] pulse stable. entropy: 72%");
+          const entropy = currentMode === "storm" ? 91 : currentMode === "aggressive" ? 82 : 73;
+          print(`[vrp] pulse stable. entropy: ${entropy}%.`);
         },
         observers: () => {
-          print("[vrp] 14 observers detected. pattern adapting.");
+          const count = currentMode === "stealth" ? 3 : currentMode === "storm" ? 19 : 14;
+          print(`[vrp] ${count} observers detected. pattern adapting.`);
+        },
+        status: () => {
+          print(`[vrp] mode: ${currentMode}.`);
+          print("[vrp] core: online. behavior: stable under observation.");
+        },
+        "mode stealth": () => setMode("stealth"),
+        "mode aggressive": () => setMode("aggressive"),
+        "mode storm": () => setMode("storm"),
+        "what is vrp": () => {
+          print("[vrp] VRP is a behavioral communication organism.");
+          print("[vrp] it treats routing, encryption and transport as a living system.");
         },
         clear: () => {
           output.textContent = "[vrp] console cleared.";
         }
       };
+
+      function handleCommand(raw) {
+        const cmd = raw.trim().toLowerCase();
+        if (!cmd) return;
+
+        print("vrp> " + raw);
+
+        if (commands[cmd]) {
+          commands[cmd]();
+        } else if (cmd.startsWith("mode ")) {
+          print("[vrp] unknown mode. available: stealth, aggressive, storm.");
+        } else if (cmd.includes("ip")) {
+          print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
+        } else if (cmd.includes("hello") || cmd.includes("hi")) {
+          print("[vrp] acknowledged. organism is listening.");
+        } else {
+          print("[vrp] unknown command. type \"help\" for list.");
+        }
+      }
 
       openBtn.addEventListener("click", () => {
         wrapper.style.display = "block";
@@ -821,17 +875,9 @@ log_level  = minimal
 
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
-          const cmd = input.value.trim();
-          if (!cmd) return;
-          print("vrp> " + cmd);
-
-          if (commands[cmd]) {
-            commands[cmd]();
-          } else {
-            print("[vrp] unknown command.");
-          }
-
+          const value = input.value;
           input.value = "";
+          handleCommand(value);
         }
       });
     })();
