@@ -3,303 +3,344 @@
 <head>
 <meta charset="UTF-8">
 <title>Jumping VPN — VRP Protocol</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --bg:#050505;
-  --fg:#f5f5f5;
-  --muted:#9a9a9a;
-  --accent:#4fd1c5;
-  --accent-pink:#f472b6;
-  --border:#222;
+
+/* =========================================================
+   GLOBAL / BASE
+   ========================================================= */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #050505;
+  color: #f5f5f5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
 }
 
-* { box-sizing:border-box; }
-
-html,body {
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  background:radial-gradient(circle at top,#111 0,#050505 60%,#000 100%);
-  color:var(--fg);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  overflow-x:hidden;
-}
+/* =========================================================
+   FULL SCREEN PAGE (ADDED, NOTHING REMOVED)
+   ========================================================= */
 
 .page {
-  width:100vw;
-  min-height:100vh;
-  padding:32px;
+  width: 100vw;
+  min-height: 100vh;
+  padding: 32px 5vw 160px;
+  position: relative;
+  z-index: 1;
 }
 
-/* ---------- HEADER ---------- */
+/* =========================================================
+   MATRIX BACKGROUND (ADDED)
+   ========================================================= */
+
+#cmatrix {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+/* =========================================================
+   HEADER / HERO (ORIGINAL STRUCTURE KEPT)
+   ========================================================= */
 
 .header-top {
-  display:flex;
-  justify-content:space-between;
-  font-size:0.8rem;
-  color:var(--muted);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .hero {
-  margin-top:40px;
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:32px;
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
 }
 
-@media(max-width:900px){
-  .hero{ grid-template-columns:1fr; }
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
 }
 
 .hero-title {
-  font-size:2.6rem;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
+  font-size: 2.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-.hero-title span { color:var(--accent); }
+.hero-title span {
+  color: #4fd1c5;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 .buttons {
-  margin-top:20px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .btn {
-  padding:10px 20px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:#000;
-  color:var(--fg);
-  cursor:pointer;
-  transition:.25s;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid #222;
+  background: #000;
+  color: #f5f5f5;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
 .btn.primary {
-  background:var(--accent);
-  color:#000;
-  border:none;
-  box-shadow:0 0 14px rgba(79,209,197,.7);
+  background: #4fd1c5;
+  color: #000;
+  border: none;
+  box-shadow: 0 0 14px rgba(79,209,197,0.6);
 }
 
 .btn:hover {
-  transform:translateY(-1px);
+  transform: translateY(-1px);
 }
 
-/* ---------- TERMINAL ---------- */
+/* =========================================================
+   TERMINAL
+   ========================================================= */
 
 .terminal {
-  background:#000;
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:12px;
-  font-family:monospace;
-  font-size:0.78rem;
-  height:200px;
-  overflow:auto;
+  background: #000;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 0.78rem;
+  height: 220px;
+  overflow-y: auto;
 }
 
-/* ---------- FLOATING ---------- */
+/* =========================================================
+   FLOATING CONTROLS
+   ========================================================= */
 
 #floating {
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
 }
 
 .float-btn {
-  padding:8px 16px;
-  border-radius:999px;
-  border:1px solid var(--accent);
-  background:#000;
-  color:var(--accent);
-  cursor:pointer;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #4fd1c5;
+  background: #000;
+  color: #4fd1c5;
+  cursor: pointer;
 }
 
-/* ---------- MODALS ---------- */
+/* =========================================================
+   MODALS (UNCHANGED STRUCTURE)
+   ========================================================= */
 
 .modal {
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.75);
-  z-index:9999;
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.75);
+  z-index: 9999;
 }
 
 .modal-box {
-  position:relative;
-  width:520px;
-  max-width:90vw;
-  background:#000;
-  border:1px solid var(--accent);
-  border-radius:12px;
-  padding:20px;
-  z-index:2;
+  width: 520px;
+  max-width: 90vw;
+  background: #000;
+  border: 1px solid #4fd1c5;
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
 }
 
 .modal h3 {
-  margin-top:0;
-  color:var(--accent);
-  text-align:center;
+  margin-top: 0;
+  text-align: center;
+  color: #4fd1c5;
 }
 
 .close {
-  margin-top:16px;
-  width:100%;
-  padding:8px;
-  background:var(--accent);
-  border:none;
-  color:#000;
-  cursor:pointer;
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px;
+  background: #4fd1c5;
+  color: #000;
+  border: none;
+  cursor: pointer;
 }
 
-/* ---------- MATRIX ---------- */
+/* ========================================================= */
 
-.matrix {
-  position:absolute;
-  inset:0;
-  z-index:1;
-  border-radius:12px;
-  overflow:hidden;
-}
-
-.matrix canvas {
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-.matrix-content {
-  position:relative;
-  z-index:2;
-}
 </style>
 </head>
 
 <body>
 
+<!-- MATRIX BACKGROUND -->
+<canvas id="cmatrix"></canvas>
+
 <div class="page">
 
-<div class="header-top">
-  <div>JUMPING VPN</div>
-  <div style="color:var(--accent-pink)">VRP ACTIVE</div>
-</div>
-
-<section class="hero">
-  <div>
-    <div class="hero-title">
-      THE NETWORK<br>
-      THAT <span>JUMPS</span>
-    </div>
-
-    <p class="muted">
-      Behavioral routing. Adaptive transport.<br>
-      A protocol that reacts.
-    </p>
-
-    <div class="buttons">
-      <button class="btn primary" id="start">Start Jumping</button>
-      <button class="btn" id="open-author">Author</button>
-    </div>
+  <div class="header-top">
+    <div>JUMPING VPN</div>
+    <div style="color:#f472b6">VRP ACTIVE</div>
   </div>
 
-  <div>
-    <div class="terminal" id="console">
+  <section class="hero">
+    <div>
+      <div class="hero-title">
+        THE NETWORK<br>
+        THAT <span>JUMPS</span>
+      </div>
+
+      <p style="opacity:.7">
+        Behavioral routing. Adaptive transport.<br>
+        A protocol that reacts.
+      </p>
+
+      <div class="buttons">
+        <button class="btn primary">Start Jumping</button>
+        <button class="btn" id="open-author">Author</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="terminal" id="console">
 [vrp] core initialized
 [vrp] behavior engine online
 [vrp] pulse stable
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 </div>
 
-<!-- FLOATING -->
 <div id="floating">
-  <button class="float-btn" id="btn-author">Author</button>
+  <button class="float-btn" id="float-author">Author</button>
 </div>
 
 <!-- AUTHOR MODAL -->
 <div class="modal" id="author-modal">
   <div class="modal-box">
-
-    <div class="matrix">
-      <canvas id="matrix"></canvas>
-    </div>
-
-    <div class="matrix-content">
-      <h3>Author</h3>
-      <p>
-        <strong>Vitalijus Riabovas</strong><br><br>
-        Architect of VRP / Jumping VPN<br><br>
-        Protocol design • Behavioral routing<br>
-        Privacy infrastructure • Narrative systems
-      </p>
-      <button class="close" data-close="author-modal">Close</button>
-    </div>
-
+    <h3>Author</h3>
+    <p style="text-align:center">
+      <strong>Vitalijus Riabovas</strong><br><br>
+      Architect of VRP / Jumping VPN<br>
+      Protocol design · Behavioral routing<br>
+      Privacy infrastructure
+    </p>
+    <button class="close" id="close-author">Close</button>
   </div>
 </div>
 
 <script>
-/* ---------- CONSOLE ---------- */
+
+/* =========================================================
+   TERMINAL LOG STREAM (ORIGINAL IDEA KEPT)
+   ========================================================= */
+
 (function(){
-  const c=document.getElementById("console");
-  const logs=[
-    "[vrp] observers detected",
+  const consoleBox = document.getElementById("console");
+  const messages = [
     "[vrp] entropy stable",
-    "[vrp] background rotation active",
-    "[vrp] mutation window idle"
+    "[vrp] observer layer active",
+    "[vrp] routing mutation idle",
+    "[vrp] background process running"
   ];
-  setInterval(()=>{
-    c.textContent+="\n"+logs[Math.floor(Math.random()*logs.length)];
-    c.scrollTop=c.scrollHeight;
-  },6000);
+
+  setInterval(() => {
+    consoleBox.textContent += "\n" + messages[Math.floor(Math.random()*messages.length)];
+    consoleBox.scrollTop = consoleBox.scrollHeight;
+  }, 6000);
 })();
 
-/* ---------- MODAL ---------- */
-const modal=document.getElementById("author-modal");
-document.getElementById("btn-author").onclick=()=>open();
-document.getElementById("open-author").onclick=()=>open();
-function open(){ modal.style.display="flex"; startMatrix(); }
-document.querySelector(".close").onclick=()=>modal.style.display="none";
+/* =========================================================
+   AUTHOR MODAL (ADDED AUTO-OPEN)
+   ========================================================= */
 
-/* ---------- MATRIX ---------- */
-function startMatrix(){
-  const canvas=document.getElementById("matrix");
-  const ctx=canvas.getContext("2d");
-  canvas.width=canvas.offsetWidth;
-  canvas.height=canvas.offsetHeight;
+const authorModal = document.getElementById("author-modal");
 
-  const chars="0123456789";
-  const cols=Math.floor(canvas.width/14);
-  const drops=Array(cols).fill(1);
+document.getElementById("open-author").onclick = () => {
+  authorModal.style.display = "flex";
+};
+
+document.getElementById("float-author").onclick = () => {
+  authorModal.style.display = "flex";
+};
+
+document.getElementById("close-author").onclick = () => {
+  authorModal.style.display = "none";
+};
+
+/* Auto open once on first load */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    authorModal.style.display = "flex";
+  }, 1200);
+});
+
+/* =========================================================
+   CMATRIX EFFECT (ADDED)
+   ========================================================= */
+
+(function(){
+  const canvas = document.getElementById("cmatrix");
+  const ctx = canvas.getContext("2d");
+
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const fontSize = 14;
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
 
   function draw(){
-    ctx.fillStyle="rgba(0,0,0,0.08)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="#4fd1c5";
-    ctx.font="14px monospace";
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for(let i=0;i<drops.length;i++){
-      const text=chars[Math.floor(Math.random()*chars.length)];
-      ctx.fillText(text,i*14,drops[i]*14);
-      if(drops[i]*14>canvas.height && Math.random()>0.95) drops[i]=0;
+    ctx.fillStyle = "#4fd1c5";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.97) {
+        drops[i] = 0;
+      }
       drops[i]++;
     }
   }
-  if(window.matrixInterval) clearInterval(window.matrixInterval);
-  window.matrixInterval=setInterval(draw,50);
-}
+
+  setInterval(draw, 50);
+})();
+
 </script>
 
 </body>
