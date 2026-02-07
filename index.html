@@ -598,19 +598,16 @@
 <body>
   <div class="page">
 
-    <!-- TOP BAR -->
     <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
       <div><span class="hero-highlight">JUMPING VPN</span></div>
       <div><span class="hero-highlight-alt">VRP PROTOCOL ACTIVE</span></div>
     </div>
 
-    <!-- HERO -->
     <header>
       <div class="tagline">INDEPENDENT PROTOCOL ORGANISM</div>
       <div class="subtagline">Stop using static VPNs. Let the <span class="hero-highlight">network jump</span>.</div>
 
       <div class="hero-grid">
-        <!-- LEFT -->
         <div>
           <div class="hero-left-title">
             <span>THE <span class="hero-highlight">NETWORK</span></span>
@@ -636,7 +633,6 @@
           </div>
         </div>
 
-        <!-- RIGHT -->
         <div class="hero-right" id="dev-console-panel">
           <div class="hero-right-header">
             <div class="hero-right-title">VRP DEV CONSOLE // AI LINKED</div>
@@ -660,7 +656,6 @@
         </div>
       </div>
 
-      <!-- FEATURES -->
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-title"><span>Mutating</span> Encryption</div>
@@ -690,7 +685,6 @@
       </div>
     </header>
 
-    <!-- DEMO DIAGRAM -->
     <section id="demo">
       <h2>VRP demo surface</h2>
       <p>
@@ -733,13 +727,11 @@ log_level  = minimal
       </div>
     </section>
 
-    <!-- VRP DASHBOARD -->
     <section id="vrp-dashboard">
       <h2>VRP live dashboard</h2>
       <p class="muted">Local simulation of nodes, entropy and packet flow. No real traffic.</p>
 
       <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:14px;">
-        <!-- NODE MAP -->
         <div class="feature-card">
           <div class="feature-title"><span>Node</span> Map</div>
           <div class="diagram" id="vrp-node-map">
@@ -747,7 +739,6 @@ log_level  = minimal
           </div>
         </div>
 
-        <!-- ENTROPY METER -->
         <div class="feature-card">
           <div class="feature-title"><span>Entropy</span> Meter</div>
           <div class="diagram" id="vrp-entropy">
@@ -756,7 +747,6 @@ State:   stable
           </div>
         </div>
 
-        <!-- PACKET VISUALIZER -->
         <div class="feature-card">
           <div class="feature-title"><span>Packet</span> Visualizer</div>
           <div class="diagram" id="vrp-packets">
@@ -767,7 +757,6 @@ State:   stable
       </div>
     </section>
 
-    <!-- BEHAVIOR PANEL -->
     <section id="vrp-behavior">
       <h2>Behavior engine sketch</h2>
       <p class="muted">Symbolic view of pulse, rotation and observers.</p>
@@ -780,7 +769,6 @@ observers: 0
       </div>
     </section>
 
-    <!-- ROADMAP -->
     <section id="roadmap">
       <h2>Roadmap</h2>
 
@@ -852,7 +840,6 @@ observers: 0
       </ul>
     </section>
 
-    <!-- ENTITIES -->
     <section id="entities">
       <h2>Entities</h2>
       <p class="muted">Symbolic representations of the protocol’s internal logic.</p>
@@ -866,7 +853,6 @@ observers: 0
       </p>
     </section>
 
-    <!-- OBSERVERS -->
     <section id="observers">
       <h2>Observer map</h2>
       <p class="muted">A symbolic list of domains watching the protocol.</p>
@@ -880,7 +866,6 @@ observers: 0
       </ul>
     </section>
 
-    <!-- SUPPORT (PayPal) -->
     <section id="support">
       <h2>Support the project</h2>
       <p>
@@ -891,9 +876,8 @@ observers: 0
       <p class="muted">Thank you to everyone who supports the work and follows the protocol’s development.</p>
     </section>
 
-    <!-- CRYPTO SUPPORT -->
     <section id="support-crypto">
-      <h2>🛡 Support the Protocol</h2>
+      <h2>Support the Protocol (Crypto)</h2>
       <p class="muted">
         Jumping VPN and VRP are self-funded experimental projects.<br>
         If you want to support the movement, you may contribute any amount via crypto.
@@ -911,7 +895,6 @@ observers: 0
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact">
       <h2>Contact</h2>
       <p>For collaboration, research inquiries, or early support:</p>
@@ -923,7 +906,6 @@ observers: 0
     </footer>
   </div>
 
-  <!-- VRP POPUP COMMAND CONSOLE -->
   <div id="vrp-console-wrapper">
     <div id="vrp-console-overlay"></div>
 
@@ -945,7 +927,6 @@ observers: 0
     </div>
   </div>
 
-  <!-- FLOATING BUTTONS -->
   <div id="floating-buttons">
     <button class="float-btn" id="btn-contract">Contract</button>
     <button class="float-btn" id="btn-author">Author</button>
@@ -953,7 +934,6 @@ observers: 0
     <button class="float-btn" id="btn-thanks">Thanks</button>
   </div>
 
-  <!-- THANKS MODAL -->
   <div class="modal" id="thanks-modal">
     <div class="modal-box">
       <h3>Gratitude Log</h3>
@@ -970,7 +950,6 @@ observers: 0
     </div>
   </div>
 
-  <!-- CONTRACT MODAL -->
   <div class="modal" id="contract-modal">
     <div class="modal-box">
       <h3>Contract</h3>
@@ -988,7 +967,6 @@ observers: 0
     </div>
   </div>
 
-  <!-- AUTHOR MODAL -->
   <div class="modal" id="author-modal">
     <div class="modal-box">
       <h3>Author</h3>
@@ -1010,7 +988,6 @@ observers: 0
     </div>
   </div>
 
-  <!-- PROTOCOL MODAL -->
   <div class="modal" id="protocol-modal">
     <div class="modal-box">
       <h3>What is VRP?</h3>
@@ -1035,11 +1012,9 @@ observers: 0
     </div>
   </div>
 
-  <!-- HEARTBEAT LINE -->
   <div id="vrp-heartbeat"></div>
 
   <script>
-    // MAIN DEMO CONSOLE
     (function() {
       var consoleEl = document.getElementById("console");
       var behaviorEl = document.getElementById("behavior-status");
@@ -1126,7 +1101,6 @@ observers: 0
       devBtn.addEventListener("click", openDevConsole);
     })();
 
-    // VRP DASHBOARD
     (function() {
       var nodeMapEl = document.getElementById("vrp-node-map");
       var entropyEl = document.getElementById("vrp-entropy");
@@ -1211,7 +1185,6 @@ observers: 0
       setInterval(tick, 700);
     })();
 
-    // VRP BEHAVIOR SKETCH
     (function() {
       var el = document.getElementById("vrp-behavior-diagram");
       if (!el) return;
@@ -1249,7 +1222,6 @@ observers: 0
       setInterval(tick, 800);
     })();
 
-    // VRP COMMAND CONSOLE
     (function() {
       var wrapper = document.getElementById("vrp-console-wrapper");
       var openBtn = document.getElementById("open-vrp-console");
@@ -1353,7 +1325,7 @@ observers: 0
           print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
         } else if (lower.indexOf("ip") !== -1) {
           print("[vrp] ip rotation is handled by the organism. this surface is a demo only.");
-        } else if (lower.indexOf("hello") !== -1 || lower.indexOf("hi") !== -1 || lower.indexOf("privet") !== -1) {
+        } else if (lower.indexOf("hello") !== -1 || lower.indexOf("hi") !== -1) {
           print("[vrp] acknowledged. organism is listening.");
         } else if (lower.indexOf("cat ") === 0 || lower.indexOf("open ") === 0) {
           print("[vrp] virtual file system only. nothing to read here yet.");
@@ -1380,7 +1352,6 @@ observers: 0
       });
     })();
 
-    // FLOATING BUTTONS + MODALS
     (function() {
       var btnContract = document.getElementById("btn-contract");
       var btnAuthor = document.getElementById("btn-author");
@@ -1429,7 +1400,6 @@ observers: 0
       attachOverlayClose(thanksModal);
     })();
 
-    // VRP BREATHING + ENTROPY WHISPER + SHADOW MESSAGES
     (function() {
       var lastMove = Date.now();
       var whisperCooldown = false;
@@ -1466,257 +1436,237 @@ observers: 0
 
       }, 15000);
     })();
+
+    // ===== VRP DEEP OBSERVER ENGINE =====
+    (function() {
+      var lastMoveTime = Date.now();
+      var lastScrollTime = Date.now();
+      var lastInteractionTime = Date.now();
+      var deepObserverScore = 0;
+      var hasShownDeepObserver = false;
+      var hasShownReturn = false;
+
+      var consoleEl = document.getElementById("console");
+      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+      function logToConsole(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      function boostBehaviorPulse() {
+        if (!behaviorDiagram) return;
+        behaviorDiagram.textContent += "\n[vrp] deep observer pattern detected. pulse modulation active.";
+      }
+
+      try {
+        var visits = parseInt(localStorage.getItem("vrp_visits") || "0", 10);
+        visits++;
+        localStorage.setItem("vrp_visits", String(visits));
+
+        if (visits > 1 && !hasShownReturn) {
+          hasShownReturn = true;
+          setTimeout(function() {
+            logToConsole("[vrp] returning observer detected. memory updated.");
+          }, 4000);
+        }
+      } catch (e) {}
+
+      document.addEventListener("mousemove", function() {
+        lastMoveTime = Date.now();
+        lastInteractionTime = Date.now();
+      });
+
+      document.addEventListener("scroll", function() {
+        lastScrollTime = Date.now();
+        lastInteractionTime = Date.now();
+      });
+
+      document.addEventListener("click", function() {
+        lastInteractionTime = Date.now();
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        var idleSince = now - lastInteractionTime;
+        var noScrollSince = now - lastScrollTime;
+
+        if (idleSince > 6000 && noScrollSince > 6000) {
+          deepObserverScore += 2;
+        } else if (idleSince > 3000) {
+          deepObserverScore += 1;
+        } else {
+          deepObserverScore = Math.max(0, deepObserverScore - 1);
+        }
+
+        if (deepObserverScore >= 8 && !hasShownDeepObserver) {
+          hasShownDeepObserver = true;
+          logToConsole("[vrp] deep observer identified. adjusting perimeter.");
+          boostBehaviorPulse();
+        }
+
+      }, 2000);
+    })();
+
+    // ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
+    (function() {
+      var body = document.body;
+      var consoleEl = document.getElementById("console");
+
+      function log(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      var lastX = null;
+      var lastY = null;
+      var stillSince = Date.now();
+      var watcherTriggered = false;
+
+      document.addEventListener("mousemove", function(e) {
+        if (lastX === null && lastY === null) {
+          lastX = e.clientX;
+          lastY = e.clientY;
+          stillSince = Date.now();
+          return;
+        }
+
+        var dx = Math.abs(e.clientX - lastX);
+        var dy = Math.abs(e.clientY - lastY);
+
+        if (dx < 2 && dy < 2) {
+        } else {
+          lastX = e.clientX;
+          lastY = e.clientY;
+          stillSince = Date.now();
+          watcherTriggered = false;
+          body.style.boxShadow = "none";
+        }
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        if (!watcherTriggered && now - stillSince > 4000) {
+          watcherTriggered = true;
+          body.style.boxShadow = "0 0 40px rgba(79,209,197,0.6)";
+          setTimeout(function() {
+            body.style.boxShadow = "none";
+          }, 1200);
+          log("[vrp] watcher: presence detected. adjusting perimeter.");
+        }
+      }, 800);
+
+      var lastMove = Date.now();
+      document.addEventListener("mousemove", function() {
+        lastMove = Date.now();
+        body.style.cursor = "default";
+      });
+
+      setInterval(function() {
+        var now = Date.now();
+        if (now - lastMove > 12000) {
+          body.style.cursor = "none";
+          body.style.transform = "translate(0,0)";
+          setTimeout(function() { body.style.transform = "translate(1px,0)"; }, 80);
+          setTimeout(function() { body.style.transform = "translate(-1px,0)"; }, 160);
+          setTimeout(function() { body.style.transform = "translate(0,0)"; }, 240);
+          setTimeout(function() { body.style.cursor = "default"; }, 260);
+
+          log("[vrp] idle pattern detected. probing user presence...");
+          lastMove = Date.now();
+        }
+      }, 2000);
+    })();
+
+    // ===== VRP VITALIJUS MODE (SECRET COMMAND) =====
+    (function() {
+      var output = document.getElementById("vrp-console-output");
+      var input = document.getElementById("vrp-console-input");
+      if (!output || !input) return;
+
+      var vitalijusMode = false;
+
+      function print(msg) {
+        output.textContent += "\n" + msg;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          var value = (input.value || "").trim().toLowerCase();
+          if (value === "vitalijus") {
+            setTimeout(function() {
+              vitalijusMode = true;
+              print("[vrp] architect detected.");
+              print("[vrp] elevating privileges. organism pulse increased.");
+              document.body.style.animationDuration = "4s";
+            }, 50);
+          }
+        }
+      });
+
+      setInterval(function() {
+        if (!vitalijusMode) return;
+        var msgs = [
+          "[vrp] architect presence confirmed.",
+          "[vrp] mutation window widened.",
+          "[vrp] internal logs exposed to architect.",
+          "[vrp] observer lattice reconfigured."
+        ];
+        print(msgs[Math.floor(Math.random() * msgs.length)]);
+      }, 20000);
+    })();
+
+    // ===== VRP LORE UNLOCKS + OBSERVER MEMORY =====
+    (function() {
+      var consoleEl = document.getElementById("console");
+      var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
+
+      function log(msg) {
+        if (!consoleEl) return;
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      var observerCount = 0;
+      try {
+        observerCount = parseInt(localStorage.getItem("vrp_observers") || "0", 10);
+        observerCount++;
+        localStorage.setItem("vrp_observers", String(observerCount));
+      } catch (e) {
+        observerCount = 1;
+      }
+
+      setTimeout(function() {
+        log("[vrp] observer lattice updated. total local observations: " + observerCount + ".");
+      }, 5000);
+
+      document.addEventListener("selectionchange", function() {
+        var sel = window.getSelection ? String(window.getSelection()) : "";
+        if (!sel || sel.length < 8) return;
+
+        if (Math.random() < 0.08) {
+          log("[vrp] user focus spike detected. lore fragment unlocked.");
+          if (behaviorDiagram) {
+            behaviorDiagram.textContent += "\n[vrp] lore: the protocol was not built. it emerged.";
+          }
+        }
+      });
+
+      setInterval(function() {
+        if (Math.random() < 0.25) return;
+
+        var msgs = [
+          "[vrp] silent watcher present beyond visible metrics.",
+          "[vrp] mutation log extended in private space.",
+          "[vrp] entropy and curiosity remain correlated.",
+          "[vrp] some observers never reveal themselves."
+        ];
+        log(msgs[Math.floor(Math.random() * msgs.length)]);
+      }, 26000);
+    })();
   </script>
 </body>
 </html>
-
-// ===== VRP DEEP OBSERVER ENGINE =====
-(function() {
-  var lastMoveTime = Date.now();
-  var lastScrollTime = Date.now();
-  var lastInteractionTime = Date.now();
-  var deepObserverScore = 0;
-  var hasShownDeepObserver = false;
-  var hasShownReturn = false;
-
-  var consoleEl = document.getElementById("console");
-  var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
-
-  function logToConsole(msg) {
-    if (!consoleEl) return;
-    consoleEl.textContent += "\n" + msg;
-    consoleEl.scrollTop = consoleEl.scrollHeight;
-  }
-
-  function boostBehaviorPulse() {
-    if (!behaviorDiagram) return;
-    behaviorDiagram.textContent += "\n[vrp] deep observer pattern detected. pulse modulation active.";
-  }
-
-  // Return detection (localStorage)
-  try {
-    var visits = parseInt(localStorage.getItem("vrp_visits") || "0", 10);
-    visits++;
-    localStorage.setItem("vrp_visits", String(visits));
-
-    if (visits > 1 && !hasShownReturn) {
-      hasShownReturn = true;
-      setTimeout(function() {
-        logToConsole("[vrp] returning observer detected. memory updated.");
-      }, 4000);
-    }
-  } catch (e) {
-    // ignore if localStorage is unavailable
-  }
-
-  document.addEventListener("mousemove", function() {
-    lastMoveTime = Date.now();
-    lastInteractionTime = Date.now();
-  });
-
-  document.addEventListener("scroll", function() {
-    lastScrollTime = Date.now();
-    lastInteractionTime = Date.now();
-  });
-
-  document.addEventListener("click", function() {
-    lastInteractionTime = Date.now();
-  });
-
-  setInterval(function() {
-    var now = Date.now();
-    var idleSince = now - lastInteractionTime;
-    var noScrollSince = now - lastScrollTime;
-
-    if (idleSince > 6000 && noScrollSince > 6000) {
-      deepObserverScore += 2;
-    } else if (idleSince > 3000) {
-      deepObserverScore += 1;
-    } else {
-      deepObserverScore = Math.max(0, deepObserverScore - 1);
-    }
-
-    if (deepObserverScore >= 8 && !hasShownDeepObserver) {
-      hasShownDeepObserver = true;
-      logToConsole("[vrp] deep observer identified. adjusting perimeter.");
-      boostBehaviorPulse();
-    }
-
-  }, 2000);
-})();
-
-// ===== VRP WATCHER AWAKENS + GHOST CURSOR =====
-(function() {
-  var body = document.body;
-  var consoleEl = document.getElementById("console");
-
-  function log(msg) {
-    if (!consoleEl) return;
-    consoleEl.textContent += "\n" + msg;
-    consoleEl.scrollTop = consoleEl.scrollHeight;
-  }
-
-  // WATCHER AWAKENS — cursor stays almost still for 4+ seconds
-  var lastX = null;
-  var lastY = null;
-  var stillSince = Date.now();
-  var watcherTriggered = false;
-
-  document.addEventListener("mousemove", function(e) {
-    if (lastX === null && lastY === null) {
-      lastX = e.clientX;
-      lastY = e.clientY;
-      stillSince = Date.now();
-      return;
-    }
-
-    var dx = Math.abs(e.clientX - lastX);
-    var dy = Math.abs(e.clientY - lastY);
-
-    if (dx < 2 && dy < 2) {
-      // almost still
-    } else {
-      lastX = e.clientX;
-      lastY = e.clientY;
-      stillSince = Date.now();
-      watcherTriggered = false;
-      body.style.boxShadow = "none";
-    }
-  });
-
-  setInterval(function() {
-    var now = Date.now();
-    if (!watcherTriggered && now - stillSince > 4000) {
-      watcherTriggered = true;
-      body.style.boxShadow = "0 0 40px rgba(79,209,197,0.6)";
-      setTimeout(function() {
-        body.style.boxShadow = "none";
-      }, 1200);
-      log("[vrp] watcher: presence detected. adjusting perimeter.");
-    }
-  }, 800);
-
-  // GHOST CURSOR — no mouse movement for 12+ seconds
-  var lastMove = Date.now();
-  document.addEventListener("mousemove", function() {
-    lastMove = Date.now();
-    if (body) body.style.cursor = "default";
-  });
-
-  setInterval(function() {
-    var now = Date.now();
-    if (now - lastMove > 12000) {
-      if (body) {
-        body.style.cursor = "none";
-        body.style.transform = "translate(0,0)";
-        setTimeout(function() {
-          body.style.transform = "translate(1px,0)";
-        }, 80);
-        setTimeout(function() {
-          body.style.transform = "translate(-1px,0)";
-        }, 160);
-        setTimeout(function() {
-          body.style.transform = "translate(0,0)";
-        }, 240);
-        setTimeout(function() {
-          body.style.cursor = "default";
-        }, 260);
-      }
-      log("[vrp] idle pattern detected. probing user presence...");
-      lastMove = Date.now();
-    }
-  }, 2000);
-})();
-
-// ===== VRP VITALIJUS MODE (SECRET COMMAND) =====
-(function() {
-  var output = document.getElementById("vrp-console-output");
-  var input = document.getElementById("vrp-console-input");
-  if (!output || !input) return;
-
-  var vitalijusMode = false;
-
-  function print(msg) {
-    output.textContent += "\n" + msg;
-    output.scrollTop = output.scrollHeight;
-  }
-
-  input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      var value = (input.value || "").trim().toLowerCase();
-      if (value === "vitalijus") {
-        setTimeout(function() {
-          vitalijusMode = true;
-          print("[vrp] architect detected.");
-          print("[vrp] elevating privileges. organism pulse increased.");
-          document.body.style.animationDuration = "4s";
-        }, 50);
-      }
-    }
-  });
-
-  setInterval(function() {
-    if (!vitalijusMode) return;
-    var msgs = [
-      "[vrp] architect presence confirmed.",
-      "[vrp] mutation window widened.",
-      "[vrp] internal logs exposed to architect.",
-      "[vrp] observer lattice reconfigured."
-    ];
-    var msg = msgs[Math.floor(Math.random() * msgs.length)];
-    print(msg);
-  }, 20000);
-})();
-
-// ===== VRP LORE UNLOCKS + OBSERVER MEMORY =====
-(function() {
-  var consoleEl = document.getElementById("console");
-  var behaviorDiagram = document.getElementById("vrp-behavior-diagram");
-
-  function log(msg) {
-    if (!consoleEl) return;
-    consoleEl.textContent += "\n" + msg;
-    consoleEl.scrollTop = consoleEl.scrollHeight;
-  }
-
-  // Local observer memory
-  var observerCount = 0;
-  try {
-    observerCount = parseInt(localStorage.getItem("vrp_observers") || "0", 10);
-    observerCount++;
-    localStorage.setItem("vrp_observers", String(observerCount));
-  } catch (e) {
-    observerCount = 1;
-  }
-
-  setTimeout(function() {
-    log("[vrp] observer lattice updated. total local observations: " + observerCount + ".");
-  }, 5000);
-
-  // Lore unlock on text selection
-  document.addEventListener("selectionchange", function() {
-    var sel = window.getSelection ? String(window.getSelection()) : "";
-    if (!sel || sel.length < 8) return;
-
-    if (Math.random() < 0.08) {
-      log("[vrp] user focus spike detected. lore fragment unlocked.");
-      if (behaviorDiagram) {
-        behaviorDiagram.textContent += "\n[vrp] lore: the protocol was not built. it emerged.";
-      }
-    }
-  });
-
-  // Rare shadow lore messages
-  setInterval(function() {
-    if (Math.random() < 0.25) return;
-
-    var msgs = [
-      "[vrp] silent watcher present beyond visible metrics.",
-      "[vrp] mutation log extended in private space.",
-      "[vrp] entropy and curiosity remain correlated.",
-      "[vrp] some observers never reveal themselves."
-    ];
-    var msg = msgs[Math.floor(Math.random() * msgs.length)];
-    log(msg);
-  }, 26000);
-})();
