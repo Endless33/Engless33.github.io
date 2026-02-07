@@ -28,6 +28,14 @@
       color: var(--fg);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
+      animation: vrpBreath 6s ease-in-out infinite;
+      background-size: 100%;
+    }
+
+    @keyframes vrpBreath {
+      0% { background-size: 100%; }
+      50% { background-size: 102%; }
+      100% { background-size: 100%; }
     }
 
     .page {
@@ -566,6 +574,24 @@
       color: #000;
       font-weight: bold;
     }
+
+    /* HEARTBEAT LINE */
+    #vrp-heartbeat {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      background: #4fd1c5;
+      animation: vrpPulse 1.8s infinite ease-in-out;
+      z-index: 99999;
+    }
+
+    @keyframes vrpPulse {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
   </style>
 </head>
 
@@ -1009,6 +1035,9 @@ observers: 0
     </div>
   </div>
 
+  <!-- HEARTBEAT LINE -->
+  <div id="vrp-heartbeat"></div>
+
   <script>
     // MAIN DEMO CONSOLE
     (function() {
@@ -1195,7 +1224,6 @@ observers: 0
       function render() {
         var max = 10;
         var filled = "";
-        var empty = "";
         for (var i = 0; i < max; i++) {
           filled += i < pulseLevel ? "#" : ".";
         }
@@ -1399,6 +1427,44 @@ observers: 0
       attachOverlayClose(authorModal);
       attachOverlayClose(protocolModal);
       attachOverlayClose(thanksModal);
+    })();
+
+    // VRP BREATHING + ENTROPY WHISPER + SHADOW MESSAGES
+    (function() {
+      var lastMove = Date.now();
+      var whisperCooldown = false;
+
+      document.addEventListener("mousemove", function() {
+        lastMove = Date.now();
+        if (!whisperCooldown) {
+          whisperCooldown = true;
+          setTimeout(function() { whisperCooldown = false; }, 3000);
+
+          var consoleEl = document.getElementById("console");
+          if (consoleEl) {
+            consoleEl.textContent += "\n[vrp] entropy spike detected. adjusting pulse...";
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+          }
+        }
+      });
+
+      setInterval(function() {
+        var consoleEl = document.getElementById("console");
+        if (!consoleEl) return;
+
+        var msgs = [
+          "[vrp] silent watcher connected.",
+          "[vrp] mutation event detected.",
+          "[vrp] entropy drift observed.",
+          "[vrp] background rotation active.",
+          "[vrp] observer ping received."
+        ];
+
+        var msg = msgs[Math.floor(Math.random() * msgs.length)];
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+
+      }, 15000);
     })();
   </script>
 </body>
