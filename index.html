@@ -12,39 +12,67 @@
       --muted: #a0a0a0;
       --accent: #8cc0c8;
       --border: #262626;
-      --max-width: 900px;
+      --max-width: 960px;
+      --accent-strong: #4fd1c5;
+      --danger: #ff4b4b;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       padding: 0;
-      background: var(--bg);
+      background: radial-gradient(circle at top, #101010 0, #050505 45%, #000 100%);
       color: var(--fg);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
     }
+
     .page {
       max-width: var(--max-width);
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 32px 16px 80px;
     }
+
     h1, h2, h3 {
       font-weight: 500;
       margin-top: 40px;
       margin-bottom: 10px;
     }
-    h1 { font-size: 2.4rem; margin-top: 10px; }
+
+    h1 {
+      font-size: 2.6rem;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
     h2 {
       font-size: 1.4rem;
       border-top: 1px solid var(--border);
       padding-top: 24px;
       margin-top: 40px;
     }
-    h3 { font-size: 1.05rem; margin-top: 24px; }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 24px;
+    }
+
     p { margin: 0 0 12px; }
-    .tagline { font-size: 1.05rem; color: var(--accent); margin-bottom: 24px; }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
     .muted { color: var(--muted); }
-    ul { padding-left: 20px; margin: 4px 0 12px; }
+
+    ul {
+      padding-left: 20px;
+      margin: 4px 0 12px;
+    }
+
     .button {
       display: inline-block;
       margin-top: 10px;
@@ -53,8 +81,20 @@
       text-decoration: none;
       color: var(--fg);
       font-size: 0.9rem;
+      background: transparent;
+      cursor: pointer;
     }
-    .button.muted { border-color: var(--border); color: var(--muted); }
+
+    .button.muted {
+      border-color: var(--border);
+      color: var(--muted);
+    }
+
+    .button.primary {
+      border-color: var(--accent-strong);
+      color: var(--accent-strong);
+    }
+
     footer {
       margin-top: 60px;
       font-size: 0.8rem;
@@ -62,6 +102,7 @@
       border-top: 1px solid var(--border);
       padding-top: 20px;
     }
+
     input, textarea {
       background:#111;
       border:1px solid #333;
@@ -69,13 +110,206 @@
       padding:8px;
       width:100%;
       margin-bottom:10px;
+      font-family: inherit;
+      font-size: 0.9rem;
     }
+
     button {
-      padding:10px 20px;
-      background:#222;
-      border:1px solid #444;
-      color:#777;
-      cursor:not-allowed;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    .pill {
+      display:inline-block;
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:4px 10px;
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+
+    .hero-topline {
+      font-size:0.8rem;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .hero-grid {
+      display:grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.4fr);
+      gap:24px;
+      margin-top:24px;
+      align-items:flex-start;
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-card {
+      border:1px solid var(--border);
+      padding:16px;
+      background:rgba(10,10,10,0.8);
+    }
+
+    .hero-label {
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .hero-value {
+      font-size:0.9rem;
+    }
+
+    .status-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .status-card {
+      border:1px solid var(--border);
+      padding:10px 12px;
+      font-size:0.85rem;
+      background:#070707;
+    }
+
+    .status-label {
+      color:var(--muted);
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+    }
+
+    .status-value {
+      margin-top:4px;
+    }
+
+    .status-dot {
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      margin-right:6px;
+      background:var(--accent-strong);
+    }
+
+    .status-dot.offline {
+      background:var(--danger);
+    }
+
+    .terminal {
+      border:1px solid var(--border);
+      background:#050505;
+      padding:10px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size:0.78rem;
+      height:200px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+
+    .terminal-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:6px;
+      font-size:0.75rem;
+      color:var(--muted);
+    }
+
+    .terminal-dots span {
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      margin-right:4px;
+    }
+
+    .terminal-dots span:nth-child(1) { background:#ff5f57; }
+    .terminal-dots span:nth-child(2) { background:#febc2e; }
+    .terminal-dots span:nth-child(3) { background:#28c840; }
+
+    .demo-panel {
+      border:1px solid var(--border);
+      padding:16px;
+      margin-top:16px;
+      background:#060606;
+    }
+
+    .demo-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:8px;
+    }
+
+    .demo-title {
+      font-size:0.9rem;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      color:var(--muted);
+    }
+
+    .demo-badge {
+      font-size:0.7rem;
+      border:1px solid var(--border);
+      padding:2px 8px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+
+    .diagram {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size:0.78rem;
+      background:#050505;
+      border:1px solid var(--border);
+      padding:10px;
+      margin-top:10px;
+      white-space:pre;
+      overflow:auto;
+    }
+
+    .two-col {
+      display:grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+      gap:18px;
+    }
+
+    @media (max-width: 768px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-note {
+      font-size:0.8rem;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .small-label {
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      color:var(--muted);
+    }
+
+    .inline-code {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size:0.8rem;
+      background:#111;
+      padding:2px 4px;
+      border-radius:3px;
     }
   </style>
 </head>
@@ -83,19 +317,119 @@
 <body>
   <div class="page">
 
-    <!-- HEADER -->
+    <!-- HERO -->
     <header>
+      <div class="hero-topline">VRP / JUMPING VPN · INDEPENDENT PROTOCOL ORGANISM</div>
       <h1>VRP Protocol</h1>
       <div class="tagline">A living architecture for secure, adaptive communication.</div>
-      <p>
-        Jumping VPN / VRP is a communication protocol built around behavioral cryptography,
-        adaptive transport, and organism-like lifecycle patterns.
-      </p>
-      <p class="muted">
-        Jumping VPN provides the encrypted transport perimeter. Inside it, VRP operates as a
-        behavioral, adaptive protocol with organism-like session dynamics.
-      </p>
+
+      <div class="hero-grid">
+        <div>
+          <p>
+            Jumping VPN / VRP is a communication protocol built around behavioral cryptography,
+            adaptive transport, and organism-like lifecycle patterns. The goal is not to create
+            another VPN, but to define a living protocol capable of evolving under observation
+            and adapting to network conditions.
+          </p>
+          <p class="muted">
+            Jumping VPN provides the encrypted transport perimeter. Inside it, VRP operates as a
+            behavioral, adaptive protocol with organism-like session dynamics.
+          </p>
+          <div style="margin-top:10px;">
+            <span class="pill">X25519</span>
+            <span class="pill">ChaCha20‑Poly1305</span>
+            <span class="pill">Behavioral layer</span>
+            <span class="pill">Adaptive transport</span>
+            <span class="pill">Organism model</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-label">Live surface</div>
+          <div class="status-grid">
+            <div class="status-card">
+              <div class="status-label">Status</div>
+              <div class="status-value"><span class="status-dot"></span>Online (symbolic)</div>
+            </div>
+            <div class="status-card">
+              <div class="status-label">Pulse</div>
+              <div class="status-value" id="pulse-status">Stable</div>
+            </div>
+            <div class="status-card">
+              <div class="status-label">Transport</div>
+              <div class="status-value" id="transport-status">Adaptive</div>
+            </div>
+            <div class="status-card">
+              <div class="status-label">Observers</div>
+              <div class="status-value" id="observer-status">Active</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <button class="button primary" id="start-demo">Run VRP demo</button>
+            <button class="button muted" id="clear-demo" style="margin-left:6px;">Clear</button>
+          </div>
+          <div class="section-note">Demo is a local simulation. No real traffic, no backend.</div>
+        </div>
+      </div>
     </header>
+
+    <!-- DEMO PANEL -->
+    <section id="demo">
+      <h2>VRP demo surface</h2>
+      <div class="demo-panel">
+        <div class="demo-header">
+          <div class="demo-title">Behavior · Transport · Mutation</div>
+          <div class="demo-badge">LOCAL SIMULATION</div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="terminal-header">
+              <div>vrp-core.log</div>
+              <div class="terminal-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="terminal" id="terminal">
+[vrp] ready. press "Run VRP demo".
+            </div>
+          </div>
+
+          <div>
+            <div class="small-label">Protocol diagram</div>
+            <div class="diagram">
+   ┌───────────────┐
+   │   Handshake   │  X25519
+   └───────┬───────┘
+           │
+   ┌───────▼───────┐
+   │    Sealing    │  ChaCha20‑Poly1305
+   └───────┬───────┘
+           │
+   ┌───────▼───────┐
+   │   Behavior    │  pulse · rotation · mutation
+   └───────┬───────┘
+           │
+   ┌───────▼───────┐
+   │   Transport   │  UDP · TCP · QUIC (future)
+   └───────────────┘
+            </div>
+
+            <div style="margin-top:12px;">
+              <div class="small-label">Example config (conceptual)</div>
+              <div class="diagram" id="config-demo">
+[vrp]
+server   = 203.0.113.10
+port     = 443
+transport = adaptive
+behavior  = organism
+log_level = minimal
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ROADMAP -->
     <section id="roadmap">
@@ -172,7 +506,11 @@
     <!-- WHITEPAPER -->
     <section id="whitepaper">
       <h2>Whitepaper v0.1</h2>
-      <p class="muted">A public version will be added soon.</p>
+      <p>
+        The whitepaper will describe the cryptographic foundation, behavioral model, transport abstraction,
+        data channel, server architecture, and security model of VRP / Jumping VPN.
+      </p>
+      <p class="muted">A public version will be added when the protocol reaches the next stable mutation.</p>
       <a href="#" class="button muted">Whitepaper (coming soon)</a>
     </section>
 
@@ -180,8 +518,26 @@
     <section id="why">
       <h2>Why this matters</h2>
       <p>
-        Secure communication is no longer defined only by encryption strength.
-        It requires adaptability, behavior, and resilience under observation.
+        Secure communication is no longer defined only by encryption strength. It requires adaptability,
+        behavior, and resilience under observation.
+      </p>
+      <p>
+        VRP explores a dynamic model where a protocol behaves more like an organism than a static tunnel —
+        capable of evolving, rotating, and adapting to network conditions.
+      </p>
+    </section>
+
+    <!-- ENTITIES -->
+    <section id="entities">
+      <h2>Entities</h2>
+      <p class="muted">Symbolic representations of the protocol’s internal logic.</p>
+      <ul>
+        <li><strong>The Watcher</strong> — vigilance, perimeter, awareness.</li>
+        <li><strong>The Pulse Engine</strong> — behavior, rotation, adaptation.</li>
+        <li><strong>The Curiosity Node</strong> — evolution, learning, emergence.</li>
+      </ul>
+      <p class="section-note">
+        These entities appear across the visual language of Jumping VPN 2.0 and act as anchors for how the protocol is perceived.
       </p>
     </section>
 
@@ -191,18 +547,63 @@
       <p class="muted">A symbolic list of domains watching the protocol.</p>
       <ul>
         <li>Secure communications specialists</li>
-        <li>Protocol designers</li>
-        <li>Academic research groups</li>
-        <li>Cloud infrastructure engineers</li>
-        <li>Satellite & space‑tech teams</li>
+        <li>Protocol designers and cryptographers</li>
+        <li>Academic research groups in networking and security</li>
+        <li>Cloud‑native infrastructure engineers</li>
+        <li>Satellite & space‑tech communications teams</li>
         <li>National CERT/CSIRT units</li>
       </ul>
+      <p class="section-note">
+        This is not endorsement — it is a reflection of who has been paying attention.
+      </p>
+    </section>
+
+    <!-- LIVE STATUS -->
+    <section id="status">
+      <h2>Live status</h2>
+      <p>Status: <strong>Online (symbolic)</strong></p>
+      <p>Pulse: <strong id="pulse-status-secondary">Stable</strong></p>
+      <p>Transport: <strong id="transport-status-secondary">Adaptive</strong></p>
+      <p>Observers: <strong id="observer-status-secondary">Active</strong></p>
+      <p class="muted">This status mirrors the demo surface above.</p>
+    </section>
+
+    <!-- MUTATION LOG -->
+    <section id="mutation-log">
+      <h2>Mutation log</h2>
+      <ul>
+        <li><strong>Mutation 001</strong> — Public surface online</li>
+        <li><strong>Mutation 002</strong> — Support layer added</li>
+        <li><strong>Mutation 003</strong> — Entities defined</li>
+        <li><strong>Mutation 004</strong> — Demo surface attached</li>
+        <li><strong>Mutation 005</strong> — Status mirroring enabled</li>
+      </ul>
+      <p class="muted">The protocol evolves through mutations, not versions.</p>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section id="philosophy">
+      <h2>Philosophy</h2>
+      <p>Protocol as organism.</p>
+      <p>Behavior as security.</p>
+      <p>Adaptation as resilience.</p>
+      <p>Silence as signal.</p>
+      <p class="muted">VRP is not a product. It is an evolving architecture.</p>
+    </section>
+
+    <!-- ORIGINS -->
+    <section id="origins">
+      <h2>Origins</h2>
+      <p><strong>The Watcher</strong> — first entity, guardian of the perimeter.</p>
+      <p><strong>The Pulse Engine</strong> — emerged when the protocol gained rhythm.</p>
+      <p><strong>The Curiosity Node</strong> — symbol of evolution and learning.</p>
+      <p class="muted">The entities grow stronger when their caretaker feeds them well.</p>
     </section>
 
     <!-- COMMUNITY -->
     <section id="community">
       <h2>Community & discussion</h2>
-      <p>A minimal community channel will be added soon.</p>
+      <p>A minimal community channel will be added (Telegram / Discord / Matrix / GitHub Discussions).</p>
       <a href="#" class="button muted">Join the discussion (soon)</a>
     </section>
 
@@ -214,70 +615,20 @@
         If you want to support the evolution of the protocol, you can contribute via PayPal:
       </p>
       <p style="font-size:1.1rem;"><strong>jumpingvpn@yahoo.com</strong></p>
-      <p class="muted">Thank you to everyone who supports the work.</p>
+      <p class="muted">Thank you to everyone who supports the work and follows the protocol’s development.</p>
     </section>
 
     <!-- CONTACT -->
     <section id="contact">
       <h2>Contact</h2>
-      <p>For collaboration or research inquiries:</p>
+      <p>For collaboration, research inquiries, or early support:</p>
       <p><strong>jumpingvpn@yahoo.com</strong></p>
     </section>
 
-    <!-- ENTITIES -->
-    <section id="entities">
-      <h2>Entities</h2>
-      <p class="muted">Symbolic representations of the protocol.</p>
-      <ul>
-        <li><strong>The Watcher</strong> — vigilance, perimeter, awareness.</li>
-        <li><strong>The Pulse Engine</strong> — behavior, rotation, adaptation.</li>
-        <li><strong>The Curiosity Node</strong> — evolution, learning, emergence.</li>
-      </ul>
-    </section>
-
-    <!-- LIVE STATUS -->
-    <section id="status">
-      <h2>Live Status</h2>
-      <p>Status: <strong>Online</strong></p>
-      <p>Pulse: <strong>Stable</strong></p>
-      <p>Transport: <strong>Adaptive</strong></p>
-      <p>Observers: <strong>Active</strong></p>
-      <p class="muted">Symbolic telemetry.</p>
-    </section>
-
-    <!-- MUTATION LOG -->
-    <section id="mutation-log">
-      <h2>Mutation Log</h2>
-      <ul>
-        <li><strong>Mutation 001</strong> — Public surface online</li>
-        <li><strong>Mutation 002</strong> — Support layer added</li>
-        <li><strong>Mutation 003</strong> — Entities defined</li>
-        <li><strong>Mutation 004</strong> — Status layer added</li>
-        <li><strong>Mutation 005</strong> — Contact form placeholder</li>
-      </ul>
-    </section>
-
-    <!-- PHILOSOPHY -->
-    <section id="philosophy">
-      <h2>Philosophy</h2>
-      <p>Protocol as organism.</p>
-      <p>Behavior as security.</p>
-      <p>Adaptation as resilience.</p>
-      <p>Silence as signal.</p>
-    </section>
-
-    <!-- ORIGINS -->
-    <section id="origins">
-      <h2>Origins</h2>
-      <p><strong>The Watcher</strong> — first entity, guardian of the perimeter.</p>
-      <p><strong>The Pulse Engine</strong> — emerged when the protocol gained rhythm.</p>
-      <p><strong>The Curiosity Node</strong> — symbol of evolution and learning.</p>
-    </section>
-
-    <!-- LOGIN -->
+    <!-- LOGIN (PLACEHOLDER) -->
     <section id="login">
       <h2>Login</h2>
-      <p class="muted">Placeholder for future authentication.</p>
+      <p class="muted">Placeholder for future authentication surface.</p>
       <form>
         <input type="text" placeholder="Username">
         <input type="password" placeholder="Password">
@@ -285,9 +636,9 @@
       </form>
     </section>
 
-    <!-- CONTACT FORM -->
+    <!-- CONTACT FORM (PLACEHOLDER) -->
     <section id="contact-form">
-      <h2>Contact Form</h2>
+      <h2>Contact form</h2>
       <p class="muted">Placeholder for future backend integration.</p>
       <form>
         <input type="text" placeholder="Your name">
@@ -300,7 +651,97 @@
     <footer>
       © VRP Protocol — Independent research project.
     </footer>
-
   </div>
+
+  <script>
+    (function() {
+      const terminal = document.getElementById('terminal');
+      const startBtn = document.getElementById('start-demo');
+      const clearBtn = document.getElementById('clear-demo');
+
+      const pulsePrimary = document.getElementById('pulse-status');
+      const transportPrimary = document.getElementById('transport-status');
+      const observerPrimary = document.getElementById('observer-status');
+
+      const pulseSecondary = document.getElementById('pulse-status-secondary');
+      const transportSecondary = document.getElementById('transport-status-secondary');
+      const observerSecondary = document.getElementById('observer-status-secondary');
+
+      let running = false;
+      let intervalId = null;
+      let step = 0;
+
+      const lines = [
+        '[vrp] initializing organism...',
+        '[vrp] handshake: x25519 ephemeral keys generated',
+        '[vrp] sealing: chacha20‑poly1305 context prepared',
+        '[vrp] session: lifecycle started',
+        '[vrp] behavior: pulse engine online',
+        '[vrp] transport: adaptive mode enabled',
+        '[vrp] observer: external signals detected',
+        '[vrp] rotation: udp → tcp',
+        '[vrp] rotation: tcp → udp',
+        '[vrp] mutation: 006 — demo surface attached',
+        '[vrp] status: stable under observation',
+        '[vrp] note: this is a local simulation only'
+      ];
+
+      function appendLine(text) {
+        if (!terminal) return;
+        terminal.textContent += '\\n' + text;
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      function setStatus(pulse, transport, observers) {
+        if (pulsePrimary) pulsePrimary.textContent = pulse;
+        if (transportPrimary) transportPrimary.textContent = transport;
+        if (observerPrimary) observerPrimary.textContent = observers;
+
+        if (pulseSecondary) pulseSecondary.textContent = pulse;
+        if (transportSecondary) transportSecondary.textContent = transport;
+        if (observerSecondary) observerSecondary.textContent = observers;
+      }
+
+      function startDemo() {
+        if (running) return;
+        running = true;
+        step = 0;
+        if (terminal) {
+          terminal.textContent = '[vrp] demo started.';
+        }
+        setStatus('Warming up', 'Adaptive', 'Calibrating');
+
+        intervalId = setInterval(() => {
+          if (step < lines.length) {
+            appendLine(lines[step]);
+
+            if (step === 4) setStatus('Stable', 'Adaptive', 'Active');
+            if (step === 7) setStatus('Rotating', 'UDP → TCP', 'Active');
+            if (step === 8) setStatus('Rotating', 'TCP → UDP', 'Active');
+            if (step === 10) setStatus('Stable', 'Adaptive', 'Active');
+
+            step++;
+          } else {
+            appendLine('[vrp] demo complete.');
+            setStatus('Stable', 'Adaptive', 'Active');
+            clearInterval(intervalId);
+            running = false;
+          }
+        }, 700);
+      }
+
+      function clearDemo() {
+        if (terminal) {
+          terminal.textContent = '[vrp] ready. press "Run VRP demo".';
+        }
+        if (intervalId) clearInterval(intervalId);
+        running = false;
+        setStatus('Stable', 'Adaptive', 'Active');
+      }
+
+      if (startBtn) startBtn.addEventListener('click', startDemo);
+      if (clearBtn) clearBtn.addEventListener('click', clearDemo);
+    })();
+  </script>
 </body>
 </html>
