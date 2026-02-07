@@ -1,3 +1,4 @@
+`html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -398,7 +399,7 @@
       color:var(--muted);
     }
 
-    /* VRP POPUP CONSOLE */
+    / VRP POPUP CONSOLE /
     #vrp-console-wrapper {
       position: fixed;
       inset: 0;
@@ -477,7 +478,7 @@
       font-size: 0.85rem;
     }
 
-    /* crypto support */
+    / crypto support /
     .crypto-box {
       border: 1px solid var(--border);
       background: linear-gradient(135deg, #0a0a0a, #111);
@@ -499,7 +500,7 @@
       text-shadow: 0 0 10px rgba(79,209,197,0.8);
     }
 
-    /* floating buttons */
+    / floating buttons /
     #floating-buttons {
       position: fixed;
       bottom: 20px;
@@ -530,7 +531,7 @@
       transform: translateY(-1px);
     }
 
-    /* generic modal */
+    / generic modal /
     .modal {
       position: fixed;
       inset: 0;
@@ -575,7 +576,7 @@
       font-weight: bold;
     }
 
-    /* HEARTBEAT LINE */
+    / HEARTBEAT LINE /
     #vrp-heartbeat {
       position: fixed;
       bottom: 0;
@@ -644,8 +645,14 @@
             <div class="terminal-dots"><span></span><span></span><span></span></div>
           </div>
           <div class="terminal" id="console">
-> USER: Hello, can you please change my IP address?
-> VRP: Command received. Processing...
+> USER: hello, how can I help you?
+> VRP: Ready.
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <button class="button secondary" id="geo-eu">EU Route</button>
+            <button class="button secondary" id="geo-us">US Route</button>
+            <button class="button secondary" id="geo-asia">Asia Route</button>
           </div>
 
           <div class="hero-status-row" style="margin-top:8px;">
@@ -858,7 +865,7 @@ observers: 0
       <p class="muted">A symbolic list of domains watching the protocol.</p>
       <ul>
         <li>Wayne P — early observer, consistent presence.</li>
-        <li>Chynthia — quiet orbit, long-term attention.</li>
+        <li>Cynthia — quiet orbit, long-term attention.</li>
         <li>OptiSol — structured curiosity from the outside.</li>
         <li>Security engineers and protocol designers.</li>
         <li>Cloud-native and infra architects.</li>
@@ -943,7 +950,7 @@ observers: 0
       <div>
         [vrp] observers acknowledged:<br>
         - Wayne P — early signal, consistent presence.<br>
-        - Chynthia — quiet observer, steady orbit.<br>
+        - Cynthia — quiet observer, steady orbit.<br>
         - OptiSol — structured curiosity, external lens.<br>
         - silent watchers — those who never comment, never like, but always return.<br><br>
         Every view, every saved link, every private share<br>
@@ -1061,7 +1068,7 @@ observers: 0
 
       function resetConsole() {
         consoleEl.textContent =
-"> USER: Hello, can you please change my IP address?\n> VRP: Command received. Processing...";
+"> USER: hello, how can I help you?\n> VRP: Ready.";
       }
 
       function setBehavior(text) {
@@ -1110,6 +1117,36 @@ observers: 0
 
       startBtn.addEventListener("click", startDemo);
       devBtn.addEventListener("click", openDevConsole);
+    })();
+
+    // ===== VRP GEO SIMULATION BUTTONS =====
+    (function() {
+      var consoleEl = document.getElementById("console");
+      if (!consoleEl) return;
+
+      function log(msg) {
+        consoleEl.textContent += "\n" + msg;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      var eu = document.getElementById("geo-eu");
+      var us = document.getElementById("geo-us");
+      var asia = document.getElementById("geo-asia");
+
+      if (eu) eu.addEventListener("click", function() {
+        log("[vrp] switching route → Europe node...");
+        log("[vrp] new simulated IP: 51.68.xxx.xxx (EU)");
+      });
+
+      if (us) us.addEventListener("click", function() {
+        log("[vrp] switching route → US node...");
+        log("[vrp] new simulated IP: 34.201.xxx.xxx (US)");
+      });
+
+      if (asia) asia.addEventListener("click", function() {
+        log("[vrp] switching route → Asia node...");
+        log("[vrp] new simulated IP: 103.21.xxx.xxx (Asia)");
+      });
     })();
 
     // ===== VRP DASHBOARD (NODES / ENTROPY / PACKETS) =====
@@ -1178,7 +1215,7 @@ observers: 0
         var states = ["online", "rotating", "sealed", "offline", "probing"];
         nodes[idx].state = states[Math.floor(Math.random() * states.length)];
 
-        entropy += direction * (Math.random() * 2.2);
+        entropy += direction  (Math.random()  2.2);
         if (entropy > 92) direction = -1;
         if (entropy < 64) direction = 1;
         entropy = Math.round(entropy);
@@ -1334,7 +1371,7 @@ observers: 0
         print("vrp> " + cmd);
 
         if (commands[lower]) {
-          commands[lower]();
+          commandslower;
         } else if (lower.indexOf("mode ") === 0) {
           print("[vrp] unknown mode. available: stealth, aggressive, storm, ritual.");
         } else if (lower.indexOf("ip") !== -1) {
@@ -1729,3 +1766,4 @@ observers: 0
   </script>
 </body>
 </html>
+`
