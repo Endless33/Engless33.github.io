@@ -22,7 +22,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: radial-gradient(circle at top, #141414 0, #050505 45%, #000 100%);
+      background: radial-gradient(circle at top, #1a1a1a 0, #050505 45%, #000 100%);
       color: var(--fg);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
@@ -45,6 +45,25 @@
       border-top: 1px solid var(--border);
       padding-top: 24px;
       margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: -120%;
+      top: 0;
+      width: 120%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(79,209,197,0.2), transparent);
+      animation: shine 4s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -120%; }
+      50% { left: 120%; }
+      100% { left: 120%; }
     }
 
     h3 {
@@ -119,6 +138,7 @@
       text-decoration: none;
       cursor: pointer;
       white-space: nowrap;
+      transition: 0.3s;
     }
 
     .button.primary {
@@ -131,6 +151,10 @@
       border-color: var(--border);
       color: var(--muted);
       background: #050505;
+    }
+
+    .button.primary:hover {
+      box-shadow: 0 0 12px rgba(79,209,197,0.6);
     }
 
     .hero-note {
@@ -245,6 +269,12 @@
       background: #060606;
       padding: 14px;
       font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: #4fd1c5;
+      box-shadow: 0 0 12px rgba(79,209,197,0.3);
     }
 
     .feature-title {
@@ -393,6 +423,28 @@
     /* dashboard tweaks */
     #vrp-dashboard .diagram {
       height: 120px;
+    }
+
+    /* crypto support */
+    .crypto-box {
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #0a0a0a, #111);
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      animation: cryptoGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes cryptoGlow {
+      0% { box-shadow: 0 0 4px #4fd1c5; }
+      50% { box-shadow: 0 0 14px #4fd1c5; }
+      100% { box-shadow: 0 0 4px #4fd1c5; }
+    }
+
+    #support-crypto h2 {
+      color: #4fd1c5;
+      text-shadow: 0 0 8px rgba(79,209,197,0.4);
     }
   </style>
 </head>
@@ -681,7 +733,7 @@ observers: 0
       </ul>
     </section>
 
-    <!-- SUPPORT -->
+    <!-- SUPPORT (PayPal, старый блок остаётся) -->
     <section id="support">
       <h2>Support the project</h2>
       <p>
@@ -690,6 +742,26 @@ observers: 0
       </p>
       <p style="font-size:1.1rem;"><strong>jumpingvpn@yahoo.com</strong></p>
       <p class="muted">Thank you to everyone who supports the work and follows the protocol’s development.</p>
+    </section>
+
+    <!-- NEW: CRYPTO SUPPORT -->
+    <section id="support-crypto">
+      <h2>🛡 Support the Protocol</h2>
+      <p class="muted">
+        Jumping VPN and VRP are self‑funded experimental projects.<br>
+        If you want to support the movement, you may contribute any amount via crypto.
+      </p>
+
+      <p>
+        Every satoshi strengthens the signal.<br>
+        Every ether fuels the evolution.
+      </p>
+
+      <div class="crypto-box">
+        <div><strong>BTC:</strong> bc1qafvdlevfeld4zvmqhvalwqdcc7jag2xanecfwx</div>
+        <div><strong>ETH:</strong> 0x3b51AaF84F958e082b90639bd7728544234Ff7c9</div>
+        <div><strong>LTC:</strong> ltc1qden05pz46cwtk022y9cqhzzfkj2ssgq42ldmys</div>
+      </div>
     </section>
 
     <!-- CONTACT -->
